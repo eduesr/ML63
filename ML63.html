@@ -1,0 +1,2169 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CP Modesto Lafuente 63 · Junta 2027</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --primary: #4F46E5;
+  --primary-light: #EEF2FF;
+  --secondary: #10B981;
+  --secondary-light: #D1FAE5;
+  --accent: #F59E0B;
+  --accent-light: #FEF3C7;
+  --danger: #EF4444;
+  --danger-light: #FEE2E2;
+  --info: #0EA5E9;
+  --info-light: #E0F2FE;
+  --purple: #8B5CF6;
+  --bg: #FAFBFC;
+  --surface: #FFFFFF;
+  --surface-alt: #F8FAFC;
+  --text: #0F172A;
+  --text-soft: #475569;
+  --text-muted: #64748B;
+  --border: #E2E8F0;
+  --shadow: 0 1px 3px 0 rgba(0,0,0,0.05);
+  --shadow-lg: 0 10px 25px -5px rgba(0,0,0,0.08);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 16px;
+  background: var(--bg); color: var(--text);
+  line-height: 1.6; -webkit-font-smoothing: antialiased;
+}
+body { padding: 0; max-width: 1500px; margin: 0 auto; }
+header { margin-bottom: 30px; animation: fadeInDown 0.6s ease; }
+@keyframes fadeInDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+.header-label { font-size: 14px; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 4px; }
+h1 { font-size: 28px; font-weight: 800; letter-spacing: -0.5px; }
+.subtitle { font-size: 14px; color: var(--text-soft); margin-top: 2px; }
+
+
+.project-card {
+  position: relative;
+}
+.project-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 10px;
+  background: repeating-linear-gradient(
+    -45deg,
+    transparent,
+    transparent 10px,
+    rgba(79,70,229,0.012) 10px,
+    rgba(79,70,229,0.012) 11px
+  );
+  pointer-events: none;
+}
+
+
+/* ── PAGE LAYOUT ── */
+.page-wrapper { padding: 30px 50px 0; max-width: 1500px; margin: 0 auto; }
+.site-header { margin: -30px -50px 30px -50px; padding: 0 50px; }
+
+/* ── SITE HEADER STICKY ── */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: #1E2330;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid #2D3448;
+  transition: box-shadow 0.2s ease;
+  margin: -30px -50px 30px -50px;
+  padding: 0 50px;
+}
+.site-header.scrolled { box-shadow: 0 2px 16px rgba(0,0,0,0.3); }
+.site-header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  height: 60px;
+}
+.site-header-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  min-width: 0;
+}
+.site-header-title {
+  font-size: 17px;
+  font-weight: 800;
+  color: #FFFFFF;
+  letter-spacing: -0.3px;
+  white-space: nowrap;
+}
+.site-header-divider {
+  width: 1px;
+  height: 20px;
+  background: rgba(255,255,255,0.2);
+  flex-shrink: 0;
+}
+.site-header-subtitle {
+  font-size: 14px;
+  font-weight: 500;
+  color: rgba(255,255,255,0.65);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.site-header-right {
+  display: flex;
+  gap: 32px;
+  flex-shrink: 0;
+}
+.site-header-role {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+}
+.site-header-role-label {
+  font-size: 14px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  color: rgba(255,255,255,0.5);
+}
+.site-header-role-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+}
+@media (max-width: 768px) {
+  body { padding: 16px !important; overflow-x: hidden; }
+  .page-wrapper { padding: 16px 16px 0; }
+  .site-header { margin: -16px -16px 20px -16px; padding: 0 16px; }
+  .site-header-right { display: none; }
+  .site-header-subtitle { display: none; }
+  .site-header-title { font-size: 15px; }
+  .kpi-grid { grid-template-columns: 1fr 1fr !important; }
+  .project-list { grid-template-columns: 1fr !important; padding: 10px !important; }
+  .project-card { width: 100% !important; box-sizing: border-box; }
+  .project-name { font-size: 14px !important; white-space: normal !important; }
+  .project-meta { font-size: 13px !important; }
+  .project-obs { font-size: 13px !important; }
+  .project-bank { font-size: 13px !important; }
+  .tabs-container { gap: 2px; }
+  .tab-btn { padding: 10px 12px; font-size: 13px; gap: 4px; }
+  footer { margin-left: -16px !important; margin-right: -16px !important; padding: 16px !important; }
+  footer > div { flex-direction: column; gap: 16px; align-items: center; }
+  footer > div > div:last-child { flex-direction: column; gap: 12px; align-items: center; }
+  details.project-section summary { font-size: 13px; padding: 10px 14px; }
+  .card { padding: 16px !important; }
+  .kpi { padding: 12px !important; }
+  .kpi-value { font-size: 20px !important; }
+}
+
+.tabs-container { display: flex; gap: 6px; border-bottom: 2px solid var(--border); margin-bottom: 35px; margin-top: 72px; overflow-x: auto; scrollbar-width: none; padding-bottom: 2px; }
+.tabs-container::-webkit-scrollbar { display: none; }
+.tab-btn { padding: 14px 24px; font-family: inherit; font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.6px; background: transparent; border: none; border-radius: 8px 8px 0 0; color: var(--text-muted); cursor: pointer; position: relative; white-space: nowrap; transition: all 0.2s ease; display: flex; align-items: center; gap: 7px; }
+.tab-btn:hover { color: var(--text); background: var(--surface-alt); }
+.tab-btn.active { color: var(--primary); background: #EEF2FF; box-shadow: inset 0 -3px 0 var(--primary); font-size: 15px; }
+.tab-btn.active::after { content: ''; position: absolute; bottom: -4px; left: 0; right: 0; height: 4px; background: var(--primary); border-radius: 2px 2px 0 0; }
+
+.tab-content { display: none; animation: fadeUp 0.3s ease; }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+.tab-content.active { display: block; }
+
+.card { background: transparent; border: none; border-radius: 0; padding: 48px 50px; margin-bottom: 0; box-shadow: none; transition: all 0.3s ease; }
+.card-title { font-size: 20px; font-weight: 700; margin-bottom: 24px; color: var(--text); display: flex; align-items: center; gap: 10px; }
+.tab-content > .card:nth-child(odd)  { background: #F4F5F7; }
+.tab-content > .card:nth-child(even) { background: #FFFFFF; }
+.tab-content { padding-top: 0; }
+@media (max-width: 768px) {
+  
+  .card { padding: 24px 16px !important; border-radius: 0 !important; }
+}
+.card:hover { box-shadow: var(--shadow-lg); }
+.card-title { font-size: 20px; font-weight: 700; margin-bottom: 24px; color: var(--text); display: flex; align-items: center; gap: 10px; }
+.card-desc { font-size: 14px; color: var(--text-soft); margin-bottom: 18px; }
+
+.kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 14px; margin-bottom: 22px; }
+.kpi { background: var(--surface-alt); border: 1px solid var(--border); border-radius: 10px; padding: 18px; transition: all 0.2s ease; }
+.kpi:hover { border-color: var(--primary); transform: translateY(-2px); }
+.kpi-label { font-size: 14px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.4px; margin-bottom: 8px; }
+.kpi-value { font-size: 24px; font-weight: 800; color: var(--primary); line-height: 1; }
+.kpi-sub { font-size: 14px; color: var(--text-muted); margin-top: 4px; font-weight: 500; }
+.kpi.success .kpi-value { color: var(--secondary); }
+.kpi.warning .kpi-value { color: var(--accent); }
+.kpi.danger .kpi-value { color: var(--danger); }
+.kpi.info .kpi-value { color: var(--info); }
+
+/* Desglose Gastos: 2 columnas anchas */
+.kpi-grid-split {
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+}
+.kpi-operativo {
+  background: linear-gradient(135deg, #FEE2E2 0%, #FECACA 100%);
+  border: 1px solid #EF4444;
+}
+.kpi-operativo .kpi-label {
+  color: #991B1B;
+  font-weight: 800;
+}
+.kpi-operativo .kpi-value {
+  color: #991B1B;
+  font-size: 28px;
+}
+.kpi-operativo .kpi-sub {
+  color: #7F1D1D;
+}
+
+.kpi-mejora {
+  background: linear-gradient(135deg, #D1FAE5 0%, #A7F3D0 100%);
+  border: 1px solid #10B981;
+}
+.kpi-mejora .kpi-label {
+  color: #065F46;
+  font-weight: 800;
+}
+.kpi-mejora .kpi-value {
+  color: #065F46;
+  font-size: 28px;
+}
+.kpi-mejora .kpi-sub {
+  color: #047857;
+}
+
+.chart-section { margin: 24px 0 8px; }
+.chart-title { font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 14px; text-transform: uppercase; letter-spacing: 0.5px; }
+.chart-container { width: 100%; height: 240px; background: var(--surface-alt); border: 1px solid var(--border); border-radius: 10px; padding: 30px 16px 16px; display: flex; align-items: flex-end; justify-content: space-around; gap: 8px; }
+.bar-wrapper { display: flex; flex-direction: column; align-items: center; flex: 1; height: 100%; justify-content: flex-end; min-width: 0; }
+.bar { width: 100%; max-width: 50px; background: linear-gradient(to top, var(--primary), var(--primary-light)); border-radius: 4px 4px 0 0; position: relative; transition: filter 0.2s ease; }
+.bar:hover { filter: brightness(1.1); }
+.bar-label { font-size: 14px; color: var(--text-muted); margin-top: 8px; font-weight: 600; }
+.bar-value { position: absolute; top: -22px; left: 50%; transform: translateX(-50%); font-size: 14px; font-weight: 700; color: var(--text); white-space: nowrap; }
+
+.stacked-chart { display: flex; align-items: flex-end; justify-content: space-around; height: 100%; gap: 8px; width: 100%; }
+.stacked-bar-wrapper { display: flex; flex-direction: column; align-items: center; flex: 1; height: 100%; justify-content: flex-end; }
+.stacked-bar { width: 100%; max-width: 60px; display: flex; flex-direction: column-reverse; border-radius: 4px 4px 0 0; overflow: hidden; position: relative; }
+.stacked-segment { width: 100%; transition: filter 0.2s ease; }
+.stacked-segment:hover { filter: brightness(1.1); }
+.stacked-total { position: absolute; top: -22px; left: 50%; transform: translateX(-50%); font-size: 14px; font-weight: 700; color: var(--text); white-space: nowrap; }
+.grouped-chart { display: flex; align-items: flex-end; justify-content: space-around; gap: 10px; width: 100%; height: 100%; }
+.group-cluster { display: flex; flex-direction: column; align-items: center; justify-content: flex-end; flex: 1; height: 100%; min-width: 0; }
+.group-bars { display: flex; align-items: flex-end; justify-content: center; gap: 4px; width: 100%; flex: 1; }
+.grouped-bar { display: flex; align-items: flex-end; justify-content: center; flex: 1; max-width: 18px; min-width: 0; }
+.grouped-bar-fill { width: 100%; min-height: 2px; border-radius: 4px 4px 0 0; transition: filter 0.2s ease; }
+.grouped-bar-fill:hover { filter: brightness(1.1); }
+.group-label { font-size: 13px; color: var(--text-muted); margin-top: 8px; font-weight: 600; white-space: nowrap; }
+.legend { display: flex; gap: 16px; flex-wrap: wrap; justify-content: center; margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--border); }
+.legend-item { display: flex; align-items: center; gap: 6px; font-size: 14px; color: var(--text-soft); font-weight: 600; }
+.legend-color { width: 12px; height: 12px; border-radius: 2px; }
+
+.project-section { margin-bottom: 14px; }
+.project-section summary { display: none; }
+details.project-section { border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+details.project-section summary { display: flex; align-items: center; gap: 10px; list-style: none; padding: 12px 18px; font-size: 14px; font-weight: 700; color: var(--text-soft); text-transform: uppercase; letter-spacing: 0.5px; cursor: pointer; background: var(--surface-alt); user-select: none; }
+details.project-section summary::-webkit-details-marker { display: none; }
+details.project-section summary:hover { background: #EEF2FF; color: var(--primary); }
+details.project-section summary::after { content: '▼'; margin-left: auto; font-size: 14px; color: var(--text-muted); transition: transform 0.2s ease; }
+details.project-section[open] > summary::after { transform: rotate(180deg); }
+details.project-section[open] > summary { border-bottom: 1px solid var(--border); }
+.section-header .count { background: var(--surface); border: 1px solid var(--border); padding: 2px 8px; border-radius: 10px; font-size: 14px; color: var(--text-muted); font-weight: 700; }
+.project-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 14px; padding: 16px; background: var(--surface-alt); }
+.project-card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 16px 18px; box-shadow: var(--shadow); transition: box-shadow 0.2s ease, transform 0.2s ease; }
+.project-card:hover { box-shadow: var(--shadow-lg); transform: translateY(-2px); }
+.project-card-header { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 8px; }
+.project-icon { font-size: 16px; min-width: 22px; flex-shrink: 0; }
+.project-name { font-weight: 700; font-size: 14px; color: var(--text); display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+.project-meta { font-size: 14px; color: var(--text-muted); margin-bottom: 8px; }
+.project-obs { font-size: 14px; color: var(--text-soft); margin-top: 8px; line-height: 1.5; }
+.project-bank {
+  font-size: 14px;
+  color: #1E40AF;
+  margin-top: 8px;
+  line-height: 1.5;
+  background: #EFF6FF;
+  border-left: 3px solid #3B82F6;
+  padding: 8px 12px;
+  border-radius: 4px;
+}
+.project-bank strong { color: #1E3A8A; }
+.project-pres {
+  font-size: 14px;
+  color: #92400E;
+  margin-top: 8px;
+  line-height: 1.5;
+  background: #FEF3C7;
+  border-left: 3px solid #F59E0B;
+  padding: 8px 12px;
+  border-radius: 4px;
+}
+.project-nopres {
+  font-size: 14px;
+  color: #6B7280;
+  margin-top: 8px;
+  line-height: 1.5;
+  background: #F3F4F6;
+  border-left: 3px solid #D1D5DB;
+  padding: 8px 12px;
+  border-radius: 4px;
+}
+.progress-bar { width: 100%; height: 4px; background: var(--border); border-radius: 2px; overflow: hidden; }
+.progress-fill { height: 100%; border-radius: 2px; }
+.progress-fill.green { background: linear-gradient(90deg, #10B981, #6EE7B7); }
+.progress-fill.amber { background: linear-gradient(90deg, #F59E0B, #FCD34D); }
+.progress-fill.gray { background: var(--border); }
+
+.badge { display: inline-block; padding: 4px 10px; border-radius: 12px; font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.3px; }
+.badge.success { background: var(--secondary-light); color: var(--secondary); }
+
+.alert { background: var(--info-light); border-left: 4px solid var(--info); padding: 28px 50px; font-size: 14px; color: var(--text-soft); margin: 0; display: block; }
+.alert strong { color: var(--text); }
+
+.savings-banner { background: linear-gradient(135deg, #D1FAE5, #A7F3D0); border: 1px solid var(--secondary); border-radius: 10px; padding: 20px 24px; margin-bottom: 22px; display: flex; align-items: center; gap: 18px; }
+.savings-icon { font-size: 32px; }
+.savings-content { flex: 1; }
+.savings-title { font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--secondary); margin-bottom: 4px; }
+.savings-amount { font-size: 28px; font-weight: 800; color: var(--text); line-height: 1; }
+.savings-desc { font-size: 14px; color: var(--text-soft); margin-top: 4px; }
+
+footer { margin-top: 0; padding: 28px 50px; border-top: 1px solid #2D3448; text-align: center; color: rgba(255,255,255,0.6); font-size: 14px; background: #1E2330; }
+@media (max-width: 768px) {
+  h1 { font-size: 22px; }
+  .chart-container { height: 200px; }
+  .grouped-chart { gap: 6px; }
+  .group-bars { gap: 2px; }
+  .grouped-bar { max-width: 12px; }
+  .group-label { font-size: 12px; }
+  .savings-banner { flex-direction: column; text-align: center; }
+}
+
+/* ── LOGIN OVERLAY ── */
+#loginOverlay { position: fixed; inset: 0; background: #1E2330; z-index: 9999; display: flex; align-items: center; justify-content: center; }
+.login-box { background: #fff; border-radius: 16px; padding: 40px; width: 360px; box-shadow: 0 20px 60px rgba(0,0,0,0.3); }
+.login-box h2 { font-size: 20px; font-weight: 800; color: #4F46E5; margin-bottom: 4px; }
+.login-box p { color: #94A3B8; font-size: 13px; margin-bottom: 24px; }
+.login-field { margin-bottom: 14px; }
+.login-field label { display: block; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: #64748B; margin-bottom: 5px; }
+.login-field input { width: 100%; padding: 10px 14px; border: 1.5px solid #E2E8F0; border-radius: 8px; font-size: 15px; font-family: inherit; outline: none; }
+.login-field input:focus { border-color: #4F46E5; }
+.btn-login { width: 100%; padding: 12px; background: #4F46E5; color: white; border: none; border-radius: 8px; font-size: 15px; font-weight: 700; cursor: pointer; font-family: inherit; }
+.btn-login:hover { opacity: 0.9; }
+.login-err { color: #EF4444; font-size: 13px; margin-top: 10px; text-align: center; }
+/* ── EDIT CONTROLS ── */
+.edit-bar { display: none; align-items: center; gap: 8px; }
+.edit-bar.visible { display: flex; }
+.btn-add { background: rgba(79,70,229,0.9); color: white; border: none; padding: 8px 16px; border-radius: 8px; font-size: 13px; font-weight: 700; cursor: pointer; font-family: inherit; }
+.btn-banco { background: rgba(255,255,255,0.15); color: white; border: none; padding: 8px 16px; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; font-family: inherit; }
+.btn-logout { background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.7); border: none; padding: 8px 14px; border-radius: 8px; font-size: 13px; cursor: pointer; font-family: inherit; }
+.card-edit-btn { display: none; }
+
+/* ── MODAL ── */
+.modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 1000; align-items: center; justify-content: center; padding: 20px; }
+.modal-overlay.open { display: flex; }
+.modal { background: white; border-radius: 16px; width: 100%; max-width: 560px; max-height: 90vh; overflow-y: auto; padding: 28px; }
+.modal h3 { font-size: 18px; font-weight: 800; margin-bottom: 20px; }
+.mf { display: flex; flex-direction: column; gap: 4px; margin-bottom: 14px; }
+.mf label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: #64748B; }
+.mf input, .mf select, .mf textarea { padding: 10px 12px; border: 1.5px solid #E2E8F0; border-radius: 8px; font-size: 14px; font-family: inherit; outline: none; }
+.mf input:focus, .mf select:focus, .mf textarea:focus { border-color: #4F46E5; }
+.mf textarea { resize: vertical; min-height: 70px; }
+.mf-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.modal-actions { display: flex; gap: 10px; justify-content: flex-end; margin-top: 20px; }
+.btn-cancel { background: #F1F5F9; color: #0F172A; border: none; padding: 10px 20px; border-radius: 8px; font-size: 14px; cursor: pointer; font-family: inherit; }
+.btn-save { background: #4F46E5; color: white; border: none; padding: 10px 24px; border-radius: 8px; font-size: 14px; font-weight: 700; cursor: pointer; font-family: inherit; }
+.btn-del { background: #FEE2E2; color: #EF4444; border: none; padding: 10px 16px; border-radius: 8px; font-size: 14px; cursor: pointer; margin-right: auto; font-family: inherit; }
+
+.card-menu-btn { position: absolute; top: 10px; right: 10px; background: var(--bg); border: 1px solid var(--border); cursor: pointer; font-size: 18px; color: var(--text); padding: 4px 10px; border-radius: 6px; line-height: 1; z-index: 5; font-weight: 700; letter-spacing: 1px; }
+.card-menu-btn:hover { background: var(--primary); color: white; border-color: var(--primary); }
+.card-menu-dropdown { position: absolute; top: 36px; right: 10px; background: white; border: 1px solid var(--border); border-radius: 8px; box-shadow: 0 4px 16px rgba(0,0,0,0.12); z-index: 50; min-width: 130px; overflow: hidden; display: none; }
+.card-menu-dropdown.open { display: block; }
+.card-menu-item { display: block; width: 100%; padding: 10px 14px; font-size: 14px; font-family: inherit; background: none; border: none; cursor: pointer; text-align: left; color: var(--text); }
+.card-menu-item:hover { background: var(--bg); }
+.card-menu-item.danger { color: #EF4444; }
+.card-menu-item.danger:hover { background: #FEE2E2; }
+
+
+.avatar-btn { width: 34px; height: 34px; border-radius: 50%; background: var(--primary); color: white; border: none; cursor: pointer; font-size: 14px; font-weight: 700; display: flex; align-items: center; justify-content: center; position: relative; flex-shrink: 0; }
+.avatar-btn:hover { opacity: 0.9; }
+.avatar-dropdown { position: absolute; top: 52px; right: 16px; background: white; border: 1px solid var(--border); border-radius: 12px; box-shadow: 0 8px 24px rgba(0,0,0,0.15); z-index: 200; min-width: 220px; overflow: hidden; display: none; }
+.avatar-dropdown.open { display: block; }
+.avatar-header { padding: 16px; background: var(--dark); color: white; }
+.avatar-header-email { font-size: 12px; color: rgba(255,255,255,0.6); margin-top: 2px; }
+.avatar-header-role { display: inline-block; margin-top: 6px; font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 10px; background: rgba(255,255,255,0.15); }
+.avatar-item { display: flex; align-items: center; gap: 10px; padding: 12px 16px; font-size: 14px; color: var(--text); cursor: pointer; border: none; background: none; width: 100%; font-family: inherit; text-align: left; }
+.avatar-item:hover { background: var(--bg); }
+.avatar-item.danger { color: #EF4444; }
+.avatar-divider { height: 1px; background: var(--border); }
+
+/* TOAST */
+.toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(10px); background: #1E2330; color: white; padding: 12px 24px; border-radius: 10px; font-size: 14px; font-weight: 600; z-index: 9000; opacity: 0; transition: all 0.3s; pointer-events: none; }
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+.toast.ok { background: #065F46; }
+.toast.err { background: #991B1B; }
+
+</style>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-CPCRKD0JRE"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-CPCRKD0JRE');
+</script>
+</head>
+<body>
+
+
+<!-- LOGIN -->
+<div id="loginOverlay">
+  <div class="login-box">
+    <h2>Gestión CP ML63</h2>
+    <p>Acceso restringido · Comunidad de Propietarios</p>
+    <div class="login-field"><label>Email</label><input type="email" id="lEmail" autocomplete="email"></div>
+    <div class="login-field"><label>Contraseña</label><input type="password" id="lPass" autocomplete="current-password"></div>
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:16px;">
+      <input type="checkbox" id="lRemember" checked style="width:16px;height:16px;cursor:pointer;">
+      <label for="lRemember" style="font-size:13px;color:#64748B;cursor:pointer;font-weight:500;">Mantener sesión iniciada</label>
+    </div>
+    <button class="btn-login" onclick="doLogin()">Entrar</button>
+    <div class="login-err" id="lErr"></div>
+  </div>
+</div>
+
+<!-- EDIT BAR (solo admin) -->
+
+
+<!-- MODAL PROYECTO -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal">
+    <h3 id="modalTitle">Nuevo proyecto</h3>
+    <div class="mf-row">
+      <div class="mf"><label>Año</label><select id="mAño"><option value="2026">2026</option><option value="2025">2025</option><option value="2027">2027</option></select></div>
+      <div class="mf"><label>Estado</label><select id="mCat"><option value="pendiente">📋 Pendiente</option><option value="progreso">⏳ En progreso</option><option value="completado">✅ Completado</option></select></div>
+    </div>
+    <div class="mf"><label>Nombre</label><input type="text" id="mNombre"></div>
+    <div class="mf-row">
+      <div class="mf"><label>Presupuesto € (negativo=gasto)</label><input type="number" id="mPres" placeholder="ej: -2988"></div>
+      <div class="mf"><label>% Progreso</label><input type="number" id="mProg" min="0" max="100" placeholder="0-100"></div>
+    </div>
+    <div class="mf"><label>Descripción</label><textarea id="mObs"></textarea></div>
+    <div class="mf"><label>Cruce banco</label><textarea id="mBanco"></textarea></div>
+    <div class="modal-actions">
+      <button class="btn-del" id="btnDel" onclick="delProyecto()" style="display:none">Eliminar</button>
+      <button class="btn-cancel" onclick="closeModal()">Cancelar</button>
+      <button class="btn-save" onclick="saveProyecto()">Guardar</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+
+<!-- AVATAR DROPDOWN -->
+<div class="avatar-dropdown" id="avatarDropdown">
+  <div class="avatar-header">
+    <div style="font-weight:700;font-size:14px" id="avatarName">Usuario</div>
+    <div class="avatar-header-email" id="avatarEmail"></div>
+    <span class="avatar-header-role" id="avatarRole"></span>
+  </div>
+  <button class="avatar-item" id="avatarNewProject" onclick="toggleAvatarMenu();openModal()" style="display:none">➕ Nuevo proyecto</button>
+  <div class="avatar-divider"></div>
+  <button class="avatar-item danger" onclick="doLogout()">🚪 Cerrar sesión</button>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<div class="page-wrapper"><header class="site-header" id="siteHeader">
+  <div class="site-header-inner" style="justify-content:space-between;display:flex;align-items:center;height:60px;">
+    <div class="site-header-title">Gestión CP ML63</div>
+    <div style="display:flex;align-items:center;gap:10px">
+      <div class="edit-bar" id="editBar">
+        <button class="btn-add" onclick="openModal()">+ Proyecto</button>
+      </div>
+      <button class="avatar-btn" id="avatarBtn" onclick="toggleAvatarMenu()" style="display:none">?</button>
+    </div>
+  </div>
+</header>
+
+<div class="tabs-container">
+  <button class="tab-btn active" onclick="switchTab(event, 'tab2026')">📋 2026 · En Curso</button>
+  <button class="tab-btn" onclick="switchTab(event, 'tab2025')">✓ 2025 · Cerrado</button>
+  <button class="tab-btn" onclick="switchTab(event, 'energia')">⚡ Energía</button>
+  <button class="tab-btn" onclick="switchTab(event, 'gastos')">💼 Gastos & Servicios</button>
+  <button class="tab-btn" onclick="switchTab(event, 'admin')">🏛️ Gestión</button>
+  <button class="tab-btn" onclick="switchTab(event, 'plan')">🎯 Plan 2025–2029</button>
+  <button class="tab-btn admin-only" id="tabAdmin" onclick="switchTab(event, 'admin-panel')" style="display:none">⚙️ Admin</button>
+</div>
+
+<!-- ============ TAB 2026 ============ -->
+<div id="tab2026" class="tab-content active">
+
+  <div class="card">
+    <div class="card-title">Tesorería 2026 (ene–abr)</div>
+    
+    <!-- Resumen general -->
+    <div style="font-size: 14px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px;">📊 Resumen General</div>
+    <div class="kpi-grid">
+      <div class="kpi success"><div class="kpi-label">Ingresos Totales</div><div class="kpi-value">31.740€</div></div>
+      <div class="kpi danger"><div class="kpi-label">Gastos Totales</div><div class="kpi-value">31.252€</div></div>
+      <div class="kpi success"><div class="kpi-label">Saldo Periodo</div><div class="kpi-value">+488€</div></div>
+      <div class="kpi info"><div class="kpi-label">Saldo Banco</div><div class="kpi-value">28.910€</div><div class="kpi-sub">a 20/04/2026</div></div>
+    </div>
+    
+    <!-- Desglose de gastos -->
+    <div style="font-size: 14px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin: 22px 0 10px;">💰 Desglose de Gastos</div>
+    <div class="kpi-grid kpi-grid-split">
+      <div class="kpi kpi-operativo">
+        <div class="kpi-label">⚙️ Gastos Comunes (operativos)</div>
+        <div class="kpi-value">16.436€</div>
+        <div class="kpi-sub">limpieza, luz, gas, ascensor, comunicaciones, administración…</div>
+      </div>
+      <div class="kpi kpi-mejora">
+        <div class="kpi-label">🔨 Mejoras del Edificio (proyectos)</div>
+        <div class="kpi-value">14.816€</div>
+        <div class="kpi-sub">proyectos de la hoja de ruta · 47% del gasto</div>
+      </div>
+    </div>
+    <p style="font-size: 14px; color: var(--text-muted); margin-top: 14px; padding: 10px 14px; background: #EFF6FF; border-left: 3px solid #3B82F6; border-radius: 4px;">
+      🏦 <strong style="color:#1E3A8A">Auditoría:</strong> Cifras extraídas del extracto bancario Banc Sabadell hasta abril 2026. Cada proyecto enlazado con su cargo/factura concreta.
+    </p>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Proyectos 2026</div>
+    <div id="projects2026"></div>
+  </div>
+</div>
+
+<!-- ============ TAB 2025 ============ -->
+<div id="tab2025" class="tab-content">
+
+  <div class="card">
+    <div class="card-title">Tesorería 2025 <span class="badge success">✓ Cerrado</span></div>
+    
+    <!-- Resumen general -->
+    <div style="font-size: 14px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px;">📊 Resumen General</div>
+    <div class="kpi-grid">
+      <div class="kpi success"><div class="kpi-label">Ingresos Totales</div><div class="kpi-value">62.720€</div></div>
+      <div class="kpi danger"><div class="kpi-label">Gastos Totales</div><div class="kpi-value">57.763€</div></div>
+      <div class="kpi success"><div class="kpi-label">Resultado Año</div><div class="kpi-value">+4.957€</div></div>
+      <div class="kpi info"><div class="kpi-label">Saldo a 31/12</div><div class="kpi-value">28.421€</div></div>
+    </div>
+    
+    <!-- Desglose de gastos -->
+    <div style="font-size: 14px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin: 22px 0 10px;">💰 Desglose de Gastos</div>
+    <div class="kpi-grid kpi-grid-split">
+      <div class="kpi kpi-operativo">
+        <div class="kpi-label">⚙️ Gastos Comunes (operativos)</div>
+        <div class="kpi-value">39.553€</div>
+        <div class="kpi-sub">limpieza, luz, gas, ascensor, comunicaciones, administración, despido portero…</div>
+      </div>
+      <div class="kpi kpi-mejora">
+        <div class="kpi-label">🔨 Mejoras del Edificio (proyectos)</div>
+        <div class="kpi-value">18.210€</div>
+        <div class="kpi-sub">11 proyectos completados de la hoja de ruta · 32% del gasto</div>
+      </div>
+    </div>
+    <p style="font-size: 14px; color: var(--text-muted); margin-top: 14px; padding: 10px 14px; background: #EFF6FF; border-left: 3px solid #3B82F6; border-radius: 4px;">
+      🏦 <strong style="color:#1E3A8A">Auditoría:</strong> Todas las cifras provienen del extracto bancario Banc Sabadell. Cada proyecto incluye su cruce con la factura/cargo correspondiente. Total ingresos 62.720€ y gastos 57.763€ son sumas reales del banco.
+    </p>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Proyectos 2025</div>
+    <p class="card-desc">Ejercicio cerrado: en 2025 solo se muestran proyectos completados. Cualquier actuación que siga en progreso o pendiente se arrastra a 2026 y se contabiliza allí dentro del plan.</p>
+    <div id="projects2025"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">📊 Coste Real del Portero (servicio cerrado en 2025)</div>
+    <p class="card-desc">
+      Este bloque mide el <strong>coste estructural total</strong> del antiguo modelo: <strong>Nómina + Seguridad Social (TGSS) + Quirón Prevención (riesgos laborales) + Sustituciones puntuales + valor teórico de uso de la vivienda de portería</strong>. Desde febrero de 2025 desaparecen las salidas bancarias asociadas al portero; el valor teórico de la vivienda se mantiene solo como referencia económica hasta que se convierta en un ingreso real.
+    </p>
+    <div class="kpi-grid">
+      <div class="kpi danger"><div class="kpi-label">2021 Total</div><div class="kpi-value">21.471€</div><div class="kpi-sub">Nómina+SS+Quirón+Alquiler</div></div>
+      <div class="kpi danger"><div class="kpi-label">2022 Total</div><div class="kpi-value">22.021€</div></div>
+      <div class="kpi danger"><div class="kpi-label">2023 Total</div><div class="kpi-value">23.420€</div></div>
+      <div class="kpi danger"><div class="kpi-label">2024 Total</div><div class="kpi-value">22.022€</div><div class="kpi-sub">incluye sustitución verano</div></div>
+    </div>
+    <div style="font-size: 14px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin: 18px 0 10px;">💸 Coste del despido · 2025</div>
+    <div class="kpi-grid">
+      <div class="kpi danger"><div class="kpi-label">Finiquito e indemnización</div><div class="kpi-value">11.028€</div><div class="kpi-sub">feb 2025 · 3 cargos banco</div></div>
+      <div class="kpi danger"><div class="kpi-label">Embargos Hacienda IRPF</div><div class="kpi-value">1.608€</div><div class="kpi-sub">792€ abr + 816€ may 2025</div></div>
+      <div class="kpi danger"><div class="kpi-label">Total coste salida</div><div class="kpi-value">12.636€</div><div class="kpi-sub">atrasos IRPF + finiquito</div></div>
+      <div class="kpi success"><div class="kpi-label">Ahorro anual de caja</div><div class="kpi-value">~13.000€</div><div class="kpi-sub">nómina+SS+quirón+sustituciones</div></div>
+    </div>
+    <p style="font-size: 14px; color: var(--text-muted); margin-top: 14px; padding: 10px 14px; background: #F8FAFC; border-left: 3px solid #64748B; border-radius: 4px;">
+      🏠 <strong style="color:#334155">Lectura prudente:</strong> el coste estructural previo rondaba 22.000€/año, pero unos 10.000€/año corresponden al valor teórico de uso de la vivienda. Por eso, para proyecciones de caja se toma como ahorro bancario recurrente solo ~13.000€/año, hasta que la vivienda genere cobros reales.
+    </p>
+    <div class="chart-section">
+      <div class="chart-title">Coste anual completo del portero · Desglose por concepto</div>
+      <div class="chart-container">
+        <div class="stacked-chart" id="porteroHistChart"></div>
+      </div>
+      <div class="legend">
+        <div class="legend-item"><div class="legend-color" style="background: #EF4444"></div>Nómina portero</div>
+        <div class="legend-item"><div class="legend-color" style="background: #F59E0B"></div>Seguridad Social (TGSS)</div>
+        <div class="legend-item"><div class="legend-color" style="background: #8B5CF6"></div>Quirón Prevención</div>
+        <div class="legend-item"><div class="legend-color" style="background: #06B6D4"></div>Sustituciones (el Portero)</div>
+        <div class="legend-item"><div class="legend-color" style="background: #0F172A"></div>Valor teórico vivienda (estimado 10.000€/año)</div>
+      </div>
+    </div>
+    <p style="font-size: 14px; color: var(--text-muted); margin-top: 14px; padding: 10px 14px; background: #EFF6FF; border-left: 3px solid #3B82F6; border-radius: 4px;">
+      🏦 <strong style="color:#1E3A8A">Cruce banco:</strong> Nóminas mensuales (621€/mes 2021-22, 708€/mes 2023, 771€/mes 2024) · TGSS (Seg.Social mensual) · Quirón Prevención (4 cargos/año) · el Portero transferencias extra verano 2024 (731,56€) · <strong>Finiquito e indemnización: 10.186€ + 833€ + 9€ (feb 2025)</strong> · <strong>Embargos Hacienda atrasos IRPF: 792,35€ (15/04/2025) + 816,05€ (13/05/2025)</strong>
+    </p>
+  </div>
+</div>
+
+<!-- ============ TAB ENERGÍA ============ -->
+<div id="energia" class="tab-content">
+  <div class="card">
+    <div class="card-title">⚡ Electricidad · Naturgy (zonas comunes)</div>
+    <p class="card-desc">Datos del banco. <strong>Bajada drástica 2022→2023</strong> tras revisión de tarifa eléctrica.</p>
+    <div class="kpi-grid">
+      <div class="kpi danger"><div class="kpi-label">2021</div><div class="kpi-value">11.120€</div></div>
+      <div class="kpi danger"><div class="kpi-label">2022</div><div class="kpi-value">12.188€</div></div>
+      <div class="kpi warning"><div class="kpi-label">2023</div><div class="kpi-value">4.534€</div></div>
+      <div class="kpi success"><div class="kpi-label">2024</div><div class="kpi-value">1.301€</div></div>
+      <div class="kpi success"><div class="kpi-label">2025</div><div class="kpi-value">1.306€</div></div>
+      <div class="kpi info"><div class="kpi-label">2026 (ene-abr)</div><div class="kpi-value">533€</div></div>
+    </div>
+    <div class="chart-section">
+      <div class="chart-title">Gasto Anual Naturgy · 2021–2026</div>
+      <div class="chart-container" id="luzAnualChart"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🔥 Calefacción · Por Temporada (oct–may)</div>
+    <p class="card-desc">
+      Calefacción agrupada en <strong>temporadas reales de uso</strong> (octubre–mayo). Suma 3 conceptos: <strong>Gas Power</strong> (combustible), <strong>Multiservicios Tecnológicos</strong> (mantenimiento caldera) y <strong>Techem</strong> (servicios energéticos).
+    </p>
+    <div class="kpi-grid">
+      <div class="kpi danger"><div class="kpi-label">Temp. 2022/23</div><div class="kpi-value">13.597€</div></div>
+      <div class="kpi warning"><div class="kpi-label">Temp. 2023/24</div><div class="kpi-value">9.211€</div></div>
+      <div class="kpi success"><div class="kpi-label">Temp. 2024/25</div><div class="kpi-value">7.801€</div></div>
+      <div class="kpi info"><div class="kpi-label">Temp. 2025/26*</div><div class="kpi-value">6.255€</div><div class="kpi-sub">hasta abril 2026</div></div>
+    </div>
+    <div class="chart-section">
+      <div class="chart-title">Coste por Temporada (octubre a mayo) · Desglose por Concepto</div>
+      <div class="chart-container">
+        <div class="stacked-chart" id="calefStackedChart"></div>
+      </div>
+      <div class="legend">
+        <div class="legend-item"><div class="legend-color" style="background: #EF4444"></div>Gas Power (combustible)</div>
+        <div class="legend-item"><div class="legend-color" style="background: #F59E0B"></div>Multiservicios Tecn. (caldera)</div>
+        <div class="legend-item"><div class="legend-color" style="background: #4F46E5"></div>Techem (servicios energéticos)</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🔬 Gas Power · Análisis detallado (consumo y precio)</div>
+    <p class="card-desc">
+      Datos extraídos de las facturas del portal Gas Power (2022–2026). Permite separar el efecto del <strong>consumo (kWh)</strong> del efecto del <strong>precio (€/kWh)</strong> para entender cómo evoluciona el coste real.
+    </p>
+    <div class="kpi-grid">
+      <div class="kpi danger"><div class="kpi-label">2022/23 · Precio alto</div><div class="kpi-value">0,110€</div><div class="kpi-sub">63.816 kWh · 7.002€</div></div>
+      <div class="kpi warning"><div class="kpi-label">2023/24</div><div class="kpi-value">0,068€</div><div class="kpi-sub">91.135 kWh · 6.148€</div></div>
+      <div class="kpi success"><div class="kpi-label">2024/25</div><div class="kpi-value">0,067€</div><div class="kpi-sub">98.959 kWh · 6.626€</div></div>
+      <div class="kpi info"><div class="kpi-label">2025/26* · Precio bajo</div><div class="kpi-value">0,057€</div><div class="kpi-sub">82.082 kWh · 4.642€ · hasta marzo</div></div>
+    </div>
+    <div class="chart-section">
+      <div class="chart-title">Precio medio €/kWh por temporada</div>
+      <div class="chart-container" id="gasPrecioChart"></div>
+    </div>
+    <div class="chart-section">
+      <div class="chart-title">Consumo kWh por temporada</div>
+      <div class="chart-container" id="gasConsumoChart"></div>
+    </div>
+
+    <div class="chart-section">
+      <div class="chart-title">🔬 Uso caldera · kWh/día por mes · Comparativa temporadas</div>
+      <div class="chart-container" id="gasKwhDiaChart"></div>
+      <div class="legend">
+        <div class="legend-item"><div class="legend-color" style="background:#4F46E5"></div>Temporada 2022/23</div>
+        <div class="legend-item"><div class="legend-color" style="background:#0EA5E9"></div>Temporada 2023/24</div>
+        <div class="legend-item"><div class="legend-color" style="background:#10B981"></div>Temporada 2024/25</div>
+        <div class="legend-item"><div class="legend-color" style="background:#F59E0B"></div>Temporada 2025/26 (parcial)</div>
+      </div>
+      <p style="font-size: 14px; color: var(--text-muted); margin-top: 10px; padding: 10px 14px; background: #EFF6FF; border-left: 3px solid #3B82F6; border-radius: 4px;">
+        💡 <strong style="color:#1E3A8A">Insight:</strong> Noviembre mejora claramente (27,3 → 15,7 → 16,8 kWh/día) — señal de que los ajustes de horario de encendido están teniendo efecto en el arranque de temporada.
+      </p>
+    </div>
+    <p style="font-size: 14px; color: var(--text-muted); margin-top: 14px; padding: 10px 14px; background: #D1FAE5; border-left: 3px solid #10B981; border-radius: 4px;">
+      💡 <strong style="color:#065F46">Conclusión clave:</strong> El gasto baja por <strong>doble efecto</strong>: el precio del gas ha caído un 48% (de 0,110€ a 0,057€/kWh) y el consumo se estabiliza tras el certificado energético favorable de la caldera (mar 2026). Comparando la misma temporada: 2025/26 lleva similar kWh consumido a 2024/25 pero <strong>~30% menos coste</strong> gracias al precio.
+    </p>
+  </div>
+
+  <div class="card">
+    <div class="card-title">💧 Agua · Canal de Isabel II + ISTA (Contadores)</div>
+    <p class="card-desc">
+      <strong>Dos conceptos del agua del edificio:</strong> el <strong>Canal de Isabel II</strong> factura el suministro de agua bimensualmente (6 cargos al año), e <strong>ISTA Metering Services</strong> gestiona los contadores individuales de agua (cargo anual). La administración regulariza con los vecinos según consumo individual.
+    </p>
+    <div class="kpi-grid">
+      <div class="kpi"><div class="kpi-label">2021 Total</div><div class="kpi-value">4.861€</div><div class="kpi-sub">Canal 4.392€ + Ista 469€</div></div>
+      <div class="kpi"><div class="kpi-label">2022 Total</div><div class="kpi-value">5.090€</div><div class="kpi-sub">Canal 4.591€ + Ista 499€</div></div>
+      <div class="kpi"><div class="kpi-label">2023 Total</div><div class="kpi-value">5.098€</div><div class="kpi-sub">Canal 4.570€ + Ista 528€</div></div>
+      <div class="kpi"><div class="kpi-label">2024 Total</div><div class="kpi-value">5.338€</div><div class="kpi-sub">Canal 4.794€ + Ista 544€</div></div>
+      <div class="kpi success"><div class="kpi-label">2025 Total</div><div class="kpi-value">5.305€</div><div class="kpi-sub">Canal 4.611€ + Ista 694€</div></div>
+      <div class="kpi info"><div class="kpi-label">2026 (ene-abr)</div><div class="kpi-value">2.225€</div><div class="kpi-sub">Canal 1.655€ + Ista 570€</div></div>
+    </div>
+    <div class="chart-section">
+      <div class="chart-title">Coste Anual Agua · Desglose Canal de Isabel II + ISTA</div>
+      <div class="chart-container">
+        <div class="stacked-chart" id="aguaChart"></div>
+      </div>
+      <div class="legend">
+        <div class="legend-item"><div class="legend-color" style="background: #0EA5E9"></div>Canal de Isabel II (suministro · bimensual)</div>
+        <div class="legend-item"><div class="legend-color" style="background: #4F46E5"></div>ISTA Metering (contadores · anual)</div>
+      </div>
+    </div>
+    <p style="font-size: 14px; color: var(--text-muted); margin-top: 14px; padding: 10px 14px; background: #EFF6FF; border-left: 3px solid #3B82F6; border-radius: 4px;">
+      💡 <strong style="color:#1E3A8A">Nota:</strong> El gasto de agua se mantiene muy estable año a año (~5.000€). El Canal factura cada 2 meses (~750–900€/cargo) e ISTA factura una vez al año (~500–700€).
+    </p>
+  </div>
+
+  <div class="card">
+    <div class="card-title">📋 Liquidación bimestral ISTA · Reparto entre vecinos y CP</div>
+    <p class="card-desc">
+      Cada 2 meses ISTA emite una liquidación con los consumos individuales medidos en cada contador. La administración cobra a los vecinos su parte (incluida en la remesa) y la <strong>CP paga directamente sus 3 contadores comunitarios</strong>: limpieza (grifo basura), caldera y la vivienda CP del 8º A.
+    </p>
+    <div style="font-size: 14px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px;">📅 Período actual · 01/01/2026 – 01/03/2026 (59 días)</div>
+    <div class="kpi-grid">
+      <div class="kpi"><div class="kpi-label">Total liquidación finca</div><div class="kpi-value">535,91€</div><div class="kpi-sub">26 recibos · 327 m³</div></div>
+      <div class="kpi success"><div class="kpi-label">Cobrado a vecinos</div><div class="kpi-value">514,36€</div><div class="kpi-sub">23 contadores individuales · 96%</div></div>
+      <div class="kpi info"><div class="kpi-label">Pagado por la CP</div><div class="kpi-value">21,55€</div><div class="kpi-sub">3 contadores comunitarios · 4%</div></div>
+    </div>
+    <div style="font-size: 14px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin: 18px 0 10px;">🏢 Desglose de los 3 contadores que paga la CP</div>
+    <div class="kpi-grid">
+      <div class="kpi"><div class="kpi-label">🧹 Limpieza</div><div class="kpi-value">8,51€</div><div class="kpi-sub">Grifo basura · 2 m³ consumidos</div></div>
+      <div class="kpi"><div class="kpi-label">🔥 Caldera</div><div class="kpi-value">6,52€</div><div class="kpi-sub">Cuarto calderas · 0 m³ (cuota fija)</div></div>
+      <div class="kpi"><div class="kpi-label">🏠 Vivienda CP</div><div class="kpi-value">6,52€</div><div class="kpi-sub">8º A · 0 m³ (cuota fija)</div></div>
+    </div>
+    <p style="font-size: 14px; color: var(--text-muted); margin-top: 14px; padding: 10px 14px; background: #EFF6FF; border-left: 3px solid #3B82F6; border-radius: 4px;">
+      💡 <strong style="color:#1E3A8A">Estimación anual CP:</strong> ~<strong>129€/año</strong> (21,55€ × 6 bimestres). Cuando llegue cada nueva liquidación, este bloque se actualizará para mantener el seguimiento del consumo del edificio.
+    </p>
+    <div style="margin-top: 14px; padding: 12px 16px; background: #D1FAE5; border-left: 3px solid #10B981; border-radius: 6px; font-size: 14px; color: #065F46;">
+      ✅ <strong>Contadores regularizados:</strong> Todos los contadores de agua del edificio están ahora con sus mediciones correctas. Proyecto «ISTA Contadores de agua regularizados» completado en 2026.
+    </div>
+  </div>
+
+</div>
+
+<!-- ============ TAB GASTOS & SERVICIOS (sin portero) ============ -->
+<div id="gastos" class="tab-content">
+
+  <!-- LIMPIEZA EXTERNALIZADA -->
+  <div class="card">
+    <div class="card-title">🧹 Limpieza externalizada · Histórico de proveedores</div>
+    <p class="card-desc">
+      Cronología de empresas de limpieza: <strong>MJM</strong> (anterior) → <strong>Cubos El Pilar</strong> (may 2025–feb 2026) → <strong>Don Cubo / Prevent XXI</strong> (actual desde jun 2025, asumió todo el servicio en marzo 2026 con cuota única). Cada empresa hacía limpieza + cubos.
+    </p>
+    <div class="kpi-grid">
+      <div class="kpi danger"><div class="kpi-label">MJM (oct'24 – abr'25)</div><div class="kpi-value">1.964€</div><div class="kpi-sub">empresa anterior · total histórico</div></div>
+      <div class="kpi warning"><div class="kpi-label">El Pilar (may'25 – feb'26)</div><div class="kpi-value">5.367€</div><div class="kpi-sub">total histórico</div></div>
+      <div class="kpi success"><div class="kpi-label">Don Cubo (jun'25 → hoy)</div><div class="kpi-value">2.706€</div><div class="kpi-sub">actual · 517,88€/mes desde mar 2026</div></div>
+    </div>
+    <div class="kpi-grid">
+      <div class="kpi danger"><div class="kpi-label">Antes (MJM)</div><div class="kpi-value">~330€</div><div class="kpi-sub">€/mes promedio</div></div>
+      <div class="kpi warning"><div class="kpi-label">Antes (El Pilar + Prevent feb'26)</div><div class="kpi-value">597,53€</div><div class="kpi-sub">2 proveedores · €/mes</div></div>
+      <div class="kpi success"><div class="kpi-label">Ahora (Don Cubo)</div><div class="kpi-value">517,88€</div><div class="kpi-sub">cuota única · €/mes</div></div>
+      <div class="kpi success"><div class="kpi-label">Ahorro vs feb'26</div><div class="kpi-value">−956€/año</div></div>
+    </div>
+    <div class="chart-section">
+      <div class="chart-title">Evolución Coste Limpieza por Año (MJM + El Pilar + Don Cubo)</div>
+      <div class="chart-container">
+        <div class="stacked-chart" id="limpiezaChart"></div>
+      </div>
+      <div class="legend">
+        <div class="legend-item"><div class="legend-color" style="background: #EF4444"></div>MJM (anterior)</div>
+        <div class="legend-item"><div class="legend-color" style="background: #F59E0B"></div>Cubos El Pilar (intermedio)</div>
+        <div class="legend-item"><div class="legend-color" style="background: #10B981"></div>Don Cubo / Prevent XXI (actual)</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- COMUNICACIONES -->
+  <div class="card">
+    <div class="card-title">📡 Comunicaciones · Antena, Vídeo y Cámaras</div>
+    <p class="card-desc">
+      Cambio en 2026: <strong>Prisma → Lasser</strong> (Antenas Lasser + Seguridad Lasser).
+    </p>
+    <div class="kpi-grid">
+      <div class="kpi"><div class="kpi-label">2021 Prisma</div><div class="kpi-value">1.513€</div></div>
+      <div class="kpi"><div class="kpi-label">2022 Prisma</div><div class="kpi-value">1.110€</div></div>
+      <div class="kpi"><div class="kpi-label">2023 Prisma</div><div class="kpi-value">1.039€</div></div>
+      <div class="kpi"><div class="kpi-label">2024 Prisma</div><div class="kpi-value">1.229€</div></div>
+      <div class="kpi"><div class="kpi-label">2025 Prisma</div><div class="kpi-value">1.094€</div></div>
+      <div class="kpi success"><div class="kpi-label">2026 Lasser</div><div class="kpi-value">928€</div><div class="kpi-sub">marzo + abril</div></div>
+    </div>
+    <div class="chart-section">
+      <div class="chart-title">Comunicaciones por Año (Prisma vs Lasser)</div>
+      <div class="chart-container">
+        <div class="stacked-chart" id="comunicChart"></div>
+      </div>
+      <div class="legend">
+        <div class="legend-item"><div class="legend-color" style="background: #EF4444"></div>Prisma (anterior)</div>
+        <div class="legend-item"><div class="legend-color" style="background: #10B981"></div>Lasser (actual)</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ASCENSORES -->
+  <div class="card">
+    <div class="card-title">🦟 Desinsectación anual · Protesins</div>
+    <p class="card-desc">
+      Tratamiento anual de desinsectación del edificio. Proveedor: <strong>Protesins</strong>. Cargo único anual, habitualmente en mayo–junio. Obligatorio para comunidades de propietarios.
+    </p>
+    <div class="kpi-grid">
+      <div class="kpi"><div class="kpi-label">2022</div><div class="kpi-value">476€</div><div class="kpi-sub">cargo 08/06/2022</div></div>
+      <div class="kpi"><div class="kpi-label">2023</div><div class="kpi-value">490€</div><div class="kpi-sub">cargo 30/05/2023</div></div>
+      <div class="kpi"><div class="kpi-label">2024 presupuesto</div><div class="kpi-value">505€</div><div class="kpi-sub">aprobado en junta</div></div>
+      <div class="kpi info"><div class="kpi-label">2025 / 2026</div><div class="kpi-value">~520€</div><div class="kpi-sub">pendiente confirmar en banco</div></div>
+    </div>
+    <p style="font-size: 14px; color: var(--text-muted); margin-top: 10px; padding: 10px 14px; background: #EFF6FF; border-left: 3px solid #3B82F6; border-radius: 4px;">
+      🏦 <strong style="color:#1E3A8A">Cruce banco:</strong> 476,16€ (jun 2022) · 490,45€ (may 2023) · Pendiente verificar cargos 2024, 2025 y 2026 en extracto bancario — aparece como "ADEUDO RECIBO PROTESINS".
+    </p>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🧯 Extintores · Iberext S.A.</div>
+    <p class="card-desc">
+      Revisión anual obligatoria de extintores del edificio. Proveedor: <strong>Iberext S.A.</strong> (aparece en banco como "ADEUDO RECIBO IBEREXT S.A."). Cargo irregular — varía según el año por incorporación de nuevos elementos al sistema.
+    </p>
+    <div class="kpi-grid">
+      <div class="kpi"><div class="kpi-label">2022</div><div class="kpi-value">728€</div><div class="kpi-sub">3 cargos (regularización)</div></div>
+      <div class="kpi"><div class="kpi-label">2023</div><div class="kpi-value">114€</div></div>
+      <div class="kpi warning"><div class="kpi-label">2024</div><div class="kpi-value">446€</div><div class="kpi-sub">2 cargos mayo + nov</div></div>
+      <div class="kpi info"><div class="kpi-label">2025</div><div class="kpi-value">170€</div><div class="kpi-sub">cargo nov · ADEUDO IBEREXT</div></div>
+      <div class="kpi"><div class="kpi-label">2026</div><div class="kpi-value">—</div><div class="kpi-sub">pendiente oct/nov</div></div>
+    </div>
+    <p style="font-size: 14px; color: var(--text-muted); margin-top: 6px; padding: 10px 14px; background: #EFF6FF; border-left: 3px solid #3B82F6; border-radius: 4px;">
+      🏦 <strong style="color:#1E3A8A">Cruce banco:</strong> 2022: 105,14€ (feb) + 109,35€ (nov) + 513,12€ (dic) · 2023: 113,72€ (oct) · 2024: 279,61€ (may) + 166,17€ (nov) · 2025: 170,32€ (nov)
+    </p>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🛗 Ascensores · Mantenimiento + Móvil</div>
+    <p class="card-desc">
+      Empresa <strong>Duplex Elevación</strong> (mantenimiento) + línea Movistar 18,15€/mes (teléfono de emergencia del ascensor, obligatorio por normativa).
+      Aumento 2025 por avería y cambio de máquina (8.000€ proyecto del año).
+    </p>
+    <div class="kpi-grid">
+      <div class="kpi"><div class="kpi-label">2021</div><div class="kpi-value">2.733€</div></div>
+      <div class="kpi"><div class="kpi-label">2022</div><div class="kpi-value">2.902€</div></div>
+      <div class="kpi"><div class="kpi-label">2023</div><div class="kpi-value">3.760€</div></div>
+      <div class="kpi"><div class="kpi-label">2024</div><div class="kpi-value">3.493€</div></div>
+      <div class="kpi danger"><div class="kpi-label">2025</div><div class="kpi-value">7.148€</div><div class="kpi-sub">avería + máquina</div></div>
+      <div class="kpi info"><div class="kpi-label">2026 (ene-abr)</div><div class="kpi-value">5.378€</div><div class="kpi-sub">pagos aplazados</div></div>
+    </div>
+    <div class="chart-section">
+      <div class="chart-title">Coste Ascensor por Año (Duplex + Móvil)</div>
+      <div class="chart-container">
+        <div class="stacked-chart" id="ascensorChart"></div>
+      </div>
+      <div class="legend">
+        <div class="legend-item"><div class="legend-color" style="background: #4F46E5"></div>Duplex Elevación</div>
+        <div class="legend-item"><div class="legend-color" style="background: #0EA5E9"></div>Móvil Telefónica</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ TAB GESTIÓN ============ -->
+<div id="admin" class="tab-content">
+
+  <!-- COMISIONES BANCARIAS -->
+  <div class="card">
+    <div class="card-title">🏦 Comisiones bancarias · Banc Sabadell</div>
+    <p class="card-desc">
+      Cargos del banco: <strong>comisiones de mantenimiento</strong> (cuenta y remesas de cuotas), <strong>intereses</strong>, <strong>gastos por gestión de devoluciones</strong> (recibos impagados) e <strong>IVA sobre comisiones</strong>. Las comisiones se han <strong>triplicado</strong> entre 2021 y 2025 (220€ → 760€). En 2026 se proyectan ~1.360€ anuales.
+    </p>
+    <div class="kpi-grid">
+      <div class="kpi"><div class="kpi-label">2021</div><div class="kpi-value">220€</div></div>
+      <div class="kpi"><div class="kpi-label">2022</div><div class="kpi-value">345€</div></div>
+      <div class="kpi"><div class="kpi-label">2023</div><div class="kpi-value">399€</div></div>
+      <div class="kpi warning"><div class="kpi-label">2024</div><div class="kpi-value">569€</div></div>
+      <div class="kpi danger"><div class="kpi-label">2025</div><div class="kpi-value">760€</div></div>
+      <div class="kpi info"><div class="kpi-label">2026 (ene-abr)</div><div class="kpi-value">454€</div><div class="kpi-sub">→ ~1.360€ proyección anual</div></div>
+    </div>
+    <div style="margin: 14px 0; padding: 12px 16px; background: #FEF3C7; border-left: 3px solid #F59E0B; border-radius: 6px; font-size: 14px; color: #92400E;">
+      ⚠️ <strong>Alerta:</strong> Las comisiones crecen un 34% anual de media. Considerar negociar condiciones con Banc Sabadell o evaluar otras entidades en 2026–2027.
+    </div>
+    <div class="chart-section">
+      <div class="chart-title">Evolución comisiones bancarias por año</div>
+      <div class="chart-container" id="comisionesBancoChart"></div>
+    </div>
+    <div class="legend">
+      <div class="legend-item"><div class="legend-color" style="background:#4F46E5"></div>Comisiones mantenimiento y remesas</div>
+      <div class="legend-item"><div class="legend-color" style="background:#F59E0B"></div>Intereses cuenta</div>
+      <div class="legend-item"><div class="legend-color" style="background:#EF4444"></div>Devoluciones / impagados</div>
+      <div class="legend-item"><div class="legend-color" style="background:#94A3B8"></div>IVA comisiones</div>
+    </div>
+  </div>
+
+  <!-- IMPUESTOS Y OBLIGACIONES -->
+  <div class="card">
+    <div class="card-title">⚖️ Impuestos y obligaciones legales</div>
+    <p class="card-desc">
+      La CP tributa <strong>IRPF de retenciones trimestralmente</strong> (modelo 111, autoliquidación a Hacienda sobre los pagos a administradora) y mantiene un servicio de <strong>cumplimiento LOPD/RGPD con Conversia</strong> (protección de datos personales de los vecinos, obligatorio para comunidades de propietarios).
+    </p>
+    <div style="font-size: 14px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px;">IRPF · Retenciones trimestrales</div>
+    <div class="kpi-grid">
+      <div class="kpi"><div class="kpi-label">2024 (T2–T4)</div><div class="kpi-value">218€</div><div class="kpi-sub">inicio con Susana</div></div>
+      <div class="kpi"><div class="kpi-label">2025</div><div class="kpi-value">396€</div><div class="kpi-sub">99€ × 4 trimestres</div></div>
+      <div class="kpi info"><div class="kpi-label">2026 (T1+T2)</div><div class="kpi-value">217€</div><div class="kpi-sub">→ ~396€ proyección anual</div></div>
+    </div>
+    <div style="font-size: 14px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin: 18px 0 10px;">LOPD/RGPD · Conversia (cumplimiento protección de datos)</div>
+    <div class="kpi-grid">
+      <div class="kpi"><div class="kpi-label">2025</div><div class="kpi-value">242€</div><div class="kpi-sub">anual</div></div>
+      <div class="kpi info"><div class="kpi-label">2026 (ene-abr)</div><div class="kpi-value">242€</div><div class="kpi-sub">cargo anual feb 2026</div></div>
+    </div>
+    <div style="font-size: 14px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin: 18px 0 10px;">Notificaciones electrónicas · DEH (Dirección Electrónica Habilitada)</div>
+    <div class="kpi-grid">
+      <div class="kpi"><div class="kpi-label">2024</div><div class="kpi-value">73€</div></div>
+      <div class="kpi"><div class="kpi-label">2025</div><div class="kpi-value">73€</div></div>
+      <div class="kpi info"><div class="kpi-label">2026 (ene-abr)</div><div class="kpi-value">—</div><div class="kpi-sub">pendiente de cargo</div></div>
+    </div>
+    <p style="font-size: 14px; color: var(--text-muted); margin-top: 14px; padding: 10px 14px; background: #EFF6FF; border-left: 3px solid #3B82F6; border-radius: 4px;">
+      🏦 <strong style="color:#1E3A8A">Cruce banco:</strong> IRPF · cargos trimestrales 99€ (ene-20 y abr-19 de 2026) · Conversia 242€ cargo 10/02/2026 · DEH Notificaciones cargo dic 2024 y dic 2025 (72,60€)
+    </p>
+  </div>
+
+  <!-- ADMINISTRACIÓN -->
+  <div class="card">
+    <div class="card-title">📋 Administración de la Comunidad</div>
+    <p class="card-desc">
+      Histórico: <strong>Alfredo Sánchez Aguirre / BMC</strong> (Cl. Sauce 9) → <strong>Vanessa Álvarez</strong> → 
+      <strong>Susana Fernández Robleda</strong> (actual desde julio 2024). Cuota aprobada en junta con ligera subida respecto al año anterior. Los cargos de Susana en banco corresponden a <strong>cuota de administración de la comunidad</strong>, no a limpieza.
+    </p>
+    <div class="kpi-grid">
+      <div class="kpi danger"><div class="kpi-label">2021 BMC/Alfredo</div><div class="kpi-value">5.026€</div></div>
+      <div class="kpi danger"><div class="kpi-label">2022 BMC/Alfredo</div><div class="kpi-value">4.260€</div></div>
+      <div class="kpi danger"><div class="kpi-label">2023 BMC/Alfredo</div><div class="kpi-value">19.281€</div><div class="kpi-sub">incluye atrasos</div></div>
+      <div class="kpi warning"><div class="kpi-label">2024 transición</div><div class="kpi-value">11.037€</div><div class="kpi-sub">BMC + Vanessa + Susana</div></div>
+      <div class="kpi success"><div class="kpi-label">2025 Susana</div><div class="kpi-value">2.830€</div><div class="kpi-sub">~233€/mes</div></div>
+      <div class="kpi info"><div class="kpi-label">2026 (ene-abr)</div><div class="kpi-value">1.133€</div></div>
+    </div>
+    <div class="chart-section">
+      <div class="chart-title">Coste Administración por Año</div>
+      <div class="chart-container" id="adminChart"></div>
+    </div>
+    <div style="font-size: 14px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin: 18px 0 10px;">🖥️ Software de gestión · IESA / Aareon Proptech</div>
+    <p style="font-size: 14px; color: var(--text-soft); margin-bottom: 10px;">Portal de gestión de comunidades de propietarios utilizado por Susana para la administración. Dos cargos anuales (suscripción + módulo adicional).</p>
+    <div class="kpi-grid">
+      <div class="kpi"><div class="kpi-label">2025 · Fac. NC8995</div><div class="kpi-value">78,65€</div><div class="kpi-sub">cargo 12/05/2025</div></div>
+      <div class="kpi"><div class="kpi-label">2025 · Fac. NC9461</div><div class="kpi-value">24,20€</div><div class="kpi-sub">cargo 12/05/2025</div></div>
+      <div class="kpi info"><div class="kpi-label">Total anual estimado</div><div class="kpi-value">~103€</div></div>
+    </div>
+    <p style="font-size: 14px; color: var(--text-muted); margin-top: 10px; padding: 10px 14px; background: #EFF6FF; border-left: 3px solid #3B82F6; border-radius: 4px;">
+      🏦 <strong style="color:#1E3A8A">Cruce banco:</strong> IESA-CCPP-Aareon Proptech · 78,65€ + 24,20€ (12/05/2025) · Comisión emisión certificado digital: 2,42€ (14/03/2025)
+    </p>
+  </div>
+
+</div>
+
+<!-- ============ TAB PLAN 2025-2029 ============ -->
+<div id="plan" class="tab-content">
+  <div class="card">
+    <div class="card-title">📅 Gastos previstos · Resto de 2026</div>
+    <p class="card-desc">Solo quedan dos partidas significativas pendientes para cerrar el ejercicio 2026:</p>
+    <div class="kpi-grid">
+      <div class="kpi warning"><div class="kpi-label">Sellado y limpieza ventanal con descuelgue</div><div class="kpi-value">2.988€</div><div class="kpi-sub">Pinta Limpio · presupuesto real · mayo/junio · distinto al de desprendimientos 1C (ya pagado)</div></div>
+      <div class="kpi warning"><div class="kpi-label">Quitar maderas pared portal</div><div class="kpi-value">~2.700€</div><div class="kpi-sub">A. Pirtac · iniciado 25% · pladur tras quitar maderas</div></div>
+      <div class="kpi info"><div class="kpi-label">Total restante 2026</div><div class="kpi-value">~5.700€</div><div class="kpi-sub">~7k previstos en total</div></div>
+    </div>
+  </div>
+
+  <div class="card" id="planEstadoCard">
+    <div class="card-title">🎯 Estado del Plan Plurianual</div>
+    <p class="card-desc">La reforma de la vivienda 8A solo se ejecutará cuando la comunidad acumule 30.000€ de ahorro específico para la obra y mantenga además un colchón mínimo de seguridad de 20.000€. A partir de ahí, 8A se plantea como una inversión para generar fondos adicionales sin comprometer la tesorería ordinaria. Una vez reformada y alquilada la vivienda, junto con el ahorro estructural por no tener portero, la comunidad podrá acometer con más rapidez el resto de proyectos del plan.</p>
+    <p style="font-size: 14px; color: var(--text-muted); margin-top: 12px; padding: 10px 14px; background: #FFF7ED; border-left: 3px solid #F59E0B; border-radius: 4px;">
+      🛡️ <strong style="color:#9A3412">Versión conservadora:</strong> descontando primero el descuelgue y la retirada de maderas del portal ya presupuestados, y asumiendo que siempre surgirán imprevistos, la referencia prudente para alcanzar los 50.000€ de caja (30.000€ para la obra + 20.000€ de colchón) es verano de 2028. Esta estimación no cuenta ingresos teóricos de la vivienda hasta que se conviertan en cobros reales.
+    </p>
+    <div class="kpi-grid" id="planKpis"></div>
+    <div class="chart-section">
+      <div class="chart-title">Gasto Presupuestado por Estado (€)</div>
+      <div class="chart-container" id="planProgressChart"></div>
+    </div>
+  </div>
+
+  <div class="card" id="planDesglosCard">
+    <div class="card-title">📊 Contabilización del Plan</div>
+    <div class="kpi-grid" id="planDesglose"></div>
+    <div class="chart-section">
+      <div class="chart-title">Cobertura del Marco del Plan</div>
+      <div class="chart-container" id="burndownChart"></div>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<!-- ============ TAB ADMIN ============ -->
+<div id="admin-panel" class="tab-content">
+
+  <div class="card">
+    <div class="card-title" style="display:flex;justify-content:space-between;align-items:center">
+      <span>➕ Acciones rápidas</span>
+    </div>
+    <div style="display:flex;gap:12px;flex-wrap:wrap">
+      <button onclick="openModal()" style="background:var(--primary);color:white;border:none;padding:12px 20px;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;display:flex;align-items:center;gap:6px">+ Nuevo proyecto</button>
+      <button onclick="openBancoModal()" style="background:var(--surface);color:var(--text);border:1.5px solid var(--border);padding:12px 20px;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;display:flex;align-items:center;gap:6px">📤 Subir extracto bancario</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">👥 Gestión de usuarios</div>
+    <p class="card-desc">Usuarios con acceso al dashboard. Para invitar a un nuevo usuario, ve a <strong>Supabase → Authentication → Users → Invite user</strong> y luego añade su rol aquí.</p>
+    <div id="usersList" style="margin-top:16px"><div style="color:var(--text-muted);font-size:14px">Cargando usuarios...</div></div>
+    <div style="margin-top:16px;display:flex;gap:10px;flex-wrap:wrap">
+      <input type="email" id="newUserEmail" placeholder="nuevo@email.com" style="padding:10px 14px;border:1.5px solid var(--border);border-radius:8px;font-size:14px;outline:none;flex:1;min-width:200px">
+      <select id="newUserRole" style="padding:10px 14px;border:1.5px solid var(--border);border-radius:8px;font-size:14px;background:white">
+        <option value="viewer">👁️ Visualizador</option>
+        <option value="admin">⚙️ Admin</option>
+      </select>
+      <button onclick="addUserRole()" style="padding:10px 20px;background:var(--primary);color:white;border:none;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit">Añadir</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">📤 Subida de documentos</div>
+    <p class="card-desc">Sube facturas y extractos para tenerlos registrados. Los archivos se almacenan en Supabase Storage.</p>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin-top:16px">
+      <div onclick="openDocUpload('banco')" style="border:2px dashed var(--border);border-radius:10px;padding:24px;text-align:center;cursor:pointer;transition:all 0.2s" onmouseover="this.style.borderColor='var(--primary)'" onmouseout="this.style.borderColor='var(--border)'">
+        <div style="font-size:28px;margin-bottom:8px">🏦</div>
+        <div style="font-weight:700;font-size:14px">Extracto banco</div>
+        <div style="font-size:12px;color:var(--text-muted);margin-top:4px">XLS Sabadell mensual</div>
+      </div>
+      <div onclick="openDocUpload('naturgy')" style="border:2px dashed var(--border);border-radius:10px;padding:24px;text-align:center;cursor:pointer;transition:all 0.2s" onmouseover="this.style.borderColor='var(--primary)'" onmouseout="this.style.borderColor='var(--border)'">
+        <div style="font-size:28px;margin-bottom:8px">⚡</div>
+        <div style="font-weight:700;font-size:14px">Factura Naturgy</div>
+        <div style="font-size:12px;color:var(--text-muted);margin-top:4px">Electricidad zonas comunes</div>
+      </div>
+      <div onclick="openDocUpload('gas_power')" style="border:2px dashed var(--border);border-radius:10px;padding:24px;text-align:center;cursor:pointer;transition:all 0.2s" onmouseover="this.style.borderColor='var(--primary)'" onmouseout="this.style.borderColor='var(--border)'">
+        <div style="font-size:28px;margin-bottom:8px">🔥</div>
+        <div style="font-weight:700;font-size:14px">Factura Gas Power</div>
+        <div style="font-size:12px;color:var(--text-muted);margin-top:4px">Gas calefacción</div>
+      </div>
+      <div onclick="openDocUpload('factura')" style="border:2px dashed var(--border);border-radius:10px;padding:24px;text-align:center;cursor:pointer;transition:all 0.2s" onmouseover="this.style.borderColor='var(--primary)'" onmouseout="this.style.borderColor='var(--border)'">
+        <div style="font-size:28px;margin-bottom:8px">📄</div>
+        <div style="font-weight:700;font-size:14px">Factura proveedor</div>
+        <div style="font-size:12px;color:var(--text-muted);margin-top:4px">Pirtac, Perón, etc.</div>
+      </div>
+    </div>
+    <div id="docsList" style="margin-top:20px"></div>
+  </div>
+
+  <div class="card">
+    <details>
+      <summary style="list-style:none;display:flex;align-items:center;justify-content:space-between;cursor:pointer;padding:4px 0">
+        <div class="card-title" style="margin-bottom:0">📋 Log de sesiones</div>
+        <span style="font-size:13px;color:var(--text-muted)">▼ Ver registro</span>
+      </summary>
+      <div style="margin-top:16px">
+        <div style="display:flex;gap:8px;margin-bottom:12px;align-items:center">
+          <button onclick="loadSessionLog(0)" style="background:var(--bg);border:1px solid var(--border);padding:6px 14px;border-radius:6px;font-size:13px;cursor:pointer;font-family:inherit">⟳ Actualizar</button>
+          <span id="sessionLogInfo" style="font-size:12px;color:var(--text-muted)"></span>
+        </div>
+        <div id="sessionLog"><div style="color:var(--text-muted);font-size:14px">Haz clic en "Actualizar" para cargar el log</div></div>
+        <div id="sessionLogPager" style="display:flex;gap:8px;margin-top:12px;align-items:center"></div>
+      </div>
+    </details>
+  </div>
+
+</div>
+
+<footer>
+  <div style="text-align:center; line-height: 2;">
+    <div>CP Modesto Lafuente 63 · Datos reales · 28/04/2026</div>
+    <div>Administración · <strong>Susana Fernández Robleda</strong></div>
+    <div>Presidente · <strong>Eduardo Sánchez Ruiz</strong></div>
+  </div>
+</footer>
+
+<script>
+const DATA = {
+"2026": [
+{
+"nombre": "Estatutos",
+"progreso": 0.0,
+"cat": "pendiente",
+"pres": null,
+"obs": "Se acepta en junta iniciar e incluir los acuerdos de trasteros"
+},
+{
+"nombre": "Contratación conserje externo",
+"progreso": 0.0,
+"cat": "pendiente",
+"pres": null,
+"obs": "Parado"
+},
+{
+"nombre": "Marquesina portal",
+"progreso": 0.0,
+"cat": "pendiente",
+"pres": null,
+"obs": "Mal en general, desagüe, impermeabilización, electricidad."
+},
+{
+"nombre": "Fachadas patio de luces",
+"progreso": 0.0,
+"cat": "pendiente",
+"pres": null,
+"obs": "Las tres paredes de la finca necesitarán reparación, se pedirán presupuestos una vez se solucione la mayor parte de los cableados."
+},
+{
+"nombre": "Arreglo cuarto caldera y contadores de luz",
+"progreso": 0.0,
+"cat": "pendiente",
+"pres": null,
+"obs": "Tras la inundación estos cuartos deben ser incluidos para su reparación."
+},
+{
+"nombre": "Reforma portal",
+"progreso": 0.0,
+"cat": "pendiente",
+"pres": -30000.0,
+"obs": "Sin presupuestar, cálculo estimado viendo otras actuaciones."
+},
+{
+"nombre": "Pintura escaleras",
+"progreso": 0.0,
+"cat": "pendiente",
+"pres": null,
+"obs": "Sin presupuestar, cálculo estimado viendo otras actuaciones."
+},
+{
+"nombre": "Aplique escalera de 8º a azotea (no hay)",
+"progreso": 0.0,
+"cat": "pendiente",
+"pres": -80.0,
+"obs": "Pendiente de instalar. Presupuestado en 80€."
+},
+{
+"nombre": "Pintura de barandillas terraza",
+"progreso": 0.0,
+"cat": "pendiente",
+"pres": null,
+"obs": "Habrá que empezar antes de que los agujeros perforen el hierro"
+},
+{
+"nombre": "Tela asfáltica azotea edificio",
+"progreso": 0.0,
+"cat": "pendiente",
+"pres": null,
+"obs": "Solicitando presupuestos."
+},
+{
+"nombre": "Quitar resto de maderas pared portal",
+"progreso": 0.25,
+"cat": "progreso",
+"pres": -2700.0,
+"obs": "En espera de concretar con los técnicos para eliminar."
+},
+{
+"nombre": "Reforma vivienda 8A · CP",
+"progreso": 0.0,
+"cat": "pendiente",
+"pres": -30000.0,
+"obs": "Reforma integral de la vivienda 8A propiedad de la CP. Presupuesto estimado por Alexandru Pirtac: ~30.000€. Proyecto prioritario, pero condicionado a acumular 30.000€ de ahorro específico para la obra y mantener además un colchón mínimo de seguridad de 20.000€. Las tuberías generales se acometerán tras esta reforma, cuando 8A esté alquilada y empiece a generar fondos junto con el ahorro estructural de no tener portero."
+},
+{
+"nombre": "Tuberías agua · Proyecto grande",
+"progreso": 0.0,
+"cat": "pendiente",
+"pres": -40000.0,
+"obs": "Renovación completa bajantes y ascendentes de dos patinillos. Presupuesto estimado ~40.000€. Se acometerá después de la reforma de la vivienda 8A para generar fondos. Las reparaciones puntuales realizadas son independientes a este proyecto, y se han actualizado más de 12 metros en las líneas de pisos C y B."
+},
+{
+"nombre": "Cambio tuberías agua · entrada a vertical (local Sanitas)",
+"progreso": 1.0,
+"cat": "completado",
+"pres": -3245.0,
+"obs": "Cambio de tuberías de agua desde la entrada hasta la vertical pasando por el local Sanitas. Quitar hierro, multicapa 50mm, 2 llaves de corte 1-1/4, azulejos.",
+"banco_ref": "Alexandru Pirtac · Fac.229 · 3.245€ (05/01/2026)"
+},
+{
+"nombre": "Petter Movistar",
+"progreso": 1.0,
+"cat": "completado",
+"pres": -200.0,
+"obs": "Retirada de cableado antiguo Movistar del edificio. Pagado por transferencia.",
+"banco_ref": "Transferencia a Telefónica de España S.A.U. · 200€ (08/04/2026)"
+},
+{
+"nombre": "Sellado y limpieza ventanal · Pinta Limpio",
+"progreso": 0.5,
+"cat": "progreso",
+"pres": -2988.0,
+"obs": "Presupuesto real Pinta Limpio: 2.988€. Pendiente de ejecutar mayo/junio 2026."
+},
+{
+"nombre": "Trasteros",
+"progreso": 0.75,
+"cat": "progreso",
+"pres": 8400.0,
+"obs": "Pago realizado por todos. Cobro completo de 8.400€ en banco 2026. Pendiente incluir en los Estatutos (a acometer en 2027) junto con las nuevas mediciones de coeficientes. Se mantiene al 75% hasta que se formalice en estatutos.",
+"banco_ref": "Ingresos por transferencias propietarios · 8.400€ cobrado íntegro en 2026"
+},
+{
+"nombre": "Rotura vertical calefacción · 6B-6C-5B",
+"progreso": 0.75,
+"cat": "progreso",
+"pres": -1496.0,
+"obs": "Rotura vertical de calefacción con afectación a pisos 6B, 6C y 5B. Trabajos: descubrir pared 6B y techo 5B, tuberías multicapa, fontanería, albañilería, pintura y carpintería. Parte al seguro Ocaso póliza 303233 · Ref. 86497/2026.",
+"banco_ref": "Alexandru Pirtac · Fac.246 · 1.496€ (10/02/2026) · Seguro Ocaso pendiente resolución"
+},
+{
+"nombre": "Reparación techo despacho local Sanitas",
+"progreso": 1.0,
+"cat": "completado",
+"pres": -704.0,
+"obs": "Deficiencia del local. Reparación techo despacho local Sanitas: bajante sujetada y colocada a su sitio, pladur, trampilla de registro, pintura quitamanchas.",
+"banco_ref": "Alexandru Pirtac · Fac.228 · 704€ (05/01/2026)"
+},
+{
+"nombre": "Regularizado el contador de agua · Local 1A",
+"progreso": 1.0,
+"cat": "completado",
+"pres": null,
+"obs": "Gastos de instalación del contador repercutidos al propietario del local 1A. Pagado por el propietario. Resuelto."
+},
+{
+"nombre": "Comunicaciones (Antena, video y cámaras)",
+"progreso": 1.0,
+"cat": "completado",
+"pres": null,
+"obs": "Cancelado Prisma en abril 2026. Contrato Lasser aceptado 24/03/2026 (Alejandro Kurlander). Instalación y alta 25/03/2026. Tres servicios anuales: antena TV, videoportero y sistema de cámaras de seguridad.",
+"banco_ref": "Lasser · 3 cargos anuales 2026: Antena TV 274,43€ (08/04) · Videoportero 304,92€ (08/04) · Cámaras seguridad 337,59€ (01/04) · Total 916,94€"
+},
+{
+"nombre": "Retirada antenas y cables sobrantes · Lasser",
+"progreso": 0.5,
+"cat": "progreso",
+"pres": -200.0,
+"obs": "Presupuesto técnico Lasser de 200€ aceptado el 21/04/2026. Pendiente de ejecutar en próximos días. Lasser coordinará con Susana para agendar visita técnica.",
+"banco_ref": "Lasser · presupuesto 200€ aceptado · pendiente de cargo en banco"
+},
+{
+"nombre": "Caldera gas",
+"progreso": 1.0,
+"cat": "completado",
+"pres": -266.2,
+"obs": "En la carpeta certificado energético favorable",
+"banco_ref": "Multiservicios Tecnológicos · 266,20€ (11/03/2026) · certificado energético favorable obtenido"
+},
+{
+"nombre": "Regularizado el contador de agua · Local 6B",
+"progreso": 1.0,
+"cat": "completado",
+"pres": null,
+"obs": "Contador en interior de vivienda regularizado. Gastos repercutidos al propietario del local 6B. Pagado por el propietario. Resuelto."
+},
+{
+"nombre": "Ascensores avería",
+"progreso": 1.0,
+"cat": "completado",
+"pres": -5306.0,
+"obs": "Terminado",
+"banco_ref": "Duplex Elevación · 5.306€ banco 2026 (4 cargos pagos aplazados)"
+},
+{
+"nombre": "Desprendimientos 1c a vía pública",
+"progreso": 1.0,
+"cat": "completado",
+"pres": -1033.0,
+"obs": "Reparado con pinta limpio el segundo y el quinto",
+"banco_ref": "Pintalimpio S.L. · 1.033,34€ transferencia 03/03/2026 (descuelgue y reparación)"
+},
+{
+"nombre": "Revisión techos terrazas",
+"progreso": 1.0,
+"cat": "completado",
+"pres": 0.0,
+"obs": "Revisado por Pinta Limpio. Sin coste."
+},
+{
+"nombre": "Cambio puerta cuarto basuras",
+"progreso": 1.0,
+"cat": "completado",
+"pres": -1595.0,
+"obs": "Cambio de puerta cuarto de basuras. Fac.248 Pirtac: precerco 7cm, aislante ruido, pladur, puerta blanca 72.5 con jambas y cerradura, pintado de remates.",
+"banco_ref": "Alexandru Pirtac · Fac.248 · 1.595€ (10/02/2026)"
+},
+{
+"nombre": "Cerradura portal y cuarto basuras",
+"progreso": 1.0,
+"cat": "completado",
+"pres": -1005.51,
+"obs": "Sustituidas y ambas con la misma llave.",
+"banco_ref": "Cerrajería Perón · 1.005,51€ (17/09/2025)"
+},
+{
+"nombre": "Cambio de leds 1 y portal",
+"progreso": 1.0,
+"cat": "completado",
+"pres": -60.0,
+"obs": "Realizado, electricista Juan de la calle de atrás. Pendiente de pago."
+},
+{
+"nombre": "Fijación cuadro de luces portal Juan Electricita",
+"progreso": 1.0,
+"cat": "completado",
+"pres": -50.0,
+"obs": "Realizado, estaba descolgado el cuadro y cables. Pendiente de pago."
+},
+{
+"nombre": "Alquiler temporal vivienda 8A · CP",
+"progreso": 0.75,
+"cat": "progreso",
+"pres": 1700.0,
+"obs": "Alquiler temporal de la vivienda 8A propiedad de la CP. Contrato formalizado y pagado por transferencia.",
+"banco_ref": "Transferencia · 17/03/2026 · 1.700€"
+},
+{
+"nombre": "Avería piso 8A · daños en 7A",
+"progreso": 0.75,
+"cat": "progreso",
+"pres": -308.0,
+"obs": "Avería agua fría y caliente en piso 8A: fregadero, calentador, sifón, lavadora y lavavajillas. ⚠️ Daños en techo cocina vivienda 7A — pendiente visita perito seguro Ocaso.",
+"banco_ref": "Alexandru Pirtac · Fac.261 · 308€ (13/03/2026) · Seguro Ocaso · pendiente peritación daños techo cocina 7A"
+},
+{
+"nombre": "Desagüe pérgola 7B",
+"progreso": 1.0,
+"cat": "completado",
+"pres": -1254.0,
+"obs": "Reparación desagüe pérgola 7B: quitar tubos existentes y colocar 3 tubos blancos de PVC con abrazaderas y juntas.",
+"banco_ref": "Alexandru Pirtac · Factura dic-2025 · 726€ (22/01/2026) + Fac.251 · 528€ (18/02/2026) · Total: 1.254€"
+},
+{
+"nombre": "Cambio bajantes plantas 7-6",
+"progreso": 1.0,
+"cat": "completado",
+"pres": -968.0,
+"obs": "Cambio de dos bajantes de planta 7 a planta 6: una en zona trastero/cocina y otra en zona de baños. Fac.260 Pirtac: 3 bajantes + 7m tubería, descubrir mocheta planta 6.",
+"banco_ref": "Alexandru Pirtac · Fac.260 · 968€ (13/03/2026)"
+}
+],
+"2025": [
+{
+"nombre": "Alarma Piso CP",
+"progreso": 1.0,
+"cat": "completado",
+"pres": -199.0,
+"obs": "Instalada con Prosegur en vivienda 8A. Instalación inicial del equipo en abril 2025. Cuota mensual recurrente 52,90€/mes a cargo de la CP.",
+"banco_ref": "Prosegur · 199€ instalación inicial (03/04/2025) · cuota mensual 52,90€ (recurrente desde abr 2025)"
+},
+{
+"nombre": "Cubos basura",
+"progreso": 1.0,
+"cat": "completado",
+"pres": -1336.0,
+"obs": "Proveedor final Don Cubo. Precio mes por el servicio de cubos, incluida la limpieza semanal de los mismos.   Empresa con la que contrataremos la limpieza para el 2026, ya que nos hace precio especial ",
+"banco_ref": "Don Cubo / Prevent XXI · 1.336€ pagados 2025 (8 cargos mensuales 165,77€)"
+},
+{
+"nombre": "Despido portero",
+"progreso": 1.0,
+"cat": "completado",
+"pres": -12636.0,
+"obs": "Completado y pagados impuestos e indemnización",
+"banco_ref": "TGSS + finiquito el Portero · 11.028€ banco 2025 (3 cargos: 833€ feb + indemnización 10.186€ feb + 9€) · Embargos Hacienda por atrasos IRPF: 792,35€ (15/04/2025) + 816,05€ (13/05/2025)"
+},
+{
+"nombre": "Inundación cuartos calderas, luz y almacén",
+"progreso": 1.0,
+"cat": "completado",
+"pres": -217.8,
+"obs": "Arreglo de pocería, atasco provocado por la bajante de los B, con afectación a cuarto de calderas, contadores de luz y almacén.   Se solventa el atasco, daños en varias paredes por esto y por las hume",
+"banco_ref": "Poceral SL · 217,80€ (31/10/2025) · desatasco bajante B con afectación a calderas, contadores y almacén"
+},
+{
+"nombre": "Limpieza edificio",
+"progreso": 1.0,
+"cat": "completado",
+"pres": -4087.0,
+"obs": "Proveedor El Pilar. Gasto mensual, se dio de baja el servicio de cubos con ellos, estamos a la espera del vencimiento para cambiar a la empresa D.Cubo por condiciones, precio, diferentes problemas con",
+"banco_ref": "Cubos El Pilar · 4.087€ banco 2025 (11 cargos mensuales ~418€)"
+},
+{
+"nombre": "Limpieza piso portería",
+"progreso": 1.0,
+"cat": "completado",
+"pres": -200.0,
+"obs": "Limpieza del piso de la CP por estado tras entrega, trabajo contratado con El Pilar de forma paralela.  Aún quedan un motón de maderas que por el momento hemos preferido mantener y no incurrir en mayo",
+"banco_ref": "Pago puntual El Pilar · sin cargo separado"
+},
+{
+"nombre": "Patio luces impermeabilización",
+"progreso": 1.0,
+"cat": "completado",
+"pres": -660.0,
+"obs": "Aplicada dos manos y fibra, solución temporal por filtraciones.  Para la obra será necesario estimar, añadir vigas, eliminar techo con goteras, e impermeabilizar y solar el patio.",
+"banco_ref": "Mundo Reformas y Obras · 660€ transferencia (12/06/2025)"
+},
+{
+"nombre": "Buzones",
+"progreso": 1.0,
+"cat": "completado",
+"pres": -1179.75,
+"obs": "Resuelto la identificación de los mismos, queda pendiente la entrega en 5C avisado a su propietario. Se ha restablecido su uso y avisado a correos.",
+"banco_ref": "Cerrajería Perón · 1.179,75€ (07/04/2025) · identificación y trabajos en buzones"
+}
+]
+};
+
+function switchTab(e, name) {
+  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(name).classList.add('active');
+  e.target.classList.add('active');
+  if (name === 'admin-panel' && _isAdmin) loadAdminPanel();
+}
+
+function fmtNum(n) {
+  // Forzar separador de miles manualmente (evita bugs en Safari/incógnito)
+  return Math.round(Math.abs(n)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+}
+function fmtPres(p) {
+  if (p === null || p === undefined) return '<span style="color:var(--text-muted)">Sin presupuestar</span>';
+  const sign = p < 0 ? 'Coste: ' : 'Ingreso: +';
+  return sign + fmtNum(p) + '€';
+}
+
+function progClass(cat) {
+  if (cat === 'completado') return 'green';
+  if (cat === 'progreso') return 'amber';
+  return 'gray';
+}
+
+function _baseProjectHTML(p) {
+  const obs = p.obs && p.obs.length > 0 ? `<div class="project-obs">${p.obs}</div>` : '';
+  const bancoRef = p.banco_ref ? `<div class="project-bank">🏦 <strong>Cruce banco:</strong> ${p.banco_ref}</div>` : '';
+  const presBanner = !p.banco_ref
+    ? (p.pres !== null && p.pres !== undefined
+        ? `<div class="project-pres">📋 <strong>Presupuesto:</strong> ${fmtPres(p.pres)}</div>`
+        : `<div class="project-nopres">📋 Sin presupuestar</div>`)
+    : '';
+  const progPct = Math.round(p.progreso * 100);
+  const icon = p.cat === 'completado' ? '✅' : p.cat === 'progreso' ? '⏳' : '📋';
+  const cardAccent = p.cat === 'completado' ? 'border-left: 3px solid var(--secondary);'
+                   : p.cat === 'progreso'   ? 'border-left: 3px solid var(--accent);'
+                   :                          'border-left: 3px solid var(--border);';
+
+  // Meatball menu — visible si _isAdmin
+  let meatball = '';
+  if (typeof _isAdmin !== 'undefined' && _isAdmin) {
+    const uid = (p._id || p.nombre).replace(/[^a-zA-Z0-9]/g,'_');
+    const menuId = 'menu_' + uid;
+    meatball = `<button class="card-menu-btn" onclick="event.stopPropagation();toggleMenu('${menuId}')">⋮</button>
+      <div class="card-menu-dropdown" id="${menuId}">
+        <button class="card-menu-item" onclick="event.stopPropagation();closeMenus();openModal('${p._id||''}')">✏️ Editar</button>
+        <button class="card-menu-item danger" onclick="event.stopPropagation();closeMenus();confirmDel('${p._id||''}')">🗑️ Eliminar</button>
+      </div>`;
+  }
+
+  return `<div class="project-card" style="position:relative;${cardAccent}">
+    ${meatball}
+    <div class="project-card-header">
+      <span class="project-icon">${icon}</span>
+      <span class="project-name">${p.nombre}</span>
+    </div>
+    <div class="progress-bar"><div class="progress-fill ${progClass(p.cat)}" style="width:${progPct}%"></div></div>
+    ${obs}
+    ${bancoRef}
+    ${presBanner}
+  </div>`;
+}
+
+function renderProjectsByState(year, elemId) {
+  const projects = DATA[year] || [];
+  const progreso = projects.filter(p => p.cat === 'progreso').sort((a,b) => b.progreso - a.progreso);
+  const completados = projects.filter(p => p.cat === 'completado');
+  const pendientes = projects.filter(p => p.cat === 'pendiente');
+  let html = '';
+  if (progreso.length) html += `<details class="project-section"><summary>⏳ En progreso <span class="count">${progreso.length}</span></summary><div class="project-list">${progreso.map(_baseProjectHTML).join('')}</div></details>`;
+  if (pendientes.length) html += `<details class="project-section"><summary>📋 Pendientes <span class="count">${pendientes.length}</span></summary><div class="project-list">${pendientes.map(_baseProjectHTML).join('')}</div></details>`;
+  if (completados.length) html += `<details class="project-section"><summary>✓ Completados <span class="count">${completados.length}</span></summary><div class="project-list">${completados.map(_baseProjectHTML).join('')}</div></details>`;
+  document.getElementById(elemId).innerHTML = html;
+}
+
+function renderProjects2026() {
+  renderProjectsByState('2026', 'projects2026');
+}
+
+function renderProjects2025() {
+  const projects = (DATA['2025'] || []).filter(p => p.cat === 'completado');
+  document.getElementById('projects2025').innerHTML = `<details class="project-section"><summary>✓ Completados <span class="count">${projects.length}</span></summary><div class="project-list">${projects.map(_baseProjectHTML).join('')}</div></details>`;
+}
+
+function makeBars(elemId, data, labels, opts) {
+  opts = opts || {};
+  const max = Math.max(...data.filter(v => v > 0));
+  const fmt = opts.fmt || (v => v + '€');
+  const colorFn = opts.colorFn || (() => null);
+  const showZero = opts.showZero !== false; // por defecto sí mostrar etiqueta en ceros
+  const html = data.map((v, i) => {
+    const h = v > 0 ? (v / max) * 175 : 4; // mínimo 4px para que se vea la etiqueta
+    const bg = colorFn(v, i);
+    const style = bg ? `height:${h}px; background: linear-gradient(to top, ${bg}, ${bg}30);` : `height:${h}px`;
+    const showVal = (v > 0 || showZero) ? fmt(v) : '';
+    return `<div class="bar-wrapper"><div class="bar" style="${style}"><div class="bar-value">${showVal}</div></div><div class="bar-label">${labels[i]}</div></div>`;
+  }).join('');
+  document.getElementById(elemId).innerHTML = html;
+}
+
+function makeStackedBars(elemId, datasets, labels, colors) {
+  const totals = labels.map((_, i) => datasets.reduce((sum, ds) => sum + ds[i], 0));
+  const max = Math.max(...totals);
+  const html = labels.map((lbl, i) => {
+    const total = totals[i];
+    const totalH = max > 0 ? (total / max) * 175 : 0;
+    const segments = datasets.map((ds, dsIdx) => {
+      const segH = total > 0 ? (ds[i] / total) * totalH : 0;
+      const opacity = ds[i] > 0 ? '1' : '0';
+      return `<div class="stacked-segment" style="background: ${colors[dsIdx]}; height: ${segH}px; opacity: ${opacity};" title="${Math.round(ds[i])}€"></div>`;
+    }).join('');
+    return `<div class="stacked-bar-wrapper">
+      <div class="stacked-bar" style="height: ${totalH}px;">
+        <div class="stacked-total">${fmtNum(total)}€</div>
+        ${segments}
+      </div>
+      <div class="bar-label">${lbl}</div>
+    </div>`;
+  }).join('');
+  document.getElementById(elemId).innerHTML = html;
+}
+
+function makeGroupedBars(elemId, datasets, labels, seriesLabels, colors, opts) {
+  opts = opts || {};
+  const fmt = opts.fmt || (v => String(v));
+  const allValues = datasets.reduce((vals, ds) => vals.concat(ds.filter(v => v > 0)), []);
+  const max = allValues.length ? Math.max(...allValues) : 0;
+  const html = labels.map((label, i) => {
+    const bars = datasets.map((ds, dsIdx) => {
+      const value = ds[i] || 0;
+      const height = max > 0 && value > 0 ? (value / max) * 175 : 0;
+      const barStyle = value > 0
+        ? `height:${height}px; background:${colors[dsIdx]};`
+        : 'height:0; min-height:0;';
+      const title = `${seriesLabels[dsIdx]} · ${label}: ${fmt(value)}`;
+      return `<div class="grouped-bar" title="${title}"><div class="grouped-bar-fill" style="${barStyle}"></div></div>`;
+    }).join('');
+    return `<div class="group-cluster"><div class="group-bars">${bars}</div><div class="group-label">${label}</div></div>`;
+  }).join('');
+  document.getElementById(elemId).innerHTML = `<div class="grouped-chart">${html}</div>`;
+}
+
+renderProjects2026();
+renderProjects2025();
+
+// PORTERO HISTÓRICO (solo 2021-2024) - en pestaña 2025
+// Datos reales del banco: nómina | SS (TGSS) | Quirón | Sustituciones (el Portero transferencias extra) | Alquiler estimado
+const nomina   = [7459, 7459, 8411, 8816];
+const segSoc   = [3462, 4009, 4417, 3785];
+const quiron   = [550,  553,  591,  610];
+const sustit   = [0,    0,    0,    732]; // el Portero transferencias jul-ago 2024 (731,56€)
+const alquiler = [10000, 10000, 10000, 10000];
+makeStackedBars('porteroHistChart',
+  [nomina, segSoc, quiron, sustit, alquiler],
+  ['2021','2022','2023','2024'],
+  ['#EF4444', '#F59E0B', '#8B5CF6', '#06B6D4', '#0F172A']);
+
+// ENERGÍA
+const colorLuzA = ['#EF4444', '#EF4444', '#F59E0B', '#10B981', '#10B981', '#0EA5E9'];
+makeBars('luzAnualChart', [11120, 12188, 4534, 1301, 1306, 533], 
+  ['2021','2022','2023','2024','2025','2026*'],
+  { fmt: v => Math.round(v).toLocaleString('es-ES') + '€', colorFn: (v, i) => colorLuzA[i] });
+
+// CALEFACCIÓN STACKED por temporada (oct-may)
+makeStackedBars('calefStackedChart', 
+  [[5697, 7714, 6506, 4694], [6700, 676, 689, 1007], [1200, 821, 606, 554]], 
+  ['2022/23', '2023/24', '2024/25', '2025/26*'],
+  ['#EF4444', '#F59E0B', '#4F46E5']);
+
+// ADMINISTRACIÓN  
+const colorAdmin = ['#EF4444', '#EF4444', '#EF4444', '#F59E0B', '#10B981', '#0EA5E9'];
+// COMISIONES BANCARIAS stacked (mantenimiento, intereses, devoluciones, IVA)
+makeStackedBars('comisionesBancoChart',
+  [[99,185,246,357,437,330], [45,45,45,90,135,45], [0,30,28,45,45,46], [16,25,30,47,83,33]],
+  ['2021','2022','2023','2024','2025','2026*'],
+  ['#4F46E5','#F59E0B','#EF4444','#94A3B8']);
+
+makeBars('adminChart', [5026, 4260, 19281, 11037, 2830, 1133],
+  ['2021','2022','2023','2024','2025','2026*'],
+  { fmt: v => Math.round(v).toLocaleString('es-ES') + '€', colorFn: (v, i) => colorAdmin[i] });
+
+// COMUNICACIONES STACKED
+makeStackedBars('comunicChart',
+  [[1513, 1110, 1039, 1229, 1094, 11], [0, 0, 0, 0, 0, 917]],
+  ['2021','2022','2023','2024','2025','2026*'],
+  ['#EF4444', '#10B981']);
+
+// ASCENSOR STACKED
+makeStackedBars('ascensorChart',
+  [[2516, 2684, 3542, 3275, 6930, 5306], [218, 218, 218, 218, 218, 73]],
+  ['2021','2022','2023','2024','2025','2026*'],
+  ['#4F46E5', '#0EA5E9']);
+
+// ══ PLAN DINÁMICO — calculado desde DATA ══
+function calcPlan() {
+  const PRESUPUESTO = 182810;
+  const years = ['2025', '2026'];
+  const projects = years.flatMap(year => (DATA[year] || []).map(p => ({ ...p, year })));
+  const hasPres = p => p.pres !== null && p.pres !== undefined;
+  function subset(cat) {
+    return projects.filter(p => p.cat === cat);
+  }
+  function sumCosts(items) {
+    return items.filter(p => hasPres(p) && p.pres < 0).reduce((s, p) => s + Math.abs(p.pres), 0);
+  }
+  function sumIncome(items) {
+    return items.filter(p => hasPres(p) && p.pres > 0).reduce((s, p) => s + p.pres, 0);
+  }
+  function countBudgeted(items) {
+    return items.filter(hasPres).length;
+  }
+
+  const completados = subset('completado');
+  const progreso = subset('progreso');
+  const pendientes = subset('pendiente');
+
+  const totalProjects = projects.length;
+  const budgetedProjects = countBudgeted(projects);
+  const unbudgetedProjects = totalProjects - budgetedProjects;
+
+  const completedCosts = sumCosts(completados);
+  const progressCosts = sumCosts(progreso);
+  const pendingCosts = sumCosts(pendientes);
+
+  const completedIncome = sumIncome(completados);
+  const progressIncome = sumIncome(progreso);
+  const pendingIncome = sumIncome(pendientes);
+
+  const totalGrossCosts = completedCosts + progressCosts + pendingCosts;
+  const totalIncome = completedIncome + progressIncome + pendingIncome;
+  const totalNet = totalGrossCosts - totalIncome;
+  const unassignedFrame = Math.max(PRESUPUESTO - totalNet, 0);
+  const coveragePct = ((totalNet / PRESUPUESTO) * 100).toFixed(1);
+
+  document.getElementById('planKpis').innerHTML=`
+    <div class="kpi"><div class="kpi-label">Marco del Plan</div><div class="kpi-value">${fmtNum(PRESUPUESTO)}€</div><div class="kpi-sub">aprobado en junta 2025</div></div>
+    <div class="kpi info"><div class="kpi-label">Proyectos Registrados</div><div class="kpi-value">${totalProjects}</div><div class="kpi-sub">${budgetedProjects} con presupuesto · ${unbudgetedProjects} sin cifra</div></div>
+    <div class="kpi danger"><div class="kpi-label">Gasto Presupuestado</div><div class="kpi-value">${fmtNum(totalGrossCosts)}€</div><div class="kpi-sub">2025 cerrado + 2026 en cualquier estado</div></div>
+    <div class="kpi success"><div class="kpi-label">Ingresos Registrados</div><div class="kpi-value">+${fmtNum(totalIncome)}€</div><div class="kpi-sub">trasteros + alquiler temporal 8A</div></div>
+    <div class="kpi warning"><div class="kpi-label">Neto con Cifra</div><div class="kpi-value">${fmtNum(totalNet)}€</div><div class="kpi-sub">${coveragePct}% del marco ya cuantificado</div></div>
+    <div class="kpi"><div class="kpi-label">Marco sin Asignar</div><div class="kpi-value">${fmtNum(unassignedFrame)}€</div><div class="kpi-sub">resto aún sin presupuesto concreto</div></div>`;
+
+  document.getElementById('planDesglose').innerHTML=`
+    <div class="kpi success"><div class="kpi-label">Completados</div><div class="kpi-value">${completados.length}</div><div class="kpi-sub">${countBudgeted(completados)} con presupuesto · ${fmtNum(completedCosts)}€ de gasto</div></div>
+    <div class="kpi warning"><div class="kpi-label">En progreso</div><div class="kpi-value">${progreso.length}</div><div class="kpi-sub">${countBudgeted(progreso)} con presupuesto · ${fmtNum(progressCosts)}€ gasto · +${fmtNum(progressIncome)}€ ingreso</div></div>
+    <div class="kpi"><div class="kpi-label">Pendientes</div><div class="kpi-value">${pendientes.length}</div><div class="kpi-sub">${countBudgeted(pendientes)} con presupuesto · ${pendientes.length - countBudgeted(pendientes)} sin cifra</div></div>
+    <div class="kpi info"><div class="kpi-label">Pendiente con Cifra</div><div class="kpi-value">${fmtNum(pendingCosts - pendingIncome)}€</div><div class="kpi-sub">importe neto aún no ejecutado, concentrado en 2026+</div></div>`;
+
+  makeBars('planProgressChart',
+    [Math.round(completedCosts), Math.round(progressCosts), Math.round(pendingCosts), Math.round(totalGrossCosts)],
+    ['Completados', 'En progreso', 'Pendientes', 'Gasto total'],
+    {fmt:v=>Math.round(v/1000)+'k€', colorFn:(v,i)=>['#10B981','#F59E0B','#94A3B8','#1E3A8A'][i]});
+
+  makeBars('burndownChart',
+    [Math.round(totalNet), Math.round(unassignedFrame), PRESUPUESTO],
+    ['Con cifra', 'Sin cifra', 'Marco total'],
+    {fmt:v=>Math.round(v/1000)+'k€', colorFn:(v,i)=>['#0F172A','#CBD5E1','#94A3B8'][i]});
+}
+
+// PLAN — calculado dinámicamente desde DATA
+calcPlan();
+
+
+// GAS POWER — kWh/día por mes COMPARATIVA por temporada
+// Oct-Nov-Dic-Ene-Feb-Mar-Abr-May (temporada calefacción)
+makeGroupedBars('gasKwhDiaChart',
+  [
+    [0,   27.3, 59.2, 37.6, 85.5, 60.4, 21.3, 4.4],   // 2022/23
+    [0,   15.7, 53.3, 55.6, 47.6, 53.0, 30.6, 11.7],  // 2023/24
+    [0,   16.8, 51.8, 58.5, 68.6, 51.1, 51.2, 11.3],  // 2024/25
+    [0,    0,    0,   55.0, 83.9, 45.1,  0,    0  ],   // 2025/26 (parcial)
+  ],
+  ['Oct','Nov','Dic','Ene','Feb','Mar','Abr','May'],
+  ['2022/23', '2023/24', '2024/25', '2025/26*'],
+  ['#4F46E5','#0EA5E9','#10B981','#F59E0B'],
+  { fmt: v => `${v.toFixed(1).replace('.', ',')} kWh/día` }
+);
+
+// GAS POWER — Precio €/kWh por temporada
+makeBars('gasPrecioChart',
+  [0.110, 0.068, 0.067, 0.057],
+  ['2022/23','2023/24','2024/25','2025/26*'],
+  { fmt: v => v.toFixed(3) + '€',
+    colorFn: (v,i) => i === 0 ? '#EF4444' : i === 3 ? '#10B981' : '#F59E0B' });
+
+// GAS POWER — Consumo kWh por temporada
+makeBars('gasConsumoChart',
+  [63816, 91135, 98959, 82082],
+  ['2022/23','2023/24','2024/25','2025/26*'],
+  { fmt: v => Math.round(v/1000) + 'k kWh',
+    colorFn: (v,i) => i <= 1 ? '#4F46E5' : '#0EA5E9' });
+
+// AGUA — Canal + ISTA por año
+makeStackedBars('aguaChart',
+  [[4392, 4591, 4570, 4794, 4611, 1655], [469, 499, 528, 544, 694, 570]],
+  ['2021','2022','2023','2024','2025','2026*'],
+  ['#0EA5E9','#4F46E5']);
+
+// LIMPIEZA — MJM + El Pilar + Don Cubo
+makeStackedBars('limpiezaChart',
+  [[1964, 0, 0, 0], [0, 4087, 1280, 430], [0, 1336, 4143, 2276]],
+  ['2024','2025 (part)','2025 (full)','2026*'],
+  ['#EF4444','#F59E0B','#10B981']);
+
+// Header scroll shadow
+window.addEventListener('scroll', () => {
+  const h = document.getElementById('siteHeader');
+  if (h) h.classList.toggle('scrolled', window.scrollY > 10);
+});
+</script>
+
+<script>
+// ── SUPABASE ──
+const { createClient } = supabase;
+const db = createClient('https://byqtsuskdbgwpyvyiprc.supabase.co', 'sb_publishable_LVuLdmu3YUa0HhMZGdBKtg_VHPZUizx');
+const ADMIN_EMAIL = null; // se consulta desde Supabase user_roles
+
+let _editingId = null;
+let _isAdmin = false;
+let _userRole = "viewer";
+
+async function initAuth() {
+  const { data: { session } } = await db.auth.getSession();
+  if (session) {
+    showApp(session.user.email);
+  }
+}
+
+async function doLogin() {
+  const email = document.getElementById('lEmail').value;
+  const pass = document.getElementById('lPass').value;
+  const { data, error } = await db.auth.signInWithPassword({ email, password: pass });
+  if (error) { document.getElementById('lErr').textContent = 'Email o contraseña incorrectos'; return; }
+  showApp(data.user.email);
+}
+
+async function showApp(email) {
+  document.getElementById('loginOverlay').style.display = 'none';
+  // Consultar rol desde Supabase
+  const { data } = await db.from('user_roles').select('role').eq('email', email).single();
+  _isAdmin = data?.role === 'admin';
+  _userRole = data?.role || 'viewer';
+  if (_isAdmin) {
+    document.getElementById('editBar').classList.add('visible');
+    const t = document.getElementById('tabAdmin');
+    if (t) t.style.display = '';
+  }
+  initAvatar(email, _userRole);
+  // Log sesión
+  await db.from('session_log').insert({ email, action: 'login', user_agent: navigator.userAgent.substring(0,200) });
+  loadFromSupabase();
+}
+
+async function doLogout() {
+  const { data: { user } } = await db.auth.getUser();
+  if (user) await db.from('session_log').insert({ email: user.email, action: 'logout', user_agent: navigator.userAgent.substring(0,200) });
+  await db.auth.signOut();
+  location.reload();
+}
+
+document.getElementById('lPass').addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
+
+// ── CARGAR PROYECTOS DESDE SUPABASE ──
+async function loadFromSupabase() {
+  const { data, error } = await db.from('proyectos').select('*').order('created_at');
+  if (error) { console.error(error); return; }
+
+  // Reconstruir DATA desde Supabase
+  DATA['2026'] = [];
+  DATA['2025'] = [];
+  (data || []).forEach(p => {
+    const proj = {
+      _id: p.id,
+      nombre: p.nombre,
+      cat: p.cat,
+      progreso: parseFloat(p.progreso) || 0,
+      pres: p.pres !== null ? parseFloat(p.pres) : null,
+      obs: p.obs || '',
+      banco_ref: p.banco_ref || '',
+      etiqueta: p.etiqueta || 'Normal'
+    };
+    if (DATA[p.año]) DATA[p.año].push(proj);
+  });
+
+  // Re-renderizar
+  renderProjects2026();
+  renderProjects2025();
+  calcPlan();
+}
+
+// ── MODAL ──
+function openModal(id) {
+  _editingId = id || null;
+  document.getElementById('modalTitle').textContent = id ? 'Editar proyecto' : 'Nuevo proyecto';
+  document.getElementById('btnDel').style.display = id ? 'block' : 'none';
+
+  if (id) {
+    const all = [...(DATA['2026']||[]), ...(DATA['2025']||[])];
+    const p = all.find(x => x._id === id);
+    if (!p) return;
+    document.getElementById('mAño').value = DATA['2026'].includes(p) ? '2026' : '2025';
+    document.getElementById('mCat').value = p.cat;
+    document.getElementById('mNombre').value = p.nombre;
+    document.getElementById('mPres').value = p.pres ?? '';
+    document.getElementById('mProg').value = Math.round((p.progreso||0)*100);
+    document.getElementById('mObs').value = p.obs || '';
+    document.getElementById('mBanco').value = p.banco_ref || '';
+  } else {
+    document.getElementById('mAño').value = '2026';
+    document.getElementById('mCat').value = 'pendiente';
+    document.getElementById('mNombre').value = '';
+    document.getElementById('mPres').value = '';
+    document.getElementById('mProg').value = '0';
+    document.getElementById('mObs').value = '';
+    document.getElementById('mBanco').value = '';
+  }
+  document.getElementById('modalOverlay').classList.add('open');
+}
+
+function closeModal() {
+  document.getElementById('modalOverlay').classList.remove('open');
+  _editingId = null;
+}
+
+async function saveProyecto() {
+  const row = {
+    año: document.getElementById('mAño').value,
+    cat: document.getElementById('mCat').value,
+    nombre: document.getElementById('mNombre').value.trim(),
+    pres: document.getElementById('mPres').value !== '' ? parseFloat(document.getElementById('mPres').value) : null,
+    progreso: parseFloat(document.getElementById('mProg').value) / 100,
+    obs: document.getElementById('mObs').value.trim() || null,
+    banco_ref: document.getElementById('mBanco').value.trim() || null,
+  };
+  if (!row.nombre) { toast('El nombre es obligatorio', 'err'); return; }
+
+  let error;
+  if (_editingId) {
+    ({ error } = await db.from('proyectos').update(row).eq('id', _editingId));
+  } else {
+    ({ error } = await db.from('proyectos').insert(row));
+  }
+  if (error) { toast('Error: ' + error.message, 'err'); return; }
+  toast(_editingId ? 'Proyecto actualizado ✓' : 'Proyecto creado ✓', 'ok');
+  closeModal();
+  loadFromSupabase();
+}
+
+async function delProyecto() {
+  if (!_editingId || !confirm('¿Eliminar este proyecto?')) return;
+  const { error } = await db.from('proyectos').delete().eq('id', _editingId);
+  if (error) { toast('Error eliminando', 'err'); return; }
+  toast('Proyecto eliminado', 'ok');
+  closeModal();
+  loadFromSupabase();
+}
+
+// ── AÑADIR BOTÓN EDITAR A CADA CARD ──
+function projectHTML(p) { return _baseProjectHTML(p); }
+
+function toggleMenu(id) {
+  const isOpen = document.getElementById(id).classList.contains('open');
+  closeMenus();
+  if (!isOpen) document.getElementById(id).classList.add('open');
+}
+function closeMenus() {
+  document.querySelectorAll('.card-menu-dropdown.open').forEach(m => m.classList.remove('open'));
+}
+async function confirmDel(id) {
+  if (!confirm('¿Eliminar este proyecto?')) return;
+  const { error } = await db.from('proyectos').delete().eq('id', id);
+  if (error) { toast('Error eliminando', 'err'); return; }
+  toast('Proyecto eliminado', 'ok');
+  loadFromSupabase();
+}
+document.addEventListener('click', () => closeMenus());
+
+// ── TOAST ──
+function toast(msg, type) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast show' + (type ? ' ' + type : '');
+  setTimeout(() => t.className = 'toast', 3000);
+}
+
+
+
+// ── AVATAR ──
+function initAvatar(email, role) {
+  const btn = document.getElementById('avatarBtn');
+  btn.style.display = 'flex';
+  btn.textContent = email.charAt(0).toUpperCase();
+  btn.style.background = role === 'admin' ? '#4F46E5' : '#10B981';
+  document.getElementById('avatarEmail').textContent = email;
+  document.getElementById('avatarName').textContent = email.split('@')[0];
+  document.getElementById('avatarRole').textContent = role === 'admin' ? '⚙️ Administrador' : '👁️ Visualizador';
+  if (role === 'admin') document.getElementById('avatarNewProject').style.display = 'flex';
+}
+
+function toggleAvatarMenu() {
+  document.getElementById('avatarDropdown').classList.toggle('open');
+}
+
+document.addEventListener('click', (e) => {
+  if (!e.target.closest('#avatarBtn') && !e.target.closest('#avatarDropdown')) {
+    document.getElementById('avatarDropdown').classList.remove('open');
+  }
+});
+
+// ── MODAL BANCO ──
+function openBancoModal() {
+  document.getElementById('bancoOverlay').classList.add('open');
+}
+function closeBancoModal() {
+  document.getElementById('bancoOverlay').classList.remove('open');
+  document.getElementById('uploadResult').innerHTML = '';
+  document.getElementById('bancoFile').value = '';
+}
+
+function handleBancoDrop(event) {
+  event.preventDefault();
+  event.currentTarget.style.borderColor = '#E2E8F0';
+  event.currentTarget.style.background = '';
+  const file = event.dataTransfer.files[0];
+  if (file) processBancoFile(file);
+}
+
+function handleBancoFile(event) {
+  const file = event.target.files[0];
+  if (file) processBancoFile(file);
+}
+
+async function processBancoFile(file) {
+  document.getElementById('uploadResult').innerHTML = '<div style="text-align:center;color:#64748B;padding:16px">⏳ Procesando...</div>';
+  try {
+    const XLSX = await import('https://cdn.jsdelivr.net/npm/xlsx@0.18.5/xlsx.mjs');
+    const buffer = await file.arrayBuffer();
+    const wb = XLSX.read(buffer, { type: 'array', cellDates: true });
+    const ws = wb.Sheets[wb.SheetNames[0]];
+    const rows = XLSX.utils.sheet_to_json(ws, { header: 1 });
+
+    let headerRow = -1;
+    for (let i = 0; i < rows.length; i++) {
+      if (rows[i].some(c => String(c||'').includes('Operativ') || String(c||'').includes('Concepto'))) {
+        headerRow = i; break;
+      }
+    }
+    if (headerRow === -1) { document.getElementById('uploadResult').innerHTML = '<div style="color:#EF4444">❌ No se encontraron las columnas del banco</div>'; return; }
+
+    const headers = rows[headerRow].map(h => String(h||'').trim());
+    const fIdx = headers.findIndex(h => h.includes('Operativ'));
+    const cIdx = headers.findIndex(h => h.includes('Concepto'));
+    const iIdx = headers.findIndex(h => h.includes('Importe'));
+    const sIdx = headers.findIndex(h => h.includes('Saldo'));
+
+    const data = [];
+    for (let i = headerRow + 1; i < rows.length; i++) {
+      const row = rows[i];
+      const importe = parseFloat(String(row[iIdx]||'').replace(',','.'));
+      if (isNaN(importe) || !row[fIdx]) continue;
+      let fecha = row[fIdx];
+      if (fecha instanceof Date) fecha = fecha.toISOString().split('T')[0];
+      else { const p = String(fecha).split('/'); fecha = p.length===3 ? `${p[2]}-${p[1].padStart(2,'0')}-${p[0].padStart(2,'0')}` : String(fecha); }
+      data.push({ fecha, concepto: String(row[cIdx]||'').trim(), importe, saldo: parseFloat(String(row[sIdx]||'0').replace(',','.')) || null });
+    }
+
+    if (!data.length) { document.getElementById('uploadResult').innerHTML = '<div style="color:#EF4444">❌ No se encontraron movimientos</div>'; return; }
+
+    const { error } = await db.from('movimientos').insert(data);
+    if (error) { document.getElementById('uploadResult').innerHTML = `<div style="color:#EF4444">❌ Error: ${error.message}</div>`; return; }
+
+    // Mostrar resumen
+    const ingresos = data.filter(m=>m.importe>0).reduce((s,m)=>s+m.importe,0);
+    const gastos = data.filter(m=>m.importe<0).reduce((s,m)=>s+Math.abs(m.importe),0);
+    document.getElementById('uploadResult').innerHTML = `
+      <div style="background:#D1FAE5;border-left:3px solid #10B981;padding:16px;border-radius:8px">
+        <div style="font-weight:700;color:#065F46;margin-bottom:8px">✅ ${data.length} movimientos importados correctamente</div>
+        <div style="font-size:13px;color:#065F46">Ingresos: +${Math.round(ingresos).toLocaleString('es-ES')}€ · Gastos: -${Math.round(gastos).toLocaleString('es-ES')}€</div>
+      </div>`;
+  } catch(e) {
+    document.getElementById('uploadResult').innerHTML = `<div style="color:#EF4444">❌ Error: ${e.message}</div>`;
+  }
+}
+
+document.getElementById('bancoOverlay').addEventListener('click', e => {
+  if (e.target === document.getElementById('bancoOverlay')) closeBancoModal();
+});
+
+document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeModal(); closeBancoModal(); } });
+document.getElementById('modalOverlay').addEventListener('click', e => {
+  if (e.target === document.getElementById('modalOverlay')) closeModal();
+});
+
+
+// ── ADMIN PANEL ──
+async function loadAdminPanel() {
+  loadUsersList();
+  loadSessionLog();
+  loadDocsList();
+}
+
+async function loadUsersList() {
+  const { data } = await db.from('user_roles').select('*').order('email');
+  if (!data) return;
+  document.getElementById('usersList').innerHTML = `
+    <table style="width:100%;border-collapse:collapse">
+      <thead><tr style="background:var(--dark);color:white">
+        <th style="padding:10px 14px;text-align:left;font-size:12px;font-weight:700">Email</th>
+        <th style="padding:10px 14px;text-align:left;font-size:12px;font-weight:700">Rol</th>
+        <th style="padding:10px 14px;text-align:left;font-size:12px;font-weight:700">Acciones</th>
+      </tr></thead>
+      <tbody>${data.map(u => `
+        <tr style="border-bottom:1px solid var(--border)">
+          <td style="padding:10px 14px;font-size:14px">${u.email}</td>
+          <td style="padding:10px 14px">
+            <span style="background:${u.role==='admin'?'#EEF2FF':'#F0FDF4'};color:${u.role==='admin'?'var(--primary)':'var(--secondary)'};padding:3px 10px;border-radius:12px;font-size:12px;font-weight:700">
+              ${u.role === 'admin' ? '⚙️ Admin' : '👁️ Viewer'}
+            </span>
+          </td>
+          <td style="padding:10px 14px">
+            <button onclick="removeUserRole('${u.email}')" style="background:#FEE2E2;color:#EF4444;border:none;padding:4px 10px;border-radius:6px;font-size:12px;cursor:pointer;font-family:inherit">Eliminar</button>
+          </td>
+        </tr>`).join('')}
+      </tbody>
+    </table>`;
+}
+
+async function addUserRole() {
+  const email = document.getElementById('newUserEmail').value.trim();
+  const role = document.getElementById('newUserRole').value;
+  if (!email) { toast('Introduce un email', 'err'); return; }
+  const { error } = await db.from('user_roles').upsert({ email, role });
+  if (error) { toast('Error: ' + error.message, 'err'); return; }
+  toast('Usuario añadido ✓', 'ok');
+  document.getElementById('newUserEmail').value = '';
+  loadUsersList();
+}
+
+async function removeUserRole(email) {
+  if (!confirm('¿Eliminar acceso de ' + email + '?')) return;
+  const { error } = await db.from('user_roles').delete().eq('email', email);
+  if (error) { toast('Error', 'err'); return; }
+  toast('Usuario eliminado', 'ok');
+  loadUsersList();
+}
+
+const LOG_PAGE_SIZE = 20;
+async function loadSessionLog(page = 0) {
+  const from = page * LOG_PAGE_SIZE;
+  const to = from + LOG_PAGE_SIZE - 1;
+  const { data, count } = await db.from('session_log').select('*', { count: 'exact' }).order('created_at', { ascending: false }).range(from, to);
+  
+  if (!data || !data.length) { 
+    document.getElementById('sessionLog').innerHTML = '<div style="color:var(--text-muted);font-size:14px">Sin sesiones registradas aún</div>'; 
+    return; 
+  }
+  
+  const totalPages = Math.ceil((count || 0) / LOG_PAGE_SIZE);
+  document.getElementById('sessionLogInfo').textContent = `${count || 0} sesiones totales · Página ${page+1} de ${totalPages}`;
+  
+  document.getElementById('sessionLog').innerHTML = `
+    <table style="width:100%;border-collapse:collapse">
+      <thead><tr style="background:var(--dark);color:white">
+        <th style="padding:10px 14px;text-align:left;font-size:12px">Fecha</th>
+        <th style="padding:10px 14px;text-align:left;font-size:12px">Email</th>
+        <th style="padding:10px 14px;text-align:left;font-size:12px">Acción</th>
+      </tr></thead>
+      <tbody>${data.map(s => `
+        <tr style="border-bottom:1px solid var(--border)">
+          <td style="padding:10px 14px;font-size:13px;color:var(--text-muted)">${new Date(s.created_at).toLocaleString('es-ES')}</td>
+          <td style="padding:10px 14px;font-size:13px">${s.email}</td>
+          <td style="padding:10px 14px">
+            <span style="background:${s.action==='login'?'#D1FAE5':'#FEE2E2'};color:${s.action==='login'?'#065F46':'#991B1B'};padding:3px 10px;border-radius:12px;font-size:12px;font-weight:700">
+              ${s.action === 'login' ? '🟢 Login' : '🔴 Logout'}
+            </span>
+          </td>
+        </tr>`).join('')}
+      </tbody>
+    </table>`;
+
+  // Paginación
+  let pager = '';
+  if (page > 0) pager += `<button onclick="loadSessionLog(${page-1})" style="background:var(--bg);border:1px solid var(--border);padding:6px 14px;border-radius:6px;font-size:13px;cursor:pointer;font-family:inherit">← Anterior</button>`;
+  if (page < totalPages - 1) pager += `<button onclick="loadSessionLog(${page+1})" style="background:var(--bg);border:1px solid var(--border);padding:6px 14px;border-radius:6px;font-size:13px;cursor:pointer;font-family:inherit">Siguiente →</button>`;
+  document.getElementById('sessionLogPager').innerHTML = pager;
+}
+
+async function loadDocsList() {
+  const { data } = await db.from('documentos').select('*').order('created_at', { ascending: false }).limit(20);
+  if (!data || !data.length) return;
+  document.getElementById('docsList').innerHTML = `
+    <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:var(--text-muted);margin-bottom:8px">Documentos subidos</div>
+    <table style="width:100%;border-collapse:collapse">
+      <thead><tr style="background:var(--dark);color:white">
+        <th style="padding:8px 14px;text-align:left;font-size:12px">Nombre</th>
+        <th style="padding:8px 14px;text-align:left;font-size:12px">Tipo</th>
+        <th style="padding:8px 14px;text-align:left;font-size:12px">Fecha</th>
+      </tr></thead>
+      <tbody>${data.map(d => `
+        <tr style="border-bottom:1px solid var(--border)">
+          <td style="padding:8px 14px;font-size:13px">${d.nombre}</td>
+          <td style="padding:8px 14px;font-size:12px;color:var(--text-muted)">${d.tipo}</td>
+          <td style="padding:8px 14px;font-size:12px;color:var(--text-muted)">${new Date(d.created_at).toLocaleDateString('es-ES')}</td>
+        </tr>`).join('')}
+      </tbody>
+    </table>`;
+}
+
+function openDocUpload(tipo) {
+  // Reutilizar el modal de banco para subir cualquier tipo de documento
+  openBancoModal();
+  // Marcar el tipo para que al subir quede registrado
+  document.getElementById('bancoOverlay').dataset.tipo = tipo;
+}
+
+// Cargar panel admin al cambiar a esa pestaña
+
+
+
+// Init
+initAuth();
+</script>
+
+
+<!-- MODAL BANCO -->
+<div class="modal-overlay" id="bancoOverlay">
+  <div class="modal" style="max-width:640px">
+    <h3>📤 Subir extracto bancario</h3>
+    <p style="font-size:14px;color:#64748B;margin-bottom:20px">Sube el archivo XLS del Banco Sabadell. Se importarán los movimientos automáticamente.</p>
+    <div id="uploadZone" onclick="document.getElementById('bancoFile').click()" 
+         style="border:2px dashed #E2E8F0;border-radius:10px;padding:40px;text-align:center;cursor:pointer;transition:all 0.2s;"
+         ondragover="event.preventDefault();this.style.borderColor='#4F46E5';this.style.background='#EEF2FF'"
+         ondragleave="this.style.borderColor='#E2E8F0';this.style.background=''"
+         ondrop="handleBancoDrop(event)">
+      <div style="font-size:32px;margin-bottom:12px">📂</div>
+      <div style="font-weight:700;font-size:15px;margin-bottom:4px">Arrastra el XLS aquí o haz clic</div>
+      <div style="color:#94A3B8;font-size:13px">Formato Banco Sabadell · columnas F.Operativa, Concepto, Importe, Saldo</div>
+      <input type="file" id="bancoFile" accept=".xls,.xlsx,.csv" style="display:none" onchange="handleBancoFile(event)">
+    </div>
+    <div id="uploadResult" style="margin-top:16px"></div>
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeBancoModal()">Cerrar</button>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
