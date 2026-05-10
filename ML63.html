@@ -597,7 +597,7 @@ footer { margin-top: 0; padding: 28px 50px; border-top: 1px solid #2D3448; text-
       <div class="kpi success"><div class="kpi-label">Ahorro anual de caja</div><div class="kpi-value">~13.000€</div><div class="kpi-sub">nómina+SS+quirón+sustituciones</div></div>
     </div>
     <p style="font-size: 14px; color: var(--text-muted); margin-top: 14px; padding: 10px 14px; background: #F8FAFC; border-left: 3px solid #64748B; border-radius: 4px;">
-      🏠 <strong style="color:#334155">Lectura prudente:</strong> el coste estructural previo rondaba 22.000€/año, pero unos 10.000€/año corresponden al valor teórico de uso de la vivienda. Por eso, para proyecciones de caja se toma como ahorro bancario recurrente solo ~13.000€/año, hasta que la vivienda genere cobros reales.
+      🏠 <strong style="color:#334155">Lectura prudente:</strong> el coste estructural previo rondaba 23.000€/año, pero unos 12.000€/año corresponden al valor teórico de uso de la vivienda (estimado conservador: 1.000€/mes). Por eso, para proyecciones de caja se toma como ahorro bancario recurrente solo ~11.000€/año, hasta que la vivienda genere cobros reales.
     </p>
     <div class="chart-section">
       <div class="chart-title">Coste anual completo del portero · Desglose por concepto</div>
@@ -609,7 +609,7 @@ footer { margin-top: 0; padding: 28px 50px; border-top: 1px solid #2D3448; text-
         <div class="legend-item"><div class="legend-color" style="background: #F59E0B"></div>Seguridad Social (TGSS)</div>
         <div class="legend-item"><div class="legend-color" style="background: #8B5CF6"></div>Quirón Prevención</div>
         <div class="legend-item"><div class="legend-color" style="background: #06B6D4"></div>Sustituciones (el Portero)</div>
-        <div class="legend-item"><div class="legend-color" style="background: #0F172A"></div>Valor teórico vivienda (estimado 10.000€/año)</div>
+        <div class="legend-item"><div class="legend-color" style="background: #0F172A"></div>Valor teórico vivienda (estimado 12.000€/año · 1.000€/mes)</div>
       </div>
     </div>
     <p style="font-size: 14px; color: var(--text-muted); margin-top: 14px; padding: 10px 14px; background: #EFF6FF; border-left: 3px solid #3B82F6; border-radius: 4px;">
@@ -1570,7 +1570,7 @@ const nomina   = [7459, 7459, 8411, 8816];
 const segSoc   = [3462, 4009, 4417, 3785];
 const quiron   = [550,  553,  591,  610];
 const sustit   = [0,    0,    0,    732]; // el Portero transferencias jul-ago 2024 (731,56€)
-const alquiler = [10000, 10000, 10000, 10000];
+const alquiler = [12000, 12000, 12000, 12000]; // 1.000€/mes estimado (conservador, Chamberí)
 makeStackedBars('porteroHistChart',
   [nomina, segSoc, quiron, sustit, alquiler],
   ['2021','2022','2023','2024'],
