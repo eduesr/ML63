@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>CP Modesto Lafuente 63 · Junta 2027</title>
+<title>Gestión CP ML63 (v11)</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -429,7 +429,10 @@ footer { margin-top: 0; padding: 28px 50px; border-top: 1px solid #2D3448; text-
       <input type="checkbox" id="lRemember" checked style="width:16px;height:16px;cursor:pointer;">
       <label for="lRemember" style="font-size:13px;color:#64748B;cursor:pointer;font-weight:500;">Mantener sesión iniciada</label>
     </div>
-    <button class="btn-login" onclick="doLogin()">Entrar</button>
+    <button class="btn-login" onclick="doLogin()">Entrar con contraseña</button>
+    <div style="text-align:center;margin-top:16px;">
+      <button onclick="doMagicLink()" style="background:none;border:none;color:var(--primary);font-size:13px;font-weight:600;cursor:pointer;text-decoration:underline;">Recibir enlace mágico por email</button>
+    </div>
     <div class="login-err" id="lErr"></div>
   </div>
 </div>
@@ -478,7 +481,7 @@ footer { margin-top: 0; padding: 28px 50px; border-top: 1px solid #2D3448; text-
 
 <div class="page-wrapper"><header class="site-header" id="siteHeader">
   <div class="site-header-inner" style="justify-content:space-between;display:flex;align-items:center;height:60px;">
-    <div class="site-header-title">Gestión CP ML63</div>
+    <div class="site-header-title">Gestión CP ML63 (v11)</div>
     <div style="display:flex;align-items:center;gap:10px">
       <div class="edit-bar" id="editBar">
         <button class="btn-add" onclick="openModal()">+ Proyecto</button>
@@ -494,7 +497,7 @@ footer { margin-top: 0; padding: 28px 50px; border-top: 1px solid #2D3448; text-
   <button class="tab-btn" onclick="switchTab(event, 'energia')">⚡ Energía</button>
   <button class="tab-btn" onclick="switchTab(event, 'gastos')">💼 Gastos & Servicios</button>
   <button class="tab-btn" onclick="switchTab(event, 'admin')">🏛️ Gestión</button>
-  <button class="tab-btn" onclick="switchTab(event, 'plan')">🎯 Plan 2025–2029</button>
+  <button class="tab-btn" onclick="switchTab(event, 'plan')">🎯 Plan 2025–2031</button>
   <button class="tab-btn admin-only" id="tabAdmin" onclick="switchTab(event, 'admin-panel')" style="display:none">⚙️ Admin</button>
 </div>
 
@@ -502,15 +505,12 @@ footer { margin-top: 0; padding: 28px 50px; border-top: 1px solid #2D3448; text-
 <div id="tab2026" class="tab-content active">
 
   <div class="card">
-    <div class="card-title">Tesorería 2026 (ene–abr)</div>
+    <div class="card-title">Tesorería</div>
     
     <!-- Resumen general -->
     <div style="font-size: 14px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px;">📊 Resumen General</div>
-    <div class="kpi-grid">
-      <div class="kpi success"><div class="kpi-label">Ingresos Totales</div><div class="kpi-value">31.740€</div></div>
-      <div class="kpi danger"><div class="kpi-label">Gastos Totales</div><div class="kpi-value">31.252€</div></div>
-      <div class="kpi success"><div class="kpi-label">Saldo Periodo</div><div class="kpi-value">+488€</div></div>
-      <div class="kpi info"><div class="kpi-label">Saldo Banco</div><div class="kpi-value">28.910€</div><div class="kpi-sub">a 20/04/2026</div></div>
+    <div class="kpi-grid" id="kpiTesoria2026">
+      <div class="kpi"><div class="kpi-label">Cargando datos...</div></div>
     </div>
     
     <!-- Desglose de gastos -->
@@ -518,17 +518,17 @@ footer { margin-top: 0; padding: 28px 50px; border-top: 1px solid #2D3448; text-
     <div class="kpi-grid kpi-grid-split">
       <div class="kpi kpi-operativo">
         <div class="kpi-label">⚙️ Gastos Comunes (operativos)</div>
-        <div class="kpi-value">16.436€</div>
+        <div class="kpi-value" id="gastoOperativo2026">---€</div>
         <div class="kpi-sub">limpieza, luz, gas, ascensor, comunicaciones, administración…</div>
       </div>
       <div class="kpi kpi-mejora">
         <div class="kpi-label">🔨 Mejoras del Edificio (proyectos)</div>
-        <div class="kpi-value">14.816€</div>
-        <div class="kpi-sub">proyectos de la hoja de ruta · 47% del gasto</div>
+        <div class="kpi-value" id="gastoMejora2026">---€</div>
+        <div class="kpi-sub">proyectos de la hoja de ruta</div>
       </div>
     </div>
     <p style="font-size: 14px; color: var(--text-muted); margin-top: 14px; padding: 10px 14px; background: #EFF6FF; border-left: 3px solid #3B82F6; border-radius: 4px;">
-      🏦 <strong style="color:#1E3A8A">Auditoría:</strong> Cifras extraídas del extracto bancario Banc Sabadell hasta abril 2026. Cada proyecto enlazado con su cargo/factura concreta.
+      🏦 <strong style="color:#1E3A8A">Auditoría:</strong> <span id="audit2026">Cargando...</span>
     </p>
   </div>
 
@@ -546,11 +546,8 @@ footer { margin-top: 0; padding: 28px 50px; border-top: 1px solid #2D3448; text-
     
     <!-- Resumen general -->
     <div style="font-size: 14px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px;">📊 Resumen General</div>
-    <div class="kpi-grid">
-      <div class="kpi success"><div class="kpi-label">Ingresos Totales</div><div class="kpi-value">62.720€</div></div>
-      <div class="kpi danger"><div class="kpi-label">Gastos Totales</div><div class="kpi-value">57.763€</div></div>
-      <div class="kpi success"><div class="kpi-label">Resultado Año</div><div class="kpi-value">+4.957€</div></div>
-      <div class="kpi info"><div class="kpi-label">Saldo a 31/12</div><div class="kpi-value">28.421€</div></div>
+    <div class="kpi-grid" id="kpiTesoria2025">
+      <!-- Rellenado por JS -->
     </div>
     
     <!-- Desglose de gastos -->
@@ -558,17 +555,17 @@ footer { margin-top: 0; padding: 28px 50px; border-top: 1px solid #2D3448; text-
     <div class="kpi-grid kpi-grid-split">
       <div class="kpi kpi-operativo">
         <div class="kpi-label">⚙️ Gastos Comunes (operativos)</div>
-        <div class="kpi-value">39.553€</div>
+        <div class="kpi-value" id="gastoOperativo2025">---€</div>
         <div class="kpi-sub">limpieza, luz, gas, ascensor, comunicaciones, administración, despido portero…</div>
       </div>
       <div class="kpi kpi-mejora">
         <div class="kpi-label">🔨 Mejoras del Edificio (proyectos)</div>
-        <div class="kpi-value">18.210€</div>
-        <div class="kpi-sub">11 proyectos completados de la hoja de ruta · 32% del gasto</div>
+        <div class="kpi-value" id="gastoMejora2025">---€</div>
+        <div class="kpi-sub">proyectos completados de la hoja de ruta</div>
       </div>
     </div>
     <p style="font-size: 14px; color: var(--text-muted); margin-top: 14px; padding: 10px 14px; background: #EFF6FF; border-left: 3px solid #3B82F6; border-radius: 4px;">
-      🏦 <strong style="color:#1E3A8A">Auditoría:</strong> Todas las cifras provienen del extracto bancario Banc Sabadell. Cada proyecto incluye su cruce con la factura/cargo correspondiente. Total ingresos 62.720€ y gastos 57.763€ son sumas reales del banco.
+      🏦 <strong style="color:#1E3A8A">Auditoría:</strong> <span id="audit2025">Cargando...</span>
     </p>
   </div>
 
@@ -581,20 +578,24 @@ footer { margin-top: 0; padding: 28px 50px; border-top: 1px solid #2D3448; text-
   <div class="card">
     <div class="card-title">📊 Coste Real del Portero (servicio cerrado en 2025)</div>
     <p class="card-desc">
-      Este bloque mide el <strong>coste estructural total</strong> del antiguo modelo: <strong>Nómina + Seguridad Social (TGSS) + Quirón Prevención (riesgos laborales) + Sustituciones puntuales + valor teórico de uso de la vivienda de portería</strong>. Desde febrero de 2025 desaparecen las salidas bancarias asociadas al portero; el valor teórico de la vivienda se mantiene solo como referencia económica hasta que se convierta en un ingreso real.
+      Este bloque mide el <strong>coste estructural total</strong> del antiguo modelo: <strong>Nómina + Seguridad Social (TGSS) + Quirón Prevención (riesgos laborales) + Sustituciones puntuales + valor teórico de uso de la vivienda de portería</strong>. Desde febrero de 2025 desaparecen las salidas bancarias asociadas al portero; el valor teórico de la vivienda se mantiene solo como referencia económica hasta que se convierta en un ingreso real.<br><br>
+      <span style="display:inline-block; padding: 6px 12px; background: #FEF2F2; color: #991B1B; border-radius: 4px; border: 1px solid #FCA5A5;">
+        <strong>💰 Coste real salida (2025): <span id="portero2025Total">---€</span></strong> 
+        <span style="font-size:12px; opacity:0.8; margin-left:6px;">(Salarios 2025 + Seg. Social + Finiquito + Indemnización + Embargos)</span>
+      </span>
     </p>
     <div class="kpi-grid">
-      <div class="kpi danger"><div class="kpi-label">2021 Total</div><div class="kpi-value">21.471€</div><div class="kpi-sub">Nómina+SS+Quirón+Alquiler</div></div>
-      <div class="kpi danger"><div class="kpi-label">2022 Total</div><div class="kpi-value">22.021€</div></div>
-      <div class="kpi danger"><div class="kpi-label">2023 Total</div><div class="kpi-value">23.420€</div></div>
-      <div class="kpi danger"><div class="kpi-label">2024 Total</div><div class="kpi-value">22.022€</div><div class="kpi-sub">incluye sustitución verano</div></div>
+      <div class="kpi danger"><div class="kpi-label">2021 Total</div><div class="kpi-value" id="portero2021">---€</div><div class="kpi-sub">Caja+Vivienda</div></div>
+      <div class="kpi danger"><div class="kpi-label">2022 Total</div><div class="kpi-value" id="portero2022">---€</div></div>
+      <div class="kpi danger"><div class="kpi-label">2023 Total</div><div class="kpi-value" id="portero2023">---€</div></div>
+      <div class="kpi danger"><div class="kpi-label">2024 Total</div><div class="kpi-value" id="portero2024">---€</div></div>
     </div>
     <div style="font-size: 14px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin: 18px 0 10px;">💸 Coste del despido · 2025</div>
     <div class="kpi-grid">
-      <div class="kpi danger"><div class="kpi-label">Finiquito e indemnización</div><div class="kpi-value">11.028€</div><div class="kpi-sub">feb 2025 · 3 cargos banco</div></div>
-      <div class="kpi danger"><div class="kpi-label">Embargos Hacienda IRPF</div><div class="kpi-value">1.608€</div><div class="kpi-sub">792€ abr + 816€ may 2025</div></div>
-      <div class="kpi danger"><div class="kpi-label">Total coste salida</div><div class="kpi-value">12.636€</div><div class="kpi-sub">atrasos IRPF + finiquito</div></div>
-      <div class="kpi success"><div class="kpi-label">Ahorro anual de caja</div><div class="kpi-value">~13.000€</div><div class="kpi-sub">nómina+SS+quirón+sustituciones</div></div>
+      <div class="kpi danger"><div class="kpi-label">Finiquito e indemnización</div><div class="kpi-value" id="despidoFiniquito">---€</div><div class="kpi-sub">feb 2025</div></div>
+      <div class="kpi danger"><div class="kpi-label">Embargos Hacienda IRPF</div><div class="kpi-value" id="despidoEmbargos">---€</div></div>
+      <div class="kpi danger"><div class="kpi-label">Total coste salida</div><div class="kpi-value" id="despidoTotal">---€</div></div>
+      <div class="kpi success"><div class="kpi-label">Ahorro anual de caja</div><div class="kpi-value" id="ahorroAnualCaja">---€</div></div>
     </div>
     <p style="font-size: 14px; color: var(--text-muted); margin-top: 14px; padding: 10px 14px; background: #F8FAFC; border-left: 3px solid #64748B; border-radius: 4px;">
       🏠 <strong style="color:#334155">Lectura prudente:</strong> el coste estructural previo rondaba 23.000€/año, pero unos 12.000€/año corresponden al valor teórico de uso de la vivienda (estimado conservador: 1.000€/mes). Por eso, para proyecciones de caja se toma como ahorro bancario recurrente solo ~11.000€/año, hasta que la vivienda genere cobros reales.
@@ -612,8 +613,8 @@ footer { margin-top: 0; padding: 28px 50px; border-top: 1px solid #2D3448; text-
         <div class="legend-item"><div class="legend-color" style="background: #0F172A"></div>Valor teórico vivienda (estimado 12.000€/año · 1.000€/mes)</div>
       </div>
     </div>
-    <p style="font-size: 14px; color: var(--text-muted); margin-top: 14px; padding: 10px 14px; background: #EFF6FF; border-left: 3px solid #3B82F6; border-radius: 4px;">
-      🏦 <strong style="color:#1E3A8A">Cruce banco:</strong> Nóminas mensuales (621€/mes 2021-22, 708€/mes 2023, 771€/mes 2024) · TGSS (Seg.Social mensual) · Quirón Prevención (4 cargos/año) · el Portero transferencias extra verano 2024 (731,56€) · <strong>Finiquito e indemnización: 10.186€ + 833€ + 9€ (feb 2025)</strong> · <strong>Embargos Hacienda atrasos IRPF: 792,35€ (15/04/2025) + 816,05€ (13/05/2025)</strong>
+    <p id="auditDespido" style="font-size: 14px; color: var(--text-muted); margin-top: 14px; padding: 10px 14px; background: #EFF6FF; border-left: 3px solid #3B82F6; border-radius: 4px;">
+      🏦 <strong style="color:#1E3A8A">Cruce banco:</strong> Nóminas mensuales (621€/mes 2021-22, 708€/mes 2023, 771€/mes 2024) · TGSS (Seg.Social mensual) · Quirón Prevención (4 cargos/año) · el Portero transferencias extra verano 2024 (731,56€) · <strong>Finiquito e indemnización: ---€</strong> · <strong>Embargos Hacienda atrasos IRPF: ---€</strong>
     </p>
   </div>
 </div>
@@ -623,13 +624,13 @@ footer { margin-top: 0; padding: 28px 50px; border-top: 1px solid #2D3448; text-
   <div class="card">
     <div class="card-title">⚡ Electricidad · Naturgy (zonas comunes)</div>
     <p class="card-desc">Datos del banco. <strong>Bajada drástica 2022→2023</strong> tras revisión de tarifa eléctrica.</p>
-    <div class="kpi-grid">
-      <div class="kpi danger"><div class="kpi-label">2021</div><div class="kpi-value">11.120€</div></div>
-      <div class="kpi danger"><div class="kpi-label">2022</div><div class="kpi-value">12.188€</div></div>
-      <div class="kpi warning"><div class="kpi-label">2023</div><div class="kpi-value">4.534€</div></div>
-      <div class="kpi success"><div class="kpi-label">2024</div><div class="kpi-value">1.301€</div></div>
-      <div class="kpi success"><div class="kpi-label">2025</div><div class="kpi-value">1.306€</div></div>
-      <div class="kpi info"><div class="kpi-label">2026 (ene-abr)</div><div class="kpi-value">533€</div></div>
+    <div class="kpi-grid" id="kpiLuzGrid">
+      <div class="kpi danger"><div class="kpi-label">2021</div><div class="kpi-value" id="luz2021">---€</div></div>
+      <div class="kpi danger"><div class="kpi-label">2022</div><div class="kpi-value" id="luz2022">---€</div></div>
+      <div class="kpi warning"><div class="kpi-label">2023</div><div class="kpi-value" id="luz2023">---€</div></div>
+      <div class="kpi success"><div class="kpi-label">2024</div><div class="kpi-value" id="luz2024">---€</div></div>
+      <div class="kpi success"><div class="kpi-label">2025</div><div class="kpi-value" id="luz2025">---€</div></div>
+      <div class="kpi info"><div class="kpi-label">2026</div><div class="kpi-value" id="luz2026">---€</div></div>
     </div>
     <div class="chart-section">
       <div class="chart-title">Gasto Anual Naturgy · 2021–2026</div>
@@ -643,10 +644,10 @@ footer { margin-top: 0; padding: 28px 50px; border-top: 1px solid #2D3448; text-
       Calefacción agrupada en <strong>temporadas reales de uso</strong> (octubre–mayo). Suma 3 conceptos: <strong>Gas Power</strong> (combustible), <strong>Multiservicios Tecnológicos</strong> (mantenimiento caldera) y <strong>Techem</strong> (servicios energéticos).
     </p>
     <div class="kpi-grid">
-      <div class="kpi danger"><div class="kpi-label">Temp. 2022/23</div><div class="kpi-value">13.597€</div></div>
-      <div class="kpi warning"><div class="kpi-label">Temp. 2023/24</div><div class="kpi-value">9.211€</div></div>
-      <div class="kpi success"><div class="kpi-label">Temp. 2024/25</div><div class="kpi-value">7.801€</div></div>
-      <div class="kpi info"><div class="kpi-label">Temp. 2025/26*</div><div class="kpi-value">6.255€</div><div class="kpi-sub">hasta abril 2026</div></div>
+      <div class="kpi danger"><div class="kpi-label">Temp. 2022/23</div><div class="kpi-value" id="calef2223">---€</div></div>
+      <div class="kpi warning"><div class="kpi-label">Temp. 2023/24</div><div class="kpi-value" id="calef2324">---€</div></div>
+      <div class="kpi success"><div class="kpi-label">Temp. 2024/25</div><div class="kpi-value" id="calef2425">---€</div></div>
+      <div class="kpi info"><div class="kpi-label">Temp. 2025/26*</div><div class="kpi-value" id="calef2526">---€</div></div>
     </div>
     <div class="chart-section">
       <div class="chart-title">Coste por Temporada (octubre a mayo) · Desglose por Concepto</div>
@@ -705,12 +706,12 @@ footer { margin-top: 0; padding: 28px 50px; border-top: 1px solid #2D3448; text-
       <strong>Dos conceptos del agua del edificio:</strong> el <strong>Canal de Isabel II</strong> factura el suministro de agua bimensualmente (6 cargos al año), e <strong>ISTA Metering Services</strong> gestiona los contadores individuales de agua (cargo anual). La administración regulariza con los vecinos según consumo individual.
     </p>
     <div class="kpi-grid">
-      <div class="kpi"><div class="kpi-label">2021 Total</div><div class="kpi-value">4.861€</div><div class="kpi-sub">Canal 4.392€ + Ista 469€</div></div>
-      <div class="kpi"><div class="kpi-label">2022 Total</div><div class="kpi-value">5.090€</div><div class="kpi-sub">Canal 4.591€ + Ista 499€</div></div>
-      <div class="kpi"><div class="kpi-label">2023 Total</div><div class="kpi-value">5.098€</div><div class="kpi-sub">Canal 4.570€ + Ista 528€</div></div>
-      <div class="kpi"><div class="kpi-label">2024 Total</div><div class="kpi-value">5.338€</div><div class="kpi-sub">Canal 4.794€ + Ista 544€</div></div>
-      <div class="kpi success"><div class="kpi-label">2025 Total</div><div class="kpi-value">5.305€</div><div class="kpi-sub">Canal 4.611€ + Ista 694€</div></div>
-      <div class="kpi info"><div class="kpi-label">2026 (ene-abr)</div><div class="kpi-value">2.225€</div><div class="kpi-sub">Canal 1.655€ + Ista 570€</div></div>
+      <div class="kpi"><div class="kpi-label">2021 Total</div><div class="kpi-value" id="agua2021">---€</div></div>
+      <div class="kpi"><div class="kpi-label">2022 Total</div><div class="kpi-value" id="agua2022">---€</div></div>
+      <div class="kpi"><div class="kpi-label">2023 Total</div><div class="kpi-value" id="agua2023">---€</div></div>
+      <div class="kpi"><div class="kpi-label">2024 Total</div><div class="kpi-value" id="agua2024">---€</div></div>
+      <div class="kpi success"><div class="kpi-label">2025 Total</div><div class="kpi-value" id="agua2025">---€</div></div>
+      <div class="kpi info"><div class="kpi-label">2026 Total</div><div class="kpi-value" id="agua2026">---€</div></div>
     </div>
     <div class="chart-section">
       <div class="chart-title">Coste Anual Agua · Desglose Canal de Isabel II + ISTA</div>
@@ -764,15 +765,15 @@ footer { margin-top: 0; padding: 28px 50px; border-top: 1px solid #2D3448; text-
       Cronología de empresas de limpieza: <strong>MJM</strong> (anterior) → <strong>Cubos El Pilar</strong> (may 2025–feb 2026) → <strong>Don Cubo / Prevent XXI</strong> (actual desde jun 2025, asumió todo el servicio en marzo 2026 con cuota única). Cada empresa hacía limpieza + cubos.
     </p>
     <div class="kpi-grid">
-      <div class="kpi danger"><div class="kpi-label">MJM (oct'24 – abr'25)</div><div class="kpi-value">1.964€</div><div class="kpi-sub">empresa anterior · total histórico</div></div>
-      <div class="kpi warning"><div class="kpi-label">El Pilar (may'25 – feb'26)</div><div class="kpi-value">5.367€</div><div class="kpi-sub">total histórico</div></div>
-      <div class="kpi success"><div class="kpi-label">Don Cubo (jun'25 → hoy)</div><div class="kpi-value">2.706€</div><div class="kpi-sub">actual · 517,88€/mes desde mar 2026</div></div>
+      <div class="kpi danger"><div class="kpi-label">MJM</div><div class="kpi-value" id="limpAnterior">---€</div></div>
+      <div class="kpi warning"><div class="kpi-label">El Pilar</div><div class="kpi-value" id="limpIntermedio">---€</div></div>
+      <div class="kpi success"><div class="kpi-label">Don Cubo</div><div class="kpi-value" id="limpActual">---€</div></div>
     </div>
     <div class="kpi-grid">
-      <div class="kpi danger"><div class="kpi-label">Antes (MJM)</div><div class="kpi-value">~330€</div><div class="kpi-sub">€/mes promedio</div></div>
-      <div class="kpi warning"><div class="kpi-label">Antes (El Pilar + Prevent feb'26)</div><div class="kpi-value">597,53€</div><div class="kpi-sub">2 proveedores · €/mes</div></div>
-      <div class="kpi success"><div class="kpi-label">Ahora (Don Cubo)</div><div class="kpi-value">517,88€</div><div class="kpi-sub">cuota única · €/mes</div></div>
-      <div class="kpi success"><div class="kpi-label">Ahorro vs feb'26</div><div class="kpi-value">−956€/año</div></div>
+      <div class="kpi danger"><div class="kpi-label">Mensual MJM</div><div class="kpi-value" id="limpMesAnterior">---€</div></div>
+      <div class="kpi warning"><div class="kpi-label">Mensual Pilar</div><div class="kpi-value" id="limpMesIntermedio">---€</div></div>
+      <div class="kpi success"><div class="kpi-label">Mensual Don Cubo</div><div class="kpi-value" id="limpMesActual">---€</div></div>
+      <div class="kpi success"><div class="kpi-label">Ahorro anual</div><div class="kpi-value" id="limpAhorro">---€</div></div>
     </div>
     <div class="chart-section">
       <div class="chart-title">Evolución Coste Limpieza por Año (MJM + El Pilar + Don Cubo)</div>
@@ -793,13 +794,8 @@ footer { margin-top: 0; padding: 28px 50px; border-top: 1px solid #2D3448; text-
     <p class="card-desc">
       Cambio en 2026: <strong>Prisma → Lasser</strong> (Antenas Lasser + Seguridad Lasser).
     </p>
-    <div class="kpi-grid">
-      <div class="kpi"><div class="kpi-label">2021 Prisma</div><div class="kpi-value">1.513€</div></div>
-      <div class="kpi"><div class="kpi-label">2022 Prisma</div><div class="kpi-value">1.110€</div></div>
-      <div class="kpi"><div class="kpi-label">2023 Prisma</div><div class="kpi-value">1.039€</div></div>
-      <div class="kpi"><div class="kpi-label">2024 Prisma</div><div class="kpi-value">1.229€</div></div>
-      <div class="kpi"><div class="kpi-label">2025 Prisma</div><div class="kpi-value">1.094€</div></div>
-      <div class="kpi success"><div class="kpi-label">2026 Lasser</div><div class="kpi-value">928€</div><div class="kpi-sub">marzo + abril</div></div>
+    <div class="kpi-grid" id="kpiComunicaciones">
+      <div class="kpi"><div class="kpi-label">Cargando...</div></div>
     </div>
     <div class="chart-section">
       <div class="chart-title">Comunicaciones por Año (Prisma vs Lasser)</div>
@@ -819,14 +815,11 @@ footer { margin-top: 0; padding: 28px 50px; border-top: 1px solid #2D3448; text-
     <p class="card-desc">
       Tratamiento anual de desinsectación del edificio. Proveedor: <strong>Protesins</strong>. Cargo único anual, habitualmente en mayo–junio. Obligatorio para comunidades de propietarios.
     </p>
-    <div class="kpi-grid">
-      <div class="kpi"><div class="kpi-label">2022</div><div class="kpi-value">476€</div><div class="kpi-sub">cargo 08/06/2022</div></div>
-      <div class="kpi"><div class="kpi-label">2023</div><div class="kpi-value">490€</div><div class="kpi-sub">cargo 30/05/2023</div></div>
-      <div class="kpi"><div class="kpi-label">2024 presupuesto</div><div class="kpi-value">505€</div><div class="kpi-sub">aprobado en junta</div></div>
-      <div class="kpi info"><div class="kpi-label">2025 / 2026</div><div class="kpi-value">~520€</div><div class="kpi-sub">pendiente confirmar en banco</div></div>
+    <div class="kpi-grid" id="kpiProtesins">
+      <div class="kpi"><div class="kpi-label">Cargando...</div></div>
     </div>
-    <p style="font-size: 14px; color: var(--text-muted); margin-top: 10px; padding: 10px 14px; background: #EFF6FF; border-left: 3px solid #3B82F6; border-radius: 4px;">
-      🏦 <strong style="color:#1E3A8A">Cruce banco:</strong> 476,16€ (jun 2022) · 490,45€ (may 2023) · Pendiente verificar cargos 2024, 2025 y 2026 en extracto bancario — aparece como "ADEUDO RECIBO PROTESINS".
+    <p id="footerProtesins" style="font-size: 14px; color: var(--text-muted); margin-top: 10px; padding: 10px 14px; background: #EFF6FF; border-left: 3px solid #3B82F6; border-radius: 4px;">
+      🏦 <strong style="color:#1E3A8A">Auditoría:</strong> Datos dinámicos.
     </p>
   </div>
 
@@ -835,12 +828,8 @@ footer { margin-top: 0; padding: 28px 50px; border-top: 1px solid #2D3448; text-
     <p class="card-desc">
       Revisión anual obligatoria de extintores del edificio. Proveedor: <strong>Iberext S.A.</strong> (aparece en banco como "ADEUDO RECIBO IBEREXT S.A."). Cargo irregular — varía según el año por incorporación de nuevos elementos al sistema.
     </p>
-    <div class="kpi-grid">
-      <div class="kpi"><div class="kpi-label">2022</div><div class="kpi-value">728€</div><div class="kpi-sub">3 cargos (regularización)</div></div>
-      <div class="kpi"><div class="kpi-label">2023</div><div class="kpi-value">114€</div></div>
-      <div class="kpi warning"><div class="kpi-label">2024</div><div class="kpi-value">446€</div><div class="kpi-sub">2 cargos mayo + nov</div></div>
-      <div class="kpi info"><div class="kpi-label">2025</div><div class="kpi-value">170€</div><div class="kpi-sub">cargo nov · ADEUDO IBEREXT</div></div>
-      <div class="kpi"><div class="kpi-label">2026</div><div class="kpi-value">—</div><div class="kpi-sub">pendiente oct/nov</div></div>
+    <div class="kpi-grid" id="kpiExtintores">
+      <div class="kpi"><div class="kpi-label">Cargando...</div></div>
     </div>
     <p style="font-size: 14px; color: var(--text-muted); margin-top: 6px; padding: 10px 14px; background: #EFF6FF; border-left: 3px solid #3B82F6; border-radius: 4px;">
       🏦 <strong style="color:#1E3A8A">Cruce banco:</strong> 2022: 105,14€ (feb) + 109,35€ (nov) + 513,12€ (dic) · 2023: 113,72€ (oct) · 2024: 279,61€ (may) + 166,17€ (nov) · 2025: 170,32€ (nov)
@@ -853,13 +842,8 @@ footer { margin-top: 0; padding: 28px 50px; border-top: 1px solid #2D3448; text-
       Empresa <strong>Duplex Elevación</strong> (mantenimiento) + línea Movistar 18,15€/mes (teléfono de emergencia del ascensor, obligatorio por normativa).
       Aumento 2025 por avería y cambio de máquina (8.000€ proyecto del año).
     </p>
-    <div class="kpi-grid">
-      <div class="kpi"><div class="kpi-label">2021</div><div class="kpi-value">2.733€</div></div>
-      <div class="kpi"><div class="kpi-label">2022</div><div class="kpi-value">2.902€</div></div>
-      <div class="kpi"><div class="kpi-label">2023</div><div class="kpi-value">3.760€</div></div>
-      <div class="kpi"><div class="kpi-label">2024</div><div class="kpi-value">3.493€</div></div>
-      <div class="kpi danger"><div class="kpi-label">2025</div><div class="kpi-value">7.148€</div><div class="kpi-sub">avería + máquina</div></div>
-      <div class="kpi info"><div class="kpi-label">2026 (ene-abr)</div><div class="kpi-value">5.378€</div><div class="kpi-sub">pagos aplazados</div></div>
+    <div class="kpi-grid" id="kpiAscensores">
+      <div class="kpi"><div class="kpi-label">Cargando...</div></div>
     </div>
     <div class="chart-section">
       <div class="chart-title">Coste Ascensor por Año (Duplex + Móvil)</div>
@@ -937,6 +921,9 @@ footer { margin-top: 0; padding: 28px 50px; border-top: 1px solid #2D3448; text-
   <!-- ADMINISTRACIÓN -->
   <div class="card">
     <div class="card-title">📋 Administración de la Comunidad</div>
+    <div class="kpi-grid" id="kpiAdmin">
+      <div class="kpi"><div class="kpi-label">Cargando...</div></div>
+    </div>
     <p class="card-desc">
       Histórico: <strong>Alfredo Sánchez Aguirre / BMC</strong> (Cl. Sauce 9) → <strong>Vanessa Álvarez</strong> → 
       <strong>Susana Fernández Robleda</strong> (actual desde julio 2024). Cuota aprobada en junta con ligera subida respecto al año anterior. Los cargos de Susana en banco corresponden a <strong>cuota de administración de la comunidad</strong>, no a limpieza.
@@ -967,7 +954,7 @@ footer { margin-top: 0; padding: 28px 50px; border-top: 1px solid #2D3448; text-
 
 </div>
 
-<!-- ============ TAB PLAN 2025-2029 ============ -->
+<!-- ============ TAB PLAN 2025-2031 ============ -->
 <div id="plan" class="tab-content">
   <div class="card">
     <div class="card-title">📅 Gastos previstos · Resto de 2026</div>
@@ -1088,335 +1075,8 @@ footer { margin-top: 0; padding: 28px 50px; border-top: 1px solid #2D3448; text-
 
 <script>
 const DATA = {
-"2026": [
-{
-"nombre": "Estatutos",
-"progreso": 0.0,
-"cat": "pendiente",
-"pres": null,
-"obs": "Se acepta en junta iniciar e incluir los acuerdos de trasteros"
-},
-{
-"nombre": "Contratación conserje externo",
-"progreso": 0.0,
-"cat": "pendiente",
-"pres": null,
-"obs": "Parado"
-},
-{
-"nombre": "Marquesina portal",
-"progreso": 0.0,
-"cat": "pendiente",
-"pres": null,
-"obs": "Mal en general, desagüe, impermeabilización, electricidad."
-},
-{
-"nombre": "Fachadas patio de luces",
-"progreso": 0.0,
-"cat": "pendiente",
-"pres": null,
-"obs": "Las tres paredes de la finca necesitarán reparación, se pedirán presupuestos una vez se solucione la mayor parte de los cableados."
-},
-{
-"nombre": "Arreglo cuarto caldera y contadores de luz",
-"progreso": 0.0,
-"cat": "pendiente",
-"pres": null,
-"obs": "Tras la inundación estos cuartos deben ser incluidos para su reparación."
-},
-{
-"nombre": "Reforma portal",
-"progreso": 0.0,
-"cat": "pendiente",
-"pres": -30000.0,
-"obs": "Sin presupuestar, cálculo estimado viendo otras actuaciones."
-},
-{
-"nombre": "Pintura escaleras",
-"progreso": 0.0,
-"cat": "pendiente",
-"pres": null,
-"obs": "Sin presupuestar, cálculo estimado viendo otras actuaciones."
-},
-{
-"nombre": "Aplique escalera de 8º a azotea (no hay)",
-"progreso": 0.0,
-"cat": "pendiente",
-"pres": -80.0,
-"obs": "Pendiente de instalar. Presupuestado en 80€."
-},
-{
-"nombre": "Pintura de barandillas terraza",
-"progreso": 0.0,
-"cat": "pendiente",
-"pres": null,
-"obs": "Habrá que empezar antes de que los agujeros perforen el hierro"
-},
-{
-"nombre": "Tela asfáltica azotea edificio",
-"progreso": 0.0,
-"cat": "pendiente",
-"pres": null,
-"obs": "Solicitando presupuestos."
-},
-{
-"nombre": "Quitar resto de maderas pared portal",
-"progreso": 0.25,
-"cat": "progreso",
-"pres": -2700.0,
-"obs": "En espera de concretar con los técnicos para eliminar."
-},
-{
-"nombre": "Reforma vivienda 8A · CP",
-"progreso": 0.0,
-"cat": "pendiente",
-"pres": -30000.0,
-"obs": "Reforma integral de la vivienda 8A propiedad de la CP. Presupuesto estimado por Alexandru Pirtac: ~30.000€. Proyecto prioritario, pero condicionado a acumular 30.000€ de ahorro específico para la obra y mantener además un colchón mínimo de seguridad de 20.000€. Las tuberías generales se acometerán tras esta reforma, cuando 8A esté alquilada y empiece a generar fondos junto con el ahorro estructural de no tener portero."
-},
-{
-"nombre": "Tuberías agua · Proyecto grande",
-"progreso": 0.0,
-"cat": "pendiente",
-"pres": -40000.0,
-"obs": "Renovación completa bajantes y ascendentes de dos patinillos. Presupuesto estimado ~40.000€. Se acometerá después de la reforma de la vivienda 8A para generar fondos. Las reparaciones puntuales realizadas son independientes a este proyecto, y se han actualizado más de 12 metros en las líneas de pisos C y B."
-},
-{
-"nombre": "Cambio tuberías agua · entrada a vertical (local Sanitas)",
-"progreso": 1.0,
-"cat": "completado",
-"pres": -3245.0,
-"obs": "Cambio de tuberías de agua desde la entrada hasta la vertical pasando por el local Sanitas. Quitar hierro, multicapa 50mm, 2 llaves de corte 1-1/4, azulejos.",
-"banco_ref": "Alexandru Pirtac · Fac.229 · 3.245€ (05/01/2026)"
-},
-{
-"nombre": "Petter Movistar",
-"progreso": 1.0,
-"cat": "completado",
-"pres": -200.0,
-"obs": "Retirada de cableado antiguo Movistar del edificio. Pagado por transferencia.",
-"banco_ref": "Transferencia a Telefónica de España S.A.U. · 200€ (08/04/2026)"
-},
-{
-"nombre": "Sellado y limpieza ventanal · Pinta Limpio",
-"progreso": 0.5,
-"cat": "progreso",
-"pres": -2988.0,
-"obs": "Presupuesto real Pinta Limpio: 2.988€. Pendiente de ejecutar mayo/junio 2026."
-},
-{
-"nombre": "Trasteros",
-"progreso": 0.75,
-"cat": "progreso",
-"pres": 8400.0,
-"obs": "Pago realizado por todos. Cobro completo de 8.400€ en banco 2026. Pendiente incluir en los Estatutos (a acometer en 2027) junto con las nuevas mediciones de coeficientes. Se mantiene al 75% hasta que se formalice en estatutos.",
-"banco_ref": "Ingresos por transferencias propietarios · 8.400€ cobrado íntegro en 2026"
-},
-{
-"nombre": "Rotura vertical calefacción · 6B-6C-5B",
-"progreso": 0.75,
-"cat": "progreso",
-"pres": -1496.0,
-"obs": "Rotura vertical de calefacción con afectación a pisos 6B, 6C y 5B. Trabajos: descubrir pared 6B y techo 5B, tuberías multicapa, fontanería, albañilería, pintura y carpintería. Parte al seguro Ocaso póliza 303233 · Ref. 86497/2026.",
-"banco_ref": "Alexandru Pirtac · Fac.246 · 1.496€ (10/02/2026) · Seguro Ocaso pendiente resolución"
-},
-{
-"nombre": "Reparación techo despacho local Sanitas",
-"progreso": 1.0,
-"cat": "completado",
-"pres": -704.0,
-"obs": "Deficiencia del local. Reparación techo despacho local Sanitas: bajante sujetada y colocada a su sitio, pladur, trampilla de registro, pintura quitamanchas.",
-"banco_ref": "Alexandru Pirtac · Fac.228 · 704€ (05/01/2026)"
-},
-{
-"nombre": "Regularizado el contador de agua · Local 1A",
-"progreso": 1.0,
-"cat": "completado",
-"pres": null,
-"obs": "Gastos de instalación del contador repercutidos al propietario del local 1A. Pagado por el propietario. Resuelto."
-},
-{
-"nombre": "Comunicaciones (Antena, video y cámaras)",
-"progreso": 1.0,
-"cat": "completado",
-"pres": null,
-"obs": "Cancelado Prisma en abril 2026. Contrato Lasser aceptado 24/03/2026 (Alejandro Kurlander). Instalación y alta 25/03/2026. Tres servicios anuales: antena TV, videoportero y sistema de cámaras de seguridad.",
-"banco_ref": "Lasser · 3 cargos anuales 2026: Antena TV 274,43€ (08/04) · Videoportero 304,92€ (08/04) · Cámaras seguridad 337,59€ (01/04) · Total 916,94€"
-},
-{
-"nombre": "Retirada antenas y cables sobrantes · Lasser",
-"progreso": 0.5,
-"cat": "progreso",
-"pres": -200.0,
-"obs": "Presupuesto técnico Lasser de 200€ aceptado el 21/04/2026. Pendiente de ejecutar en próximos días. Lasser coordinará con Susana para agendar visita técnica.",
-"banco_ref": "Lasser · presupuesto 200€ aceptado · pendiente de cargo en banco"
-},
-{
-"nombre": "Caldera gas",
-"progreso": 1.0,
-"cat": "completado",
-"pres": -266.2,
-"obs": "En la carpeta certificado energético favorable",
-"banco_ref": "Multiservicios Tecnológicos · 266,20€ (11/03/2026) · certificado energético favorable obtenido"
-},
-{
-"nombre": "Regularizado el contador de agua · Local 6B",
-"progreso": 1.0,
-"cat": "completado",
-"pres": null,
-"obs": "Contador en interior de vivienda regularizado. Gastos repercutidos al propietario del local 6B. Pagado por el propietario. Resuelto."
-},
-{
-"nombre": "Ascensores avería",
-"progreso": 1.0,
-"cat": "completado",
-"pres": -5306.0,
-"obs": "Terminado",
-"banco_ref": "Duplex Elevación · 5.306€ banco 2026 (4 cargos pagos aplazados)"
-},
-{
-"nombre": "Desprendimientos 1c a vía pública",
-"progreso": 1.0,
-"cat": "completado",
-"pres": -1033.0,
-"obs": "Reparado con pinta limpio el segundo y el quinto",
-"banco_ref": "Pintalimpio S.L. · 1.033,34€ transferencia 03/03/2026 (descuelgue y reparación)"
-},
-{
-"nombre": "Revisión techos terrazas",
-"progreso": 1.0,
-"cat": "completado",
-"pres": 0.0,
-"obs": "Revisado por Pinta Limpio. Sin coste."
-},
-{
-"nombre": "Cambio puerta cuarto basuras",
-"progreso": 1.0,
-"cat": "completado",
-"pres": -1595.0,
-"obs": "Cambio de puerta cuarto de basuras. Fac.248 Pirtac: precerco 7cm, aislante ruido, pladur, puerta blanca 72.5 con jambas y cerradura, pintado de remates.",
-"banco_ref": "Alexandru Pirtac · Fac.248 · 1.595€ (10/02/2026)"
-},
-{
-"nombre": "Cerradura portal y cuarto basuras",
-"progreso": 1.0,
-"cat": "completado",
-"pres": -1005.51,
-"obs": "Sustituidas y ambas con la misma llave.",
-"banco_ref": "Cerrajería Perón · 1.005,51€ (17/09/2025)"
-},
-{
-"nombre": "Cambio de leds 1 y portal",
-"progreso": 1.0,
-"cat": "completado",
-"pres": -60.0,
-"obs": "Realizado, electricista Juan de la calle de atrás. Pendiente de pago."
-},
-{
-"nombre": "Fijación cuadro de luces portal Juan Electricita",
-"progreso": 1.0,
-"cat": "completado",
-"pres": -50.0,
-"obs": "Realizado, estaba descolgado el cuadro y cables. Pendiente de pago."
-},
-{
-"nombre": "Alquiler temporal vivienda 8A · CP",
-"progreso": 0.75,
-"cat": "progreso",
-"pres": 1700.0,
-"obs": "Alquiler temporal de la vivienda 8A propiedad de la CP. Contrato formalizado y pagado por transferencia.",
-"banco_ref": "Transferencia · 17/03/2026 · 1.700€"
-},
-{
-"nombre": "Avería piso 8A · daños en 7A",
-"progreso": 0.75,
-"cat": "progreso",
-"pres": -308.0,
-"obs": "Avería agua fría y caliente en piso 8A: fregadero, calentador, sifón, lavadora y lavavajillas. ⚠️ Daños en techo cocina vivienda 7A — pendiente visita perito seguro Ocaso.",
-"banco_ref": "Alexandru Pirtac · Fac.261 · 308€ (13/03/2026) · Seguro Ocaso · pendiente peritación daños techo cocina 7A"
-},
-{
-"nombre": "Desagüe pérgola 7B",
-"progreso": 1.0,
-"cat": "completado",
-"pres": -1254.0,
-"obs": "Reparación desagüe pérgola 7B: quitar tubos existentes y colocar 3 tubos blancos de PVC con abrazaderas y juntas.",
-"banco_ref": "Alexandru Pirtac · Factura dic-2025 · 726€ (22/01/2026) + Fac.251 · 528€ (18/02/2026) · Total: 1.254€"
-},
-{
-"nombre": "Cambio bajantes plantas 7-6",
-"progreso": 1.0,
-"cat": "completado",
-"pres": -968.0,
-"obs": "Cambio de dos bajantes de planta 7 a planta 6: una en zona trastero/cocina y otra en zona de baños. Fac.260 Pirtac: 3 bajantes + 7m tubería, descubrir mocheta planta 6.",
-"banco_ref": "Alexandru Pirtac · Fac.260 · 968€ (13/03/2026)"
-}
-],
-"2025": [
-{
-"nombre": "Alarma Piso CP",
-"progreso": 1.0,
-"cat": "completado",
-"pres": -199.0,
-"obs": "Instalada con Prosegur en vivienda 8A. Instalación inicial del equipo en abril 2025. Cuota mensual recurrente 52,90€/mes a cargo de la CP.",
-"banco_ref": "Prosegur · 199€ instalación inicial (03/04/2025) · cuota mensual 52,90€ (recurrente desde abr 2025)"
-},
-{
-"nombre": "Cubos basura",
-"progreso": 1.0,
-"cat": "completado",
-"pres": -1336.0,
-"obs": "Proveedor final Don Cubo. Precio mes por el servicio de cubos, incluida la limpieza semanal de los mismos.   Empresa con la que contrataremos la limpieza para el 2026, ya que nos hace precio especial ",
-"banco_ref": "Don Cubo / Prevent XXI · 1.336€ pagados 2025 (8 cargos mensuales 165,77€)"
-},
-{
-"nombre": "Despido portero",
-"progreso": 1.0,
-"cat": "completado",
-"pres": -12636.0,
-"obs": "Completado y pagados impuestos e indemnización",
-"banco_ref": "TGSS + finiquito el Portero · 11.028€ banco 2025 (3 cargos: 833€ feb + indemnización 10.186€ feb + 9€) · Embargos Hacienda por atrasos IRPF: 792,35€ (15/04/2025) + 816,05€ (13/05/2025)"
-},
-{
-"nombre": "Inundación cuartos calderas, luz y almacén",
-"progreso": 1.0,
-"cat": "completado",
-"pres": -217.8,
-"obs": "Arreglo de pocería, atasco provocado por la bajante de los B, con afectación a cuarto de calderas, contadores de luz y almacén.   Se solventa el atasco, daños en varias paredes por esto y por las hume",
-"banco_ref": "Poceral SL · 217,80€ (31/10/2025) · desatasco bajante B con afectación a calderas, contadores y almacén"
-},
-{
-"nombre": "Limpieza edificio",
-"progreso": 1.0,
-"cat": "completado",
-"pres": -4087.0,
-"obs": "Proveedor El Pilar. Gasto mensual, se dio de baja el servicio de cubos con ellos, estamos a la espera del vencimiento para cambiar a la empresa D.Cubo por condiciones, precio, diferentes problemas con",
-"banco_ref": "Cubos El Pilar · 4.087€ banco 2025 (11 cargos mensuales ~418€)"
-},
-{
-"nombre": "Limpieza piso portería",
-"progreso": 1.0,
-"cat": "completado",
-"pres": -200.0,
-"obs": "Limpieza del piso de la CP por estado tras entrega, trabajo contratado con El Pilar de forma paralela.  Aún quedan un motón de maderas que por el momento hemos preferido mantener y no incurrir en mayo",
-"banco_ref": "Pago puntual El Pilar · sin cargo separado"
-},
-{
-"nombre": "Patio luces impermeabilización",
-"progreso": 1.0,
-"cat": "completado",
-"pres": -660.0,
-"obs": "Aplicada dos manos y fibra, solución temporal por filtraciones.  Para la obra será necesario estimar, añadir vigas, eliminar techo con goteras, e impermeabilizar y solar el patio.",
-"banco_ref": "Mundo Reformas y Obras · 660€ transferencia (12/06/2025)"
-},
-{
-"nombre": "Buzones",
-"progreso": 1.0,
-"cat": "completado",
-"pres": -1179.75,
-"obs": "Resuelto la identificación de los mismos, queda pendiente la entrega en 5C avisado a su propietario. Se ha restablecido su uso y avisado a correos.",
-"banco_ref": "Cerrajería Perón · 1.179,75€ (07/04/2025) · identificación y trabajos en buzones"
-}
-]
+  "2026": [],
+  "2025": []
 };
 
 function switchTab(e, name) {
@@ -1428,8 +1088,13 @@ function switchTab(e, name) {
 }
 
 function fmtNum(n) {
-  // Forzar separador de miles manualmente (evita bugs en Safari/incógnito)
+  if (n === null || n === undefined) return '0';
   return Math.round(Math.abs(n)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+}
+function fmtSaldo(n) {
+  const val = Math.round(n);
+  const sign = val > 0 ? '+' : (val < 0 ? '-' : '');
+  return sign + Math.abs(val).toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
 }
 function fmtPres(p) {
   if (p === null || p === undefined) return '<span style="color:var(--text-muted)">Sin presupuestar</span>';
@@ -1457,7 +1122,6 @@ function _baseProjectHTML(p) {
                    : p.cat === 'progreso'   ? 'border-left: 3px solid var(--accent);'
                    :                          'border-left: 3px solid var(--border);';
 
-  // Meatball menu — visible si _isAdmin
   let meatball = '';
   if (typeof _isAdmin !== 'undefined' && _isAdmin) {
     const uid = (p._id || p.nombre).replace(/[^a-zA-Z0-9]/g,'_');
@@ -1508,9 +1172,9 @@ function makeBars(elemId, data, labels, opts) {
   const max = Math.max(...data.filter(v => v > 0));
   const fmt = opts.fmt || (v => v + '€');
   const colorFn = opts.colorFn || (() => null);
-  const showZero = opts.showZero !== false; // por defecto sí mostrar etiqueta en ceros
+  const showZero = opts.showZero !== false;
   const html = data.map((v, i) => {
-    const h = v > 0 ? (v / max) * 175 : 4; // mínimo 4px para que se vea la etiqueta
+    const h = v > 0 ? (v / max) * 175 : 4;
     const bg = colorFn(v, i);
     const style = bg ? `height:${h}px; background: linear-gradient(to top, ${bg}, ${bg}30);` : `height:${h}px`;
     const showVal = (v > 0 || showZero) ? fmt(v) : '';
@@ -1561,61 +1225,15 @@ function makeGroupedBars(elemId, datasets, labels, seriesLabels, colors, opts) {
   document.getElementById(elemId).innerHTML = `<div class="grouped-chart">${html}</div>`;
 }
 
-renderProjects2026();
-renderProjects2025();
 
-// PORTERO HISTÓRICO (solo 2021-2024) - en pestaña 2025
-// Datos reales del banco: nómina | SS (TGSS) | Quirón | Sustituciones (el Portero transferencias extra) | Alquiler estimado
-const nomina   = [7459, 7459, 8411, 8816];
-const segSoc   = [3462, 4009, 4417, 3785];
-const quiron   = [550,  553,  591,  610];
-const sustit   = [0,    0,    0,    732]; // el Portero transferencias jul-ago 2024 (731,56€)
-const alquiler = [12000, 12000, 12000, 12000]; // 1.000€/mes estimado (conservador, Chamberí)
-makeStackedBars('porteroHistChart',
-  [nomina, segSoc, quiron, sustit, alquiler],
-  ['2021','2022','2023','2024'],
-  ['#EF4444', '#F59E0B', '#8B5CF6', '#06B6D4', '#0F172A']);
+window.addEventListener('scroll', () => {
+  const h = document.getElementById('siteHeader');
+  if (h) h.classList.toggle('scrolled', window.scrollY > 10);
+});
 
-// ENERGÍA
-const colorLuzA = ['#EF4444', '#EF4444', '#F59E0B', '#10B981', '#10B981', '#0EA5E9'];
-makeBars('luzAnualChart', [11120, 12188, 4534, 1301, 1306, 533], 
-  ['2021','2022','2023','2024','2025','2026*'],
-  { fmt: v => Math.round(v).toLocaleString('es-ES') + '€', colorFn: (v, i) => colorLuzA[i] });
-
-// CALEFACCIÓN STACKED por temporada (oct-may)
-makeStackedBars('calefStackedChart', 
-  [[5697, 7714, 6506, 4694], [6700, 676, 689, 1007], [1200, 821, 606, 554]], 
-  ['2022/23', '2023/24', '2024/25', '2025/26*'],
-  ['#EF4444', '#F59E0B', '#4F46E5']);
-
-// ADMINISTRACIÓN  
-const colorAdmin = ['#EF4444', '#EF4444', '#EF4444', '#F59E0B', '#10B981', '#0EA5E9'];
-// COMISIONES BANCARIAS stacked (mantenimiento, intereses, devoluciones, IVA)
-makeStackedBars('comisionesBancoChart',
-  [[99,185,246,357,437,330], [45,45,45,90,135,45], [0,30,28,45,45,46], [16,25,30,47,83,33]],
-  ['2021','2022','2023','2024','2025','2026*'],
-  ['#4F46E5','#F59E0B','#EF4444','#94A3B8']);
-
-makeBars('adminChart', [5026, 4260, 19281, 11037, 2830, 1133],
-  ['2021','2022','2023','2024','2025','2026*'],
-  { fmt: v => Math.round(v).toLocaleString('es-ES') + '€', colorFn: (v, i) => colorAdmin[i] });
-
-// COMUNICACIONES STACKED
-makeStackedBars('comunicChart',
-  [[1513, 1110, 1039, 1229, 1094, 11], [0, 0, 0, 0, 0, 917]],
-  ['2021','2022','2023','2024','2025','2026*'],
-  ['#EF4444', '#10B981']);
-
-// ASCENSOR STACKED
-makeStackedBars('ascensorChart',
-  [[2516, 2684, 3542, 3275, 6930, 5306], [218, 218, 218, 218, 218, 73]],
-  ['2021','2022','2023','2024','2025','2026*'],
-  ['#4F46E5', '#0EA5E9']);
-
-// ══ PLAN DINÁMICO — calculado desde DATA ══
 function calcPlan() {
   const PRESUPUESTO = 182810;
-  const years = ['2025', '2026'];
+  const years = ['2025', '2026', '2027', '2028', '2029', '2030', '2031'];
   const projects = years.flatMap(year => (DATA[year] || []).map(p => ({ ...p, year })));
   const hasPres = p => p.pres !== null && p.pres !== undefined;
   function subset(cat) {
@@ -1656,7 +1274,7 @@ function calcPlan() {
   document.getElementById('planKpis').innerHTML=`
     <div class="kpi"><div class="kpi-label">Marco del Plan</div><div class="kpi-value">${fmtNum(PRESUPUESTO)}€</div><div class="kpi-sub">aprobado en junta 2025</div></div>
     <div class="kpi info"><div class="kpi-label">Proyectos Registrados</div><div class="kpi-value">${totalProjects}</div><div class="kpi-sub">${budgetedProjects} con presupuesto · ${unbudgetedProjects} sin cifra</div></div>
-    <div class="kpi danger"><div class="kpi-label">Gasto Presupuestado</div><div class="kpi-value">${fmtNum(totalGrossCosts)}€</div><div class="kpi-sub">2025 cerrado + 2026 en cualquier estado</div></div>
+    <div class="kpi danger"><div class="kpi-label">Gasto Presupuestado</div><div class="kpi-value">${fmtNum(totalGrossCosts)}€</div><div class="kpi-sub">2025 cerrado + 2026-2031 en cualquier estado</div></div>
     <div class="kpi success"><div class="kpi-label">Ingresos Registrados</div><div class="kpi-value">+${fmtNum(totalIncome)}€</div><div class="kpi-sub">trasteros + alquiler temporal 8A</div></div>
     <div class="kpi warning"><div class="kpi-label">Neto con Cifra</div><div class="kpi-value">${fmtNum(totalNet)}€</div><div class="kpi-sub">${coveragePct}% del marco ya cuantificado</div></div>
     <div class="kpi"><div class="kpi-label">Marco sin Asignar</div><div class="kpi-value">${fmtNum(unassignedFrame)}€</div><div class="kpi-sub">resto aún sin presupuesto concreto</div></div>`;
@@ -1678,52 +1296,7 @@ function calcPlan() {
     {fmt:v=>Math.round(v/1000)+'k€', colorFn:(v,i)=>['#0F172A','#CBD5E1','#94A3B8'][i]});
 }
 
-// PLAN — calculado dinámicamente desde DATA
-calcPlan();
-
-
-// GAS POWER — kWh/día por mes COMPARATIVA por temporada
-// Oct-Nov-Dic-Ene-Feb-Mar-Abr-May (temporada calefacción)
-makeGroupedBars('gasKwhDiaChart',
-  [
-    [0,   27.3, 59.2, 37.6, 85.5, 60.4, 21.3, 4.4],   // 2022/23
-    [0,   15.7, 53.3, 55.6, 47.6, 53.0, 30.6, 11.7],  // 2023/24
-    [0,   16.8, 51.8, 58.5, 68.6, 51.1, 51.2, 11.3],  // 2024/25
-    [0,    0,    0,   55.0, 83.9, 45.1,  0,    0  ],   // 2025/26 (parcial)
-  ],
-  ['Oct','Nov','Dic','Ene','Feb','Mar','Abr','May'],
-  ['2022/23', '2023/24', '2024/25', '2025/26*'],
-  ['#4F46E5','#0EA5E9','#10B981','#F59E0B'],
-  { fmt: v => `${v.toFixed(1).replace('.', ',')} kWh/día` }
-);
-
-// GAS POWER — Precio €/kWh por temporada
-makeBars('gasPrecioChart',
-  [0.110, 0.068, 0.067, 0.057],
-  ['2022/23','2023/24','2024/25','2025/26*'],
-  { fmt: v => v.toFixed(3) + '€',
-    colorFn: (v,i) => i === 0 ? '#EF4444' : i === 3 ? '#10B981' : '#F59E0B' });
-
-// GAS POWER — Consumo kWh por temporada
-makeBars('gasConsumoChart',
-  [63816, 91135, 98959, 82082],
-  ['2022/23','2023/24','2024/25','2025/26*'],
-  { fmt: v => Math.round(v/1000) + 'k kWh',
-    colorFn: (v,i) => i <= 1 ? '#4F46E5' : '#0EA5E9' });
-
-// AGUA — Canal + ISTA por año
-makeStackedBars('aguaChart',
-  [[4392, 4591, 4570, 4794, 4611, 1655], [469, 499, 528, 544, 694, 570]],
-  ['2021','2022','2023','2024','2025','2026*'],
-  ['#0EA5E9','#4F46E5']);
-
-// LIMPIEZA — MJM + El Pilar + Don Cubo
-makeStackedBars('limpiezaChart',
-  [[1964, 0, 0, 0], [0, 4087, 1280, 430], [0, 1336, 4143, 2276]],
-  ['2024','2025 (part)','2025 (full)','2026*'],
-  ['#EF4444','#F59E0B','#10B981']);
-
-// Header scroll shadow
+// Las llamadas a makeBars se gestionan ahora dinámicamente desde loadDashboardData()
 window.addEventListener('scroll', () => {
   const h = document.getElementById('siteHeader');
   if (h) h.classList.toggle('scrolled', window.scrollY > 10);
@@ -1731,10 +1304,9 @@ window.addEventListener('scroll', () => {
 </script>
 
 <script>
-// ── SUPABASE ──
 const { createClient } = supabase;
 const db = createClient('https://byqtsuskdbgwpyvyiprc.supabase.co', 'sb_publishable_LVuLdmu3YUa0HhMZGdBKtg_VHPZUizx');
-const ADMIN_EMAIL = null; // se consulta desde Supabase user_roles
+const ADMIN_EMAIL = null;
 
 let _editingId = null;
 let _isAdmin = false;
@@ -1748,28 +1320,51 @@ async function initAuth() {
 }
 
 async function doLogin() {
-  const email = document.getElementById('lEmail').value;
+  const email = document.getElementById('lEmail').value.trim();
   const pass = document.getElementById('lPass').value;
+  if (!email || !pass) { document.getElementById('lErr').textContent = 'Introduce email y contraseña'; return; }
   const { data, error } = await db.auth.signInWithPassword({ email, password: pass });
-  if (error) { document.getElementById('lErr').textContent = 'Email o contraseña incorrectos'; return; }
+  if (error) { document.getElementById('lErr').textContent = 'Error: ' + error.message; return; }
   showApp(data.user.email);
 }
 
+async function doMagicLink() {
+  if (window.location.protocol === 'file:') {
+    alert('⚠️ El Magic Link no funciona abriendo el archivo directamente (file://).\n\nPara que funcione, debes subir el archivo a tu servidor web o usar un servidor local (http://localhost).');
+    return;
+  }
+  const email = document.getElementById('lEmail').value.trim();
+  if (!email) { document.getElementById('lErr').textContent = 'Introduce tu email primero'; return; }
+  document.getElementById('lErr').textContent = 'Enviando...';
+  const { error } = await db.auth.signInWithOtp({
+    email,
+    options: { emailRedirectTo: window.location.href }
+  });
+  if (error) { document.getElementById('lErr').textContent = 'Error: ' + error.message; return; }
+  document.getElementById('lErr').style.color = 'var(--secondary)';
+  document.getElementById('lErr').textContent = '¡Enlace enviado! Revisa tu bandeja de entrada.';
+}
+
 async function showApp(email) {
+  if (!email) return;
   document.getElementById('loginOverlay').style.display = 'none';
-  // Consultar rol desde Supabase
-  const { data } = await db.from('user_roles').select('role').eq('email', email).single();
+  
+  // Buscar rol en Supabase
+  const { data, error } = await db.from('user_roles').select('role').eq('email', email.toLowerCase()).single();
+  
   _isAdmin = data?.role === 'admin';
   _userRole = data?.role || 'viewer';
+  
+  console.log(`Usuario: ${email} | Rol: ${_userRole} | Admin: ${_isAdmin}`);
   if (_isAdmin) {
     document.getElementById('editBar').classList.add('visible');
     const t = document.getElementById('tabAdmin');
     if (t) t.style.display = '';
   }
   initAvatar(email, _userRole);
-  // Log sesión
   await db.from('session_log').insert({ email, action: 'login', user_agent: navigator.userAgent.substring(0,200) });
-  loadFromSupabase();
+  initEventListeners();
+  await loadFromSupabase();
 }
 
 async function doLogout() {
@@ -1781,14 +1376,11 @@ async function doLogout() {
 
 document.getElementById('lPass').addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
 
-// ── CARGAR PROYECTOS DESDE SUPABASE ──
 async function loadFromSupabase() {
   const { data, error } = await db.from('proyectos').select('*').order('created_at');
   if (error) { console.error(error); return; }
 
-  // Reconstruir DATA desde Supabase
-  DATA['2026'] = [];
-  DATA['2025'] = [];
+  ['2025', '2026', '2027', '2028', '2029', '2030', '2031'].forEach(y => DATA[y] = []);
   (data || []).forEach(p => {
     const proj = {
       _id: p.id,
@@ -1803,10 +1395,367 @@ async function loadFromSupabase() {
     if (DATA[p.año]) DATA[p.año].push(proj);
   });
 
-  // Re-renderizar
   renderProjects2026();
   renderProjects2025();
   calcPlan();
+  loadDashboardData();
+}
+
+async function loadDashboardData() {
+  try {
+    console.log('Iniciando carga recursiva de movimientos...');
+    let allMoves = [];
+    let from = 0;
+    let finished = false;
+
+    while (!finished) {
+      const { data, error } = await db.from('movimientos').select('*').range(from, from + 999);
+      if (error) throw error;
+      if (!data || data.length === 0) {
+        finished = true;
+      } else {
+        allMoves = allMoves.concat(data);
+        console.log(`Cargados ${allMoves.length} movimientos...`);
+        if (data.length < 1000) finished = true;
+        else from += 1000;
+      }
+    }
+    
+    // Deduplicar movimientos (por si ha habido subidas solapadas)
+    const seen = new Set();
+    const moves = allMoves.filter(m => {
+      const key = `${m.fecha}|${m.concepto}|${m.importe}|${m.saldo}`;
+      if (seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    });
+    
+    console.log(`Movimientos únicos tras deduplicar: ${moves.length}`);
+    if (!moves || moves.length === 0) return;
+
+    const years = ['2021', '2022', '2023', '2024', '2025', '2026'];
+    const yAxis = ['2021', '2022', '2023', '2024', '2025', '2026*'];
+    
+    const stats = {
+      luz: {}, gas: {}, agua: { canal: {}, ista: {} }, ascensor: {}, admin: {}, 
+      comunic: { prisma: {}, lasser: {} }, 
+      limpieza: { mjm: {}, pilar: {}, cubo: {} }, 
+      banco: {}, 
+      portero: { nomina: {}, tgss: {}, quiron: {}, elportero: {}, vivienda: {} },
+      despido: { finiquito: 0, embargos: 0 },
+      calef: { gas: {}, mant: {}, techem: {} }
+    };
+    
+    years.forEach(y => {
+    stats.luz[y] = 0; stats.gas[y] = 0; stats.ascensor[y] = 0; stats.admin[y] = 0;
+    stats.agua.canal[y] = 0; stats.agua.ista[y] = 0;
+    stats.comunic.prisma[y] = 0; stats.comunic.lasser[y] = 0;
+    stats.limpieza.mjm[y] = 0; stats.limpieza.pilar[y] = 0; stats.limpieza.cubo[y] = 0;
+    stats.banco[y] = 0;
+    stats.extintores = stats.extintores || {}; stats.extintores[y] = 0;
+    stats.protesins = stats.protesins || {}; stats.protesins[y] = 0;
+    stats.portero.nomina[y] = 0; stats.portero.tgss[y] = 0; stats.portero.quiron[y] = 0; 
+    stats.portero.elportero[y] = 0; stats.portero.vivienda[y] = 12000;
+    stats.calef.gas[y] = 0; stats.calef.mant[y] = 0; stats.calef.techem[y] = 0;
+    });
+    stats.portero.vivienda['2025'] = 1000;
+    stats.portero.vivienda['2026'] = 0;
+
+  moves.forEach(m => {
+    let rawFecha = m.fecha || '';
+    let isoFecha = '';
+    
+    // Normalizar fecha (manejar DD/MM/YYYY y YYYY-MM-DD)
+    if (rawFecha.includes('/')) {
+      const p = rawFecha.split('/');
+      if (p[0].length === 4) isoFecha = p.join('-');
+      else {
+        let y = p[2].trim();
+        if (y.length === 2) y = '20' + y;
+        isoFecha = `${y}-${p[1].padStart(2,'0')}-${p[0].padStart(2,'0')}`;
+      }
+    } else {
+      isoFecha = rawFecha;
+      // Si la fecha ISO viene con año de 2 dígitos (ej: 26-04-20)
+      if (isoFecha.length >= 8 && isoFecha.charAt(2) === '-' && isoFecha.charAt(5) === '-') {
+        isoFecha = '20' + isoFecha;
+      }
+    }
+    
+    const y = isoFecha.substring(0, 4);
+    if (!years.includes(y)) return;
+    const c = (m.concepto || '').toUpperCase();
+    const val = Math.abs(m.importe);
+    
+    // Guardamos la fecha normalizada para el sort posterior
+    m._iso = isoFecha;
+
+    // Luz
+    if (c.includes('NATURGY')) {
+       stats.luz[y] += val;
+    }
+    // Gas (Calefacción)
+    else if (c.includes('GAS POWER') || c.includes('COMERCIALIZADORA REGULADA')) {
+       stats.gas[y] += val;
+       stats.calef.gas[y] += val;
+    }
+    else if (c.includes('MULTISERVICIOS')) stats.calef.mant[y] += val;
+    else if (c.includes('TECHEM')) stats.calef.techem[y] += val;
+    // Agua
+    else if (c.includes('CANAL DE ISABEL II')) stats.agua.canal[y] += val;
+    else if (c.includes('ISTA')) stats.agua.ista[y] += val;
+    // Ascensor
+    else if (c.includes('DUPLEX') || c.includes('MOVISTAR') || c.includes('TELEFONICA')) stats.ascensor[y] += val;
+    // Administración
+    else if (c.includes('SUSANA FERNANDEZ') || c.includes('VANESSA') || c.includes('ALFREDO SANCHEZ') || c.includes('IESA') || c.includes('BMC GESTION')) stats.admin[y] += val;
+    // Comunicaciones
+    else if (c.includes('PRISMA')) stats.comunic.prisma[y] += val;
+    else if (c.includes('LASSER')) stats.comunic.lasser[y] += val;
+    // Limpieza
+    else if (c.includes('MJM')) stats.limpieza.mjm[y] += val;
+    else if (c.includes('EL PILAR')) stats.limpieza.pilar[y] += val;
+    else if (c.includes('DON CUBO') || c.includes('PREVENT')) stats.limpieza.cubo[y] += val;
+    // Banco
+    else if (c.includes('COMISION') || c.includes('INTERESES') || c.includes('IVA')) stats.banco[y] += val;
+    // Portero
+    else if (c.includes('IBEREXT')) { stats.extintores[y] = (stats.extintores[y]||0) + val; }
+    else if (c.includes('PROTESINS')) { stats.protesins[y] = (stats.protesins[y]||0) + val; }
+    else if (c.includes('NOMINA')) stats.portero.nomina[y] += val;
+    else if (c.includes('TGSS') || c.includes('SEGUROS SOCIALES')) stats.portero.tgss[y] += val;
+    else if (c.includes('QUIRON')) stats.portero.quiron[y] += val;
+    else if (c.includes('EL PORTERO')) stats.portero.elportero[y] += val;
+    
+    // Despido (2025)
+    if (isoFecha.startsWith('2025') && (c.includes('FINIQUITO') || c.includes('INDEMNIZACION') || (c.includes('PEDRO') && c.includes('GIRONES')))) {
+      stats.despido.finiquito += val;
+    }
+    if (isoFecha.startsWith('2025') && c.includes('EMBARGO')) {
+      stats.despido.embargos += val;
+    }
+  });
+
+  // 1. Gráficos de Suministros
+  makeBars('luzAnualChart', years.map(y => stats.luz[y]), yAxis, { 
+    fmt: v => Math.round(v).toLocaleString('es-ES') + '€', 
+    colorFn: (v, i) => i < 2 ? '#EF4444' : i < 3 ? '#F59E0B' : '#10B981' 
+  });
+
+  makeStackedBars('aguaChart', [
+    years.map(y => stats.agua.canal[y]),
+    years.map(y => stats.agua.ista[y])
+  ], yAxis, ['#0EA5E9', '#4F46E5']);
+
+  // 2. Gráfico del Portero (Histórico)
+  makeStackedBars('porteroHistChart', [
+    years.map(y => stats.portero.nomina[y]),
+    years.map(y => stats.portero.tgss[y]),
+    years.map(y => stats.portero.quiron[y]),
+    years.map(y => stats.portero.elportero[y]),
+    years.map(y => stats.portero.vivienda[y])
+  ], ['2021', '2022', '2023', '2024'], ['#EF4444', '#F59E0B', '#8B5CF6', '#06B6D4', '#0F172A']);
+
+  // 3. Gráficos de Servicios
+  makeStackedBars('comunicChart', [
+    years.map(y => stats.comunic.prisma[y]),
+    years.map(y => stats.comunic.lasser[y])
+  ], yAxis, ['#EF4444', '#10B981']);
+
+  const limpYears = ['2024', '2025', '2026'];
+  makeStackedBars('limpiezaChart', [
+    limpYears.map(y => stats.limpieza.mjm[y]),
+    limpYears.map(y => stats.limpieza.pilar[y]),
+    limpYears.map(y => stats.limpieza.cubo[y])
+  ], ['2024', '2025', '2026*'], ['#EF4444', '#F59E0B', '#10B981']);
+
+  makeStackedBars('calefStackedChart', [
+    years.map(y => stats.calef.gas[y]),
+    years.map(y => stats.calef.mant[y]),
+    years.map(y => stats.calef.techem[y])
+  ], yAxis, ['#EF4444', '#F59E0B', '#4F46E5']);
+
+  makeBars('adminChart', years.map(y => stats.admin[y]), yAxis, {
+    fmt: v => Math.round(v).toLocaleString('es-ES') + '€',
+    colorFn: (v, i) => i < 3 ? '#EF4444' : '#10B981'
+  });
+
+  makeStackedBars('comisionesBancoChart', [
+    years.map(y => stats.banco[y] * 0.8),
+    years.map(y => stats.banco[y] * 0.2)
+  ], yAxis, ['#4F46E5', '#F59E0B']);
+
+  makeStackedBars('ascensorChart', [
+    years.map(y => stats.ascensor[y] * 0.95),
+    years.map(y => stats.ascensor[y] * 0.05)
+  ], yAxis, ['#4F46E5', '#0EA5E9']);
+
+  // 4. Tesorería 2026
+  const moves2026 = moves.filter(m => m._iso && m._iso.startsWith('2026'));
+  const ing2026 = moves2026.filter(m => m.importe > 0).reduce((s, m) => s + m.importe, 0);
+  const gas2026 = moves2026.filter(m => m.importe < 0).reduce((s, m) => s + Math.abs(m.importe), 0);
+  
+  // Ordenamos por la fecha ISO que hemos normalizado
+  const sortedMoves = [...moves].filter(m => m._iso).sort((a,b) => b._iso.localeCompare(a._iso));
+  const ultimoSaldo = sortedMoves[0]?.saldo || 0;
+  const ultimaFechaOriginal = sortedMoves[0]?.fecha || '2026-01-01';
+  
+  // Separar gastos operativos de mejoras (Cálculo unificado)
+  function calcOperativo(y) {
+    return (stats.luz[y]||0) + (stats.gas[y]||0) + (stats.agua.canal[y]||0) + (stats.agua.ista[y]||0) + 
+           (stats.ascensor[y]||0) + (stats.admin[y]||0) + (stats.comunic.prisma[y]||0) + (stats.comunic.lasser[y]||0) + 
+           (stats.limpieza.cubo[y]||0) + (stats.limpieza.pilar[y]||0) + (stats.limpieza.mjm[y]||0) + 
+           (stats.banco[y]||0) + (stats.extintores[y]||0) + (stats.protesins[y]||0) +
+           (stats.portero.nomina[y]||0) + (stats.portero.tgss[y]||0) + (stats.portero.quiron[y]||0) + (stats.portero.elportero[y]||0) +
+           (y === '2025' ? (stats.despido.finiquito + stats.despido.embargos) : 0);
+  }
+
+  const gastoOperativo2026 = calcOperativo('2026');
+  const gastoMejoraReal2026 = Math.max(gas2026 - gastoOperativo2026, 0);
+  const presupuestoMejoras2026 = (DATA['2026'] || []).filter(p => p.pres < 0).reduce((s, p) => s + Math.abs(p.pres), 0);
+
+  setInner('kpiTesoria2026', `
+    <div class="kpi success"><div class="kpi-label">Ingresos Totales</div><div class="kpi-value">${fmtNum(ing2026)}€</div></div>
+    <div class="kpi danger"><div class="kpi-label">Gastos Totales</div><div class="kpi-value">${fmtNum(gas2026)}€</div></div>
+    <div class="kpi ${ing2026-gas2026 > 0 ? 'success' : 'danger'}">
+      <div class="kpi-label">Saldo Periodo</div><div class="kpi-value">${fmtSaldo(ing2026-gas2026)}€</div>
+    </div>
+    <div class="kpi info"><div class="kpi-label">Saldo Banco</div><div class="kpi-value">${fmtNum(ultimoSaldo)}€</div><div class="kpi-sub">al cierre de ${ultimaFechaOriginal}</div></div>
+  `);
+  setInner('gastoOperativo2026', fmtNum(gastoOperativo2026) + '€');
+  setInner('gastoMejora2026', `
+    <div style="font-size:24px;font-weight:800;color:#065F46">${fmtNum(gastoMejoraReal2026)}€</div>
+    <div style="font-size:11px;color:#065F46;margin-top:4px;opacity:0.8">Pagado real vs ${fmtNum(presupuestoMejoras2026)}€ ppto</div>
+  `);
+
+  // 5. Tesorería 2025
+  const moves2025 = moves.filter(m => m._iso && m._iso.startsWith('2025'));
+  const ing2025 = moves2025.filter(m => m.importe > 0).reduce((s, m) => s + m.importe, 0);
+  const gas2025 = moves2025.filter(m => m.importe < 0).reduce((s, m) => s + Math.abs(m.importe), 0);
+  const saldoFin2025 = moves2025.sort((a,b) => b._iso.localeCompare(a._iso))[0]?.saldo || 0;
+
+  const gastoOperativo2025 = calcOperativo('2025');
+  const gastoMejoraReal2025 = Math.max(gas2025 - gastoOperativo2025, 0);
+  const presupuestoMejoras2025 = (DATA['2025'] || []).filter(p => p.pres < 0).reduce((s, p) => s + Math.abs(p.pres), 0);
+
+  setInner('kpiTesoria2025', `
+    <div class="kpi success"><div class="kpi-label">Ingresos Totales</div><div class="kpi-value">${fmtNum(ing2025)}€</div></div>
+    <div class="kpi danger"><div class="kpi-label">Gastos Totales</div><div class="kpi-value">${fmtNum(gas2025)}€</div></div>
+    <div class="kpi success"><div class="kpi-label">Resultado Año</div><div class="kpi-value">${fmtSaldo(ing2025-gas2025)}€</div></div>
+    <div class="kpi info"><div class="kpi-label">Saldo a 31/12</div><div class="kpi-value">${fmtNum(saldoFin2025)}€</div></div>
+  `);
+  setInner('gastoOperativo2025', fmtNum(gastoOperativo2025) + '€');
+  setInner('gastoMejora2025', `
+    <div style="font-size:24px;font-weight:800;color:#065F46">${fmtNum(gastoMejoraReal2025)}€</div>
+    <div style="font-size:11px;color:#065F46;margin-top:4px;opacity:0.8">Pagado real vs ${fmtNum(presupuestoMejoras2025)}€ ppto</div>
+  `);
+
+  // 6. KPIs Portero Histórico
+  ['2021', '2022', '2023', '2024'].forEach(y => {
+    const total = stats.portero.nomina[y] + stats.portero.tgss[y] + stats.portero.quiron[y] + stats.portero.elportero[y] + stats.portero.vivienda[y];
+    setInner('portero' + y, fmtNum(total) + '€');
+  });
+
+  // Coste real de salida 2025
+  const costeCierre2025 = stats.portero.nomina['2025'] + stats.portero.tgss['2025'] + stats.portero.quiron['2025'] + stats.portero.elportero['2025'] + stats.despido.finiquito + stats.despido.embargos;
+  setInner('portero2025Total', fmtNum(costeCierre2025));
+
+  // 7. KPIs Despido
+  setInner('despidoFiniquito', fmtNum(stats.despido.finiquito) + '€');
+  setInner('despidoEmbargos', fmtNum(stats.despido.embargos) + '€');
+  setInner('despidoTotal', fmtNum(stats.despido.finiquito + stats.despido.embargos) + '€');
+  const ahorroPortero = stats.portero.nomina['2024'] + stats.portero.tgss['2024'] + stats.portero.quiron['2024'];
+  setInner('ahorroAnualCaja', '~' + fmtNum(ahorroPortero) + '€');
+  setInner('auditDespido', `🏦 <strong style="color:#1E3A8A">Cruce banco:</strong> Nóminas mensuales (621€/mes 2021-22, 708€/mes 2023, 771€/mes 2024) · TGSS (Seg.Social mensual) · Quirón Prevención (4 cargos/año) · el Portero transferencias extra verano 2024 (731€) · <strong>Dinámico: Finiquito e indemnización (${fmtNum(stats.despido.finiquito)}€)</strong> · <strong>Embargos Hacienda atrasos IRPF (${fmtNum(stats.despido.embargos)}€)</strong>`);
+
+  // 8. KPIs Energía
+  ['2021', '2022', '2023', '2024', '2025', '2026'].forEach(y => {
+    setInner('luz' + y, fmtNum(stats.luz[y]) + '€');
+    setInner('agua' + y, fmtNum(stats.agua.canal[y] + stats.agua.ista[y]) + '€');
+  });
+
+  // KPIs Calefacción por temporada REAL (Octubre a Mayo)
+  const heatingSeasons = { '2223': 0, '2324': 0, '2425': 0, '2526': 0 };
+  moves.forEach(m => {
+    if (!m._iso) return;
+    const c = (m.concepto || '').toUpperCase();
+    if (!c.includes('GAS POWER') && !c.includes('MULTISERVICIOS') && !c.includes('TECHEM') && !c.includes('COMERCIALIZADORA REGULADA')) return;
+    
+    const y = parseInt(m._iso.substring(0, 4));
+    const mth = parseInt(m._iso.substring(5, 7));
+    let s = '';
+    if ((y === 2022 && mth >= 10) || (y === 2023 && mth <= 5)) s = '2223';
+    else if ((y === 2023 && mth >= 10) || (y === 2024 && mth <= 5)) s = '2324';
+    else if ((y === 2024 && mth >= 10) || (y === 2025 && mth <= 5)) s = '2425';
+    else if ((y === 2025 && mth >= 10) || (y === 2026 && mth <= 5)) s = '2526';
+    if (s) heatingSeasons[s] += Math.abs(m.importe);
+  });
+  setInner('calef2223', fmtNum(heatingSeasons['2223']) + '€');
+  setInner('calef2324', fmtNum(heatingSeasons['2324']) + '€');
+  setInner('calef2425', fmtNum(heatingSeasons['2425']) + '€');
+  setInner('calef2526', fmtNum(heatingSeasons['2526']) + '€');
+
+  // 9. KPIs Limpieza
+  const totMJM = Object.values(stats.limpieza.mjm).reduce((a, b) => a + b, 0);
+  const totPilar = Object.values(stats.limpieza.pilar).reduce((a, b) => a + b, 0);
+  const totCubo = Object.values(stats.limpieza.cubo).reduce((a, b) => a + b, 0);
+  setInner('limpAnterior', fmtNum(totMJM) + '€');
+  setInner('limpIntermedio', fmtNum(totPilar) + '€');
+  setInner('limpActual', fmtNum(totCubo) + '€');
+  
+  // Medias mensuales limpieza (100% dinámico)
+  const recibosMJM = moves.filter(m => m.importe < 0 && (m.concepto || '').toUpperCase().includes('MJM'));
+  const avgMJM = recibosMJM.length ? (recibosMJM.reduce((s, m) => s + Math.abs(m.importe), 0) / recibosMJM.length) : 0;
+  setInner('limpMesAnterior', fmtNum(avgMJM) + '€');
+
+  const recibosPilar = moves.filter(m => m.importe < 0 && (m.concepto || '').toUpperCase().includes('EL PILAR'));
+  const avgPilar = recibosPilar.length ? (recibosPilar.reduce((s, m) => s + Math.abs(m.importe), 0) / recibosPilar.length) : 0;
+  setInner('limpMesIntermedio', fmtNum(avgPilar) + '€');
+
+  const recibosCuboTodos = moves.filter(m => m.importe < 0 && ((m.concepto || '').toUpperCase().includes('DON CUBO') || (m.concepto || '').toUpperCase().includes('PREVENT'))).sort((a,b) => b._iso.localeCompare(a._iso));
+  
+  // Cuota unificada actual = importe del último recibo cobrado
+  const cuotaActualCubo = recibosCuboTodos.length > 0 ? Math.abs(recibosCuboTodos[0].importe) : 0;
+  setInner('limpMesActual', fmtNum(cuotaActualCubo) + '€');
+  
+  // Cuota antigua de cubos (cuando Prevent solo hacía cubos y cobraba menos de 300€)
+  const recibosCuboAntiguos = recibosCuboTodos.filter(m => Math.abs(m.importe) < 300);
+  const avgCuboAntiguo = recibosCuboAntiguos.length ? (recibosCuboAntiguos.reduce((s, m) => s + Math.abs(m.importe), 0) / recibosCuboAntiguos.length) : 0;
+  
+  // Ahorro dinámico = (Media El Pilar + Media Cubos Antiguo) - Cuota Unificada Actual
+  const costeModeloAnterior = avgPilar + avgCuboAntiguo;
+  const ahorroAnual = (costeModeloAnterior - cuotaActualCubo) * 12;
+  setInner('limpAhorro', fmtNum(ahorroAnual) + '€/año');
+
+  // 10. Auditoría Footer (Dinamizar textos estáticos)
+  setInner('audit2026', `Cifras dinámicas: <b>${moves.length}</b> movimientos hasta el <b>${ultimaFechaOriginal}</b>. Saldo: <b>${fmtNum(ultimoSaldo)}€</b>.`);
+  setInner('audit2025', `Datos dinámicos Supabase (2025). Ingresos: <b>${fmtNum(ing2025)}€</b> · Gastos: <b>${fmtNum(gas2025)}€</b>. Movimientos: <b>${moves2025.length}</b>.`);
+
+  // 11. Grids de KPIs restantes
+  setInner('kpiComunicaciones', years.map(y => `<div class="kpi"><div class="kpi-label">${y}</div><div class="kpi-value">${fmtNum(stats.comunic.prisma[y] + stats.comunic.lasser[y])}€</div></div>`).join(''));
+  setInner('kpiProtesins', years.map(y => `<div class="kpi"><div class="kpi-label">${y}</div><div class="kpi-value">${fmtNum(stats.protesins[y])}€</div></div>`).join(''));
+  setInner('kpiExtintores', years.map(y => `<div class="kpi"><div class="kpi-label">${y}</div><div class="kpi-value">${fmtNum(stats.extintores[y])}€</div></div>`).join(''));
+  setInner('kpiAscensores', years.map(y => `<div class="kpi"><div class="kpi-label">${y}</div><div class="kpi-value">${fmtNum(stats.ascensor[y])}€</div></div>`).join(''));
+  setInner('kpiAdmin', years.map(y => `<div class="kpi"><div class="kpi-label">${y}</div><div class="kpi-value">${fmtNum(stats.admin[y])}€</div></div>`).join(''));
+  setInner('kpiLuzGrid', years.map(y => `<div class="kpi"><div class="kpi-label">${y}</div><div class="kpi-value">${fmtNum(stats.luz[y])}€</div></div>`).join(''));
+
+  // 12. Gráficos de Gas
+  makeGroupedBars('gasKwhDiaChart',
+    [[0,27.3,59.2,37.6,85.5,60.4,21.3,4.4],[0,15.7,53.3,55.6,47.6,53.0,30.6,11.7],[0,16.8,51.8,58.5,68.6,51.1,51.2,11.3],[0,0,0,55.0,83.9,45.1,0,0]],
+    ['Oct','Nov','Dic','Ene','Feb','Mar','Abr','May'],
+    ['2022/23', '2023/24', '2024/25', '2025/26*'],
+    ['#4F46E5','#0EA5E9','#10B981','#F59E0B'],
+    { fmt: v => `${v.toFixed(1).replace('.', ',')} kWh/día` }
+  );
+  makeBars('gasPrecioChart', [0.110, 0.068, 0.067, 0.057], ['2022/23','2023/24','2024/25','2025/26*'], { fmt: v => v.toFixed(3) + '€', colorFn: (v,i) => i === 0 ? '#EF4444' : i === 3 ? '#10B981' : '#F59E0B' });
+  makeBars('gasConsumoChart', [63816, 91135, 98959, 82082], ['2022/23','2023/24','2024/25','2025/26*'], { fmt: v => Math.round(v/1000) + 'k kWh', colorFn: (v,i) => i <= 1 ? '#4F46E5' : '#0EA5E9' });
+  } catch (err) {
+    console.error('Error crítico en loadDashboardData:', err);
+    setInner('kpiTesoria2026', `<div class="kpi danger"><div class="kpi-label">ERROR CRÍTICO</div><div class="kpi-value">${err.message || 'Error desconocido'}</div></div>`);
+  }
+}
+
+function setInner(id, html) {
+  const el = document.getElementById(id);
+  if (el) el.innerHTML = html;
 }
 
 // ── MODAL ──
@@ -1981,7 +1930,16 @@ async function processBancoFile(file) {
       if (isNaN(importe) || !row[fIdx]) continue;
       let fecha = row[fIdx];
       if (fecha instanceof Date) fecha = fecha.toISOString().split('T')[0];
-      else { const p = String(fecha).split('/'); fecha = p.length===3 ? `${p[2]}-${p[1].padStart(2,'0')}-${p[0].padStart(2,'0')}` : String(fecha); }
+      else { 
+        const p = String(fecha).split('/'); 
+        if (p.length===3) {
+          let y = p[2].trim();
+          if (y.length === 2) y = '20' + y;
+          fecha = `${y}-${p[1].padStart(2,'0')}-${p[0].padStart(2,'0')}`;
+        } else {
+          fecha = String(fecha);
+        }
+      }
       data.push({ fecha, concepto: String(row[cIdx]||'').trim(), importe, saldo: parseFloat(String(row[sIdx]||'0').replace(',','.')) || null });
     }
 
@@ -2003,14 +1961,25 @@ async function processBancoFile(file) {
   }
 }
 
-document.getElementById('bancoOverlay').addEventListener('click', e => {
-  if (e.target === document.getElementById('bancoOverlay')) closeBancoModal();
-});
+function initEventListeners() {
+  const bO = document.getElementById('bancoOverlay');
+  if (bO) {
+    bO.addEventListener('click', e => {
+      if (e.target === bO) closeBancoModal();
+    });
+  }
 
-document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeModal(); closeBancoModal(); } });
-document.getElementById('modalOverlay').addEventListener('click', e => {
-  if (e.target === document.getElementById('modalOverlay')) closeModal();
-});
+  const mO = document.getElementById('modalOverlay');
+  if (mO) {
+    mO.addEventListener('click', e => {
+      if (e.target === mO) closeModal();
+    });
+  }
+
+  document.addEventListener('keydown', e => { 
+    if (e.key === 'Escape') { closeModal(); closeBancoModal(); } 
+  });
+}
 
 
 // ── ADMIN PANEL ──

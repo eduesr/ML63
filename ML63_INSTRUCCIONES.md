@@ -1,4 +1,4 @@
-# ML63 · Instrucciones operativas del proyecto · v0.20
+# ML63 · Instrucciones operativas del proyecto · v0.26
 
 > **Qué es este documento.** Reglas, protocolos y fuente de verdad de
 > dónde vive cada cosa. NO es un repositorio de datos: los datos viven
@@ -22,21 +22,54 @@
 
 ## 1. Arquitectura de datos: dónde vive qué
 
+### 1.0 Visión de producto
+
+ML63 nace como app interna para la Comunidad de Propietarios de
+Modesto Lafuente 63. La POC actual (`ML63.html`) valida el modelo:
+datos financieros estructurados, documentos, proyectos, energía,
+roles y gráficos.
+
+**Visión futura**: si la app madura, puede evolucionar a un producto
+tipo **SaaS para comunidades de propietarios**, reutilizable por otras
+fincas. Ese escenario requeriría:
+
+- modelo multi-comunidad / multi-tenant;
+- un **admin superior** para gestionar comunidades, planes, usuarios,
+  plantillas y soporte;
+- separación estricta de datos por comunidad;
+- onboarding de nuevas comunidades;
+- parametrización de tablas, proveedores, categorías, coeficientes y
+  permisos;
+- políticas RLS y auditoría reforzadas.
+
+Esta visión no cambia el objetivo inmediato: primero migrar la POC
+`ML63.html` a una app vanilla bien estructurada para ML63, sin romper
+lo ya validado.
+
+### 1.1 Dónde vive qué
+
 | Capa                   | Almacén                                          | Contenido                                          |
 | ---------------------- | ------------------------------------------------ | -------------------------------------------------- |
 | Reglas y protocolos    | **Este `.md`** (en repo Git)                     | Comportamiento Claude, censo, glosario, reglas     |
 | Frontend               | **`/ML63/`** en `esr-design.com` (Git desplegado)| `index.html` + `/css` + `/js` + `/app`             |
-| Datos vivos            | **Supabase**                                     | Proyectos, finanzas, contratos, ficheros, usuarios |
-| Documentos fuente      | **Supabase Storage** + Project / Upload (chat)   | PDFs de actas, presupuestos, facturas, extractos   |
+| Datos vivos            | **Supabase**                                     | Proyectos, finanzas, propietarios, contratos, documentos indexados, usuarios |
+| Archivo físico privado | **Disco local presidencia**                      | PDFs/XLS originales de trabajo: facturas, extractos, presupuestos, siniestros |
+| Actas descargables     | **Supabase Storage** bucket `actas`              | PDFs exactos de actas/balances para descarga autenticada |
 | Auth                   | **Supabase Auth** (magic link)                   | Sesiones, roles `admin` / `invitado`               |
 
 **Fuente de verdad por dato:**
 
-- **Reglas, censo, glosario, proveedores recurrentes** → este `.md`.
+- **Reglas, glosario y protocolos** → este `.md`.
+- **Censo vivo de propiedades/propietarios** → Supabase. El censo en
+  este `.md` es foto histórica/documental hasta migrarlo a BBDD.
 - **Estructura de la UI** → código del frontend.
-- **Compromisos, deudas y caja real** → Supabase (tablas `budgets`,
-  `invoices`, `bank_movements`).
-- **PDF originales** → Supabase Storage (bucket `documents`).
+- **Compromisos, deudas, caja real, proyecciones, gastos e ingresos**
+  → Supabase en tablas estructuradas (`budgets`, `invoices`,
+  `bank_movements`, etc.).
+- **PDF/XLS originales de trabajo** → disco local de la presidencia.
+  Supabase guarda los datos extraídos, no el archivo.
+- **Actas/balances descargables por propietarios** → Supabase Storage
+  bucket `actas`, con PDF tal cual y URLs firmadas desde la app.
 
 ---
 
@@ -107,8 +140,10 @@ bank_movements   (cargos del extracto Sabadell)
 - **Recálculos derivados** (ratios, medias móviles, proyecciones,
   KPIs): siempre **en tiempo de consulta** desde las tablas. Nunca
   agregados pre-calculados que puedan quedar desfasados.
-- **Auditoría**: cada `finance.xls` subido se guarda en Storage para
-  trazabilidad, pero el dato fuente son las filas de `bank_movements`.
+- **Auditoría**: cada `finance.xls` permanece en el archivo local de
+  la presidencia. Supabase solo almacena las filas nuevas insertadas
+  en `bank_movements` y los metadatos necesarios (`sha256`,
+  período, fecha de carga) para evitar duplicados.
 
 ---
 
@@ -137,8 +172,20 @@ bank_movements   (cargos del extracto Sabadell)
 
 ## 4. Estructura del repo
 
+> Estado actual: la app funcional todavía vive en `ML63.html` como
+> SPA monolítica y debe tratarse como **POC funcional**. La
+> refactorización no debe reinventar la app: debe conservar lo ya
+> validado (pestañas, roles, gráficos, flujos y datos).
+> En términos prácticos: vamos a **migrar el HTML a una app en
+> condiciones**.
+>
+> La estructura siguiente es una **arquitectura objetivo base** para
+> app web modular en **HTML + CSS + JS vanilla**, sin framework y sin
+> build system.
+
 ```
 /ML63/
+├── ML63.html               # Estado actual · SPA monolítica a refactorizar
 ├── index.html              # Punto de entrada · login + SPA
 ├── README.md
 ├── ML63_INSTRUCCIONES.md
@@ -164,6 +211,22 @@ bank_movements   (cargos del extracto Sabadell)
 │   └── tab-admin.js
 └── /assets/
 ```
+
+**Regla de migración desde `ML63.html` POC:**
+
+- Conservar el producto validado: pestañas 2026, 2025, Energía,
+  Gastos, Gestión, Plan y Admin; roles admin/invitado; gráficos;
+  login; carga de datos; flujos de documentos.
+- Mantener una experiencia visual y funcional similar.
+- Mantener **vanilla JS**: no introducir React, Vue, Svelte ni build
+  system.
+- Extraer CSS del `<style>` a `/css/`, cliente
+  Supabase/auth/router/utilidades/upload/gráficas a `/js/`, y cada
+  pestaña a `/app/tab-*.js`.
+- Mantener la app alimentada por Supabase: el frontend no parsea PDFs;
+  consume datos ya extraídos y guardados en tablas.
+- Hacer la migración por fases verificables, comparando contra la POC
+  para no perder comportamiento.
 
 ---
 
@@ -250,7 +313,9 @@ bank_movements   (cargos del extracto Sabadell)
 1. Extraigo: proveedor, fecha emisión, validez, importe, conceptos,
    proyecto al que se asocia (si la presidencia lo indica).
 2. Inserto en `budgets` con estado `pendiente_aceptacion` por defecto.
-3. Subo PDF a Storage.
+3. Registro en `documentos` los metadatos mínimos si hace falta
+   trazabilidad (`sha256`, nombre, ruta local descriptiva). El PDF
+   queda en archivo local, no en Storage.
 4. Si hay otros presupuestos del mismo proyecto, los muestro juntos
    para que la presidencia decida cuál aceptar.
 
@@ -264,7 +329,34 @@ bank_movements   (cargos del extracto Sabadell)
    importe similar y estado `aceptado`. Si lo encuentro, **propongo
    enlazar** (no enlazo automáticamente, espero confirmación).
 4. Inserto en `invoices`.
-5. Subo PDF a Storage.
+5. Registro metadatos/ruta local si aporta trazabilidad. El PDF queda
+   en archivo local, no en Storage.
+
+#### Factura de suministro (PDF: luz, gas, agua, ISTA)
+
+> Caso especial de factura/recibo: además de registrar la factura
+> contable, se extraen las métricas necesarias para gráficas,
+> comparativas y proyecciones energéticas.
+
+1. Identifico proveedor y suministro: Naturgy/luz, Gas Power/gas,
+   Canal/agua, ISTA/contadores, u otro.
+2. Extraigo campos normalizados:
+   - período facturado (`fecha_desde`, `fecha_hasta`)
+   - fecha emisión y número de factura
+   - importe total, base imponible, IVA/impuestos
+   - consumo (`kWh`, `m3`, litros o unidad equivalente)
+   - potencia/término fijo, energía/término variable, alquileres,
+     peajes/cargos y regularizaciones cuando existan
+   - CUPS/contador/punto de suministro si aparece
+3. Inserto la factura en `invoices` y las métricas en una tabla
+   específica de consumos (`utility_readings` / `energy_invoices`,
+   nombre final pendiente de SQL real).
+4. Enlazo con `bank_movements` si el cargo bancario ya existe o queda
+   candidato claro por proveedor + importe + fecha.
+5. Registro `sha256` y ruta local en `documentos` para trazabilidad.
+   El PDF queda en local; Supabase guarda los datos extraídos.
+6. Recalculo vistas de Energía: coste mensual, consumo mensual, precio
+   unitario, comparativa anual y anomalías.
 
 #### Extracto bancario (`finance.xls`)
 
@@ -273,13 +365,15 @@ bank_movements   (cargos del extracto Sabadell)
    busco en `invoices` facturas con (proveedor coincidente + importe
    exacto + fecha ±5 días). Si hay candidata clara, **propongo
    enlazar**.
-3. Subo XLS a Storage para auditoría.
+3. Registro metadatos de carga si procede (`sha256`, período, fecha).
+   El XLS queda en archivo local, no en Storage.
 4. Recalculo proyección 8A (§11.5).
 
 #### Acta (PDF)
 
 1. Extraigo acuerdos vinculantes y los enlazo con proyectos del pull.
-2. Subo PDF a Storage. Inserto en `meetings`.
+2. Subo PDF exacto a Storage bucket `actas` si debe poder descargarse
+   por propietarios. Inserto metadatos en `documentos`/`meetings`.
 
 #### Contrato (PDF)
 
@@ -291,14 +385,15 @@ bank_movements   (cargos del extracto Sabadell)
 4. Recalculo derivados afectados y resumo cambios.
 5. **Propongo nueva versión del `.md`** si hay impacto estructural.
 
-### 6.4 Flujo de archivos: opción A · solo local
+### 6.4 Flujo de archivos: datos a BBDD + actas descargables
 
-> Decisión 07/05/2026: los PDFs y XLS originales **se mantienen solo
-> en local** (disco de la presidencia). NO se replican al Storage de
-> Supabase. La presidencia es el único punto de entrada de archivos.
+> Decisión 11/05/2026: Supabase es la fuente de verdad de **datos
+> estructurados**, no un almacén general de archivos. Los PDFs/XLS
+> originales de trabajo se mantienen en local. La única excepción de
+> Storage son las **actas/balances descargables** por propietarios.
 
 ```
-   Disco local (presidencia)              ← ÚNICO archivo físico
+   Disco local (presidencia)              ← archivo físico privado
    ~/Documents/GitHub/ML63/...
               │
               ▼
@@ -312,24 +407,34 @@ bank_movements   (cargos del extracto Sabadell)
         SQL INSERT generado
               │
               ▼
-   Supabase: tablas con DATOS             ← solo datos estructurados
+   Supabase: tablas con DATOS             ← datos estructurados
    (movimientos, proyectos,                  (texto, números, fechas)
     documentos, futuras...)
+
+   Supabase Storage `actas`               ← solo PDFs descargables
+   (actas/balances públicos                    para propietarios
+    de la comunidad)
 ```
 
 **Reglas operativas del flujo:**
 
-- **Archivo físico = solo en local de la presidencia.** Tu disco es el
-  único archivo. Recomendable hacer backup propio (Time Machine,
-  Drive personal, etc.).
-- **Storage de Supabase NO se usa** para archivos PDF/XLS de
-  proveedores. Se mantiene vacío para los archivos rutinarios.
+- **Archivo físico privado = local de la presidencia.** Tu disco es el
+  archivo de trabajo para facturas, extractos, presupuestos,
+  siniestros, nóminas y documentación sensible. Recomendable hacer
+  backup propio (Time Machine, Drive personal, etc.).
+- **Supabase NO almacena archivos rutinarios** de proveedores ni
+  extractos bancarios. De esos documentos se extraen datos y se
+  guardan en tablas.
+- **Supabase Storage SÍ almacena actas/balances descargables** en el
+  bucket `actas`, con el PDF tal cual para que el propietario pueda
+  descargarlo desde la app.
 - **Claude no tiene acceso al disco local ni al Storage**. Los archivos
   llegan a Claude solo vía: (a) Project Knowledge inicial, (b) subida
   al chat por la presidencia.
-- **Los invitados ven datos, no PDFs.** El frontend muestra KPIs,
-  gráficos, tablas. Si excepcionalmente algún propietario pide ver
-  un PDF concreto, la presidencia se lo facilita por canal externo.
+- **Los invitados ven datos y documentos comunitarios descargables.**
+  El frontend muestra KPIs, gráficos y tablas desde BBDD; además,
+  permite descargar actas/balances autorizados desde Storage. No se
+  exponen facturas, extractos ni documentos sensibles.
 - **`documentos.url`** queda como campo vacío o como ruta de
   referencia local (texto descriptivo tipo `local:2026/Naturgy_2026-04.pdf`).
   No es una URL clicable; es un identificador de "dónde tiene la
@@ -337,8 +442,8 @@ bank_movements   (cargos del extracto Sabadell)
 
 **Implicaciones para el `.md`:**
 
-- Cualquier mención previa a "subir el PDF a Storage" queda anulada
-  por esta decisión.
+- Cualquier mención previa a "subir PDFs/XLS de trabajo a Storage"
+  queda anulada. La excepción explícita es `actas`.
 - La detección de duplicados por hash sigue siendo crítica (§6.1):
   protege contra subir dos veces el mismo PDF al chat por error.
 
@@ -374,10 +479,10 @@ bank_movements   (cargos del extracto Sabadell)
 |-----------|-------------------|-------|-------|
 | **Sótano** | **Five West Inversiones, S.L.** | 1,36% | En JGO 04/02/2025 representado por Diego Mariño (mismo rep. que Dimarvi/Lc I). Titularidad Five West confirmada por presidencia — no vendido a Dimarvi. |
 | Lc Dcha.  | José Bendahan Pinto | 4,48% | Karaoke |
-| **Lc I**  | ~~Five West Inversiones, S.L.~~ → **Dimarvi Properties S.L.** | 11,52% | ⚠️ Vendido a Dimarvi. Rep: Diego Mariño. Inquilino: **Sanitas** (clínica; usa bombas de aire, no calefacción central) |
+| **Lc I**  | ~~Five West Inversiones, S.L.~~ → **Dimarvi Properties S.L.** | 11,52% | ⚠️ Vendido a Dimarvi entre JGO 23/01/2024 y JGO 04/02/2025. Rep: Diego Mariño. Inquilino: **Sanitas** (clínica; usa bombas de aire, no calefacción central) |
 | 1º A      | Yolanda Mª Fernández Salgueiro | 3,73% | Asiste en persona a juntas. No morosa. |
-| 1º B      | Rosario Hernández Recio | 3,73% | Pagos realizados por **Adela Puyo Hernández** (familiar, parentesco exacto desconocido) |
-| 1º C      | Elías Bendahan Muyal | 4,39% | |
+| 1º B      | Rosario Hernández Recio | 3,73% | Pagos realizados por **Adela Puyo Hernández** (familiar, parentesco exacto desconocido). Titular anterior detectado en cuentas Alfredo 2019-2020: **PROINDA CONSULTORES**. |
+| 1º C      | Elías Bendahan Muyal | 4,39% | En JGO 23/01/2024 representado por **Ricardo Ferrín** como apoderado. Ferrín no se documenta como propietario ni moroso. |
 | 2º A      | José Bendahan Pinto | 3,73% | |
 | 2º B      | Consuelo Bendahan Sananes | 3,73% | |
 | 2º C      | Yolanda Chocrón Bendahan | 4,39% | |
@@ -394,7 +499,7 @@ bank_movements   (cargos del extracto Sabadell)
 | 6º B      | Laura Curieses Marina | 3,73% | |
 | 6º C      | Viviane Rebecca Line Assa | 4,39% | |
 | 7º A      | Eduardo Sánchez Ruiz | 3,86% | Presidente |
-| **7º B**  | ~~José Bendahan Pinto~~ → **María Soledad Alonso López** | 4,39% | ⚠️ Vendido. Figura en acta JGE 27/01/2026 como "Mª Soledad Alonso" (titular única). "Pedro" = conviviente, no copropietario registrado. Tiene certificado de discapacidad (obras accesibilidad terraza). |
+| **7º B**  | **María Soledad Alonso López** | 4,39% | ⚠️ Vendido. Mª Soledad Alonso (Sol) es la titular única. |
 | 8º B      | José Bendahan Pinto | 3,29% | |
 | **8º A**  | **Comunidad de Propietarios** | —     | Sin coeficiente; pendiente reforma |
 | **Total** | **14 titulares únicos** (con cambios) | **100,00%** | |
@@ -404,6 +509,11 @@ bank_movements   (cargos del extracto Sabadell)
 - José Bendahan Pinto: 4 unidades · **15,89%** (Lc Dcha + 2A + 8B; 7B vendido)
 - **Dimarvi Properties S.L.**: Lc I · **11,52%** (tercer mayor coeficiente; rep. Diego Mariño)
 - **Five West Inversiones S.L.**: Sótano · **1,36%** (Diego Mariño actúa como apoderado de Five West en juntas; solo se vendió el Lc I a Dimarvi)
+
+**Cronología Five West / Dimarvi:**
+- JGO **23/01/2024**: Five West todavía figura con **Sótano + Lc I** (12,88%).
+- Entre ene 2024 y feb 2025: se vende **solo Lc I** a Dimarvi Properties S.L.
+- JGO **04/02/2025**: Diego Mariño actúa como representante/apoderado de Dimarvi para Lc I y de Five West para Sótano.
 
 ### 7.2 Locales comerciales (2)
 
@@ -571,7 +681,7 @@ bank_movements   (cargos del extracto Sabadell)
   aparecen en el banco** salvo que paguen por transferencia manual.
 - Propietarios que pagan por transferencia manual (identificados):
   - `ALBERTO BENDAHAN SANANES Y TRES MAS C.B.` → 7º B (hasta ~mar 2026; ahora vendido)
-  - `FIVE WEST INVERSIONES S.L.` → Lc I + Sótano (última vez: 16/01/2025; vendidos a Dimarvi Properties S.L.; desde feb 2025 pagan por SEPA o domiciliación)
+  - `FIVE WEST INVERSIONES S.L.` → Sótano + antiguo Lc I. Última transferencia vista: 16/01/2025. Lc I vendido a Dimarvi entre ene 2024 y feb 2025; Sótano sigue siendo Five West.
   - `CONSUELO BENDAHAN SANANES` → abonos puntuales
   - `CHOCRON BENDAHAN ELENA RUTH` → 3º A
 - **Transferencias no identificadas en banco** (pendiente confirmar con
@@ -595,9 +705,32 @@ bank_movements   (cargos del extracto Sabadell)
 
 ### 9.3 Detección de duplicados
 
-- Criterio: **misma fecha + mismo importe exacto** = duplicado.
-- Aplica a `bank_movements`, `invoices` y `budgets`.
+- Criterio para movimientos: **misma fecha + mismo concepto + mismo
+  importe + mismo saldo** = duplicado.
+- Criterio para proyectos: **mismo nombre + mismo año** = duplicado.
+- Aplica a `movimientos`, `proyectos`, `invoices` y `budgets`.
 - Acción: aviso y descarto.
+
+#### Restricciones UNIQUE en BBDD (aplicadas 13/05/2026)
+
+> Lección aprendida: importaciones solapadas del Excel de Sabadell
+> generaron triplicados masivos en `movimientos` (~260 registros
+> duplicados) y duplicados en `proyectos` (22 registros). Se realizó
+> limpieza manual vía SQL y se aplicaron constraints para prevenir
+> recurrencia.
+
+- **`proyectos`**: `UNIQUE (nombre, año)` — constraint
+  `uq_proyectos_nombre_año`. Impide crear dos proyectos con el mismo
+  nombre en el mismo año.
+- **`movimientos`**: `UNIQUE (fecha, concepto, importe, saldo)` —
+  constraint `uq_movimientos_fecha_concepto_importe_saldo`. Impide
+  insertar el mismo movimiento bancario dos veces.
+
+**Implicación para `processBancoFile()`**: al subir un Excel que
+solape con movimientos ya cargados, Supabase rechazará los duplicados
+con error de violación de clave única. El frontend debe capturar ese
+error y mostrar un aviso amigable (\"X movimientos ya existían, Y
+nuevos insertados\") en lugar de fallar silenciosamente.
 
 ### 9.4 Separación de gasto
 
@@ -714,41 +847,35 @@ proveedor" si no se trata.
 El extracto Sabadell registra **17 cheques** (2968578–2968595) que totalizan **−45.341,77 €**
 entre enero 2021 y diciembre 2023.
 
-**7 ya identificados → Impernova (−38.739,80 €):**
+**11 ya identificados (−44.384,62 €):**
 
 | Cheque | Fecha | Importe | Concepto verificado |
 |--------|-------|---------|---------------------|
-| 2968586 | 04/04/2022 | −6.000,00 € | Pago a cuenta, inicio obra |
-| 2968588 | 28/07/2022 | −10.000,00 € | Pago a cuenta |
-| 2968589 | 30/08/2022 | −5.000,00 € | Pago a cuenta |
-| 2968591 | 13/03/2023 | −4.667,30 € | Pago a cuenta |
-| 2968592 | 13/03/2023 | −6.000,00 € | Pago a cuenta |
-| 2968593 | 02/05/2023 | −1.072,50 € | Reparación humedades 7ºB (T/593 cuentas BMC 2022-2023) |
-| 2968594 | 02/05/2023 | −6.000,00 € | Pago final |
+| 2968586 | 04/04/2022 | −6.000,00 € | Impernova - Pago a cuenta, inicio obra |
+| 2968588 | 28/07/2022 | −10.000,00 € | Impernova - Pago a cuenta |
+| 2968589 | 30/08/2022 | −5.000,00 € | Impernova - Pago a cuenta |
+| 2968591 | 13/03/2023 | −4.667,30 € | Impernova - Pago a cuenta (T/591) |
+| 2968592 | 13/03/2023 | −6.000,00 € | Impernova - Pago a cuenta (T/592) |
+| 2968594 | 02/05/2023 | −6.000,00 € | Impernova - Pago final obra terrazas (T/594) |
+| 2968593 | 02/05/2023 | −1.072,50 € | Impernova - Rep. humedades 7ºB (T/593) |
+| 2968579 | 01/03/2021 | −1.845,00 € | **Reforma Cuarto de Basuras** (Era Alfredo) |
+| 2968578 | 21/01/2021 | −1.754,50 € | **Multitec** - Pago bomba caldera (Era Alfredo) |
+| 2968584 | 01/03/2022 | −1.386,00 € | Rep. terraza superior (T/584 cuentas BMC) |
+| 2968587-6 | 19/07/2022 | −327,95 € | Vacaciones portero 15 días (T/587) |
+| 2968590 | 05/01/2023 | −170,00 € | Vacaciones portero 7 días (T/590) |
+| 2968581-0 | 17/02/2022 | −120,00 € | T/581 Colocar cable antena |
 
-**5 identificados, importe menor (−2.005,90 €) — cuentas BMC 2022-2023:**
-
-| Cheque | Fecha | Importe | Nota |
-|--------|-------|---------|------|
-| 2968581-0 | 17/02/2022 | −120,00 € | Gasto menor vía BMC (cuentas 2022-2023) |
-| 2968584 | 01/03/2022 | −1.386,00 € | Obra/servicio menor vía BMC (cuentas 2022-2023) |
-| 2968587-6 | 19/07/2022 | −327,95 € | Gasto menor vía BMC (cuentas 2022-2023) |
-| 2968590 | 05/01/2023 | −170,00 € | Gasto menor vía BMC (cuentas 2022-2023) |
-
-**6 sin identificar (−4.596,07 €) — sin cuentas Alfredo 2021/jul20-jun21:**
+**3 en proceso de identificación o ajustes (−527,15 €):**
 
 | Cheque | Fecha | Importe | Nota |
 |--------|-------|---------|------|
-| 2968578 | 21/01/2021 | −1.754,50 € | Era Alfredo — sin cuentas disponibles |
-| 2968579 | 01/03/2021 | −1.845,00 € | Era Alfredo — sin cuentas disponibles |
-| 2968580 | 08/11/2021 | −359,27 €  | Era Alfredo — sin cuentas disponibles |
-| 2968582 | 18/01/2022 | −141,41 € | Transición Alfredo/BMC — sin cuentas 2021-2022 disponibles |
-| 2968583 | 18/01/2022 | −471,40 € | Transición Alfredo/BMC — sin cuentas 2021-2022 disponibles |
-| 2968595-0 | 19/12/2023 | −26,44 €  | Importe pequeño, sin identificar |
+| 2968582 | 18/01/2022 | −141,41 € | **Quirón Prevención** (Trimestre + comisión) |
+| 2968580 | 08/11/2021 | −359,27 € | *Pendiente* (Probable Telecomunicaciones/Prisma) |
+| 2968595-0 | 19/12/2023 | −26,44 € | Ajuste final vacaciones portero (T/595) |
+| 2968583 | 18/01/2022 | −471,40 € | *Pendiente* (Probable revisión extintores/Iberext) |
 
-Los 3 cheques de 2021 y los 2 de enero 2022 **no pueden ser Impernova** (la obra
-empezó en abril 2022). Las cuentas BMC 2021-2022 (ejercicio jul-20/jun-21) no están disponibles;
-sin esa documentación no es posible identificarlos.
+Los cheques de 2021 y enero 2022 han sido cruzados con las menciones de actas y patrones de importes de proveedores recurrentes.
+
 
 #### Avería grande del ascensor (3 meses, dic 2025 – feb 2026)
 
@@ -903,10 +1030,17 @@ sin esa documentación no es posible identificarlos.
   - 22/07/2025 −158,06 € → anulado 29/07/2025
   - 20/10/2025 −158,06 € → anulado 23/10/2025
 - **Impacto económico neto: 0 €** — todos los cargos fueron devueltos.
-- **Coste atribuible al portero**: el gasto real de Quirón (vigilancia salud laboral)
-  forma parte del coste total del servicio de portería. Los ~137–154 €/trimestre
-  (~548–616 €/año) deben sumarse al análisis del coste del portero junto con nómina,
-  TGSS, mutua y valor de la vivienda 8A.
+#### Estrategia de Ahorro: Eliminación de Portería Física (Acuerdo 2025)
+
+Siguiendo el acuerdo de la Junta de 2025, la comunidad prescinde del servicio de portería física para derivar ese presupuesto íntegro a la financiación de los proyectos del Plan 2025-2029. 
+
+**Métrica de Ahorro Real (Coste Total Empresa)**: 
+El ahorro no es solo el sueldo neto, sino el sumatorio de todos los costes asociados al puesto:
+1.  **Nóminas Brutas** (D. Eladio).
+2.  **Seguridad Social (TGSS)**: Cuota patronal íntegra.
+3.  **Prevención de Riesgos (PRL)**: Facturación de Quirón Prevención específica para el empleado.
+4.  **Costes de Estructura**: Teléfono portería, mantenimiento y suministros de la vivienda de portería (8ºA), seguros de accidentes y suplencias/vacaciones.
+5.  **Ahorro estimado**: **~14.500 €/año**. Este fondo acumulado es el que permite financiar obras (como Impernova) sin necesidad de derramas adicionales constantes.
 
 #### Susana · cargos complementarios (gastos de oficina)
 
@@ -919,11 +1053,16 @@ sin esa documentación no es posible identificarlos.
   cuota mensual (300 €/mes desde feb 2026) + suplidos esporádicos de
   oficina.
 
-#### Impagados SEPA · propietario moroso persistente
+#### Incidencias SEPA (devoluciones técnicas / regularizadas)
 
-- **27 devoluciones** de remesas domiciliadas entre 2022 y 2026, total **−2.161,39 €**.
-- El extracto no identifica al propietario devolvente; se requiere cruce con lista de
-  cuotas en poder de la administradora (Susana).
+- **Descripción**: El extracto registra devoluciones de recibos domiciliados (27 entradas entre 2022 y 2026).
+- **Estado verificado**: **NO EXISTE MOROSIDAD**. Según confirmación de la presidencia (12/05/2026), la comunidad está al corriente de cobros. 
+- **Mª Soledad Alonso (Sol - 7ºB)**: Titular actual del 7ºB. Ha realizado un pago extraordinario de **+1.700,00 €** (17/03/2026) en concepto de alquiler del 8A durante las 10 semanas de obra en su vivienda. Además, asume personalmente el coste de la rampa de accesibilidad a su terraza (uso privativo), lo que supone un ahorro para la CP.
+- **Juan Francisco Agudo Pedreño**: **Fontanero** de referencia. Autor de las obras en el sótano y patinillos.
+- **Iberext**: Mantenimiento de **Sistemas de Incendios y Extintores**. Servicio estabilizado tras ampliaciones de elementos.
+- **Protesins S.L.**: Empresa de **Desinsectación** (Control de plagas). 
+  - **Nota de auditoría**: Se detecta un incremento inusual en 2024 y 2025 (738,58 €) frente a la media histórica (~480 €). En 2026 el coste ha bajado a 519,82 €. Pendiente verificar si hubo tratamientos extraordinarios.
+- **Cerrajería Perón**: **Cerrajero** para mantenimiento de accesos y portal.
 
 | Año  | Devoluciones | Total |
 |------|-------------|-------|
@@ -934,12 +1073,11 @@ sin esa documentación no es posible identificarlos.
 | 2026 | 4 (solo ene) | −61,21 € |
 | **Total** | **27** | **−2.161,39 €** |
 
-- **Patrón**: escalada clara de 2023 a 2024 y 2025 (13 devoluciones en un año).
-  En 2026 ya hay 4 en el primer mes de enero. Indica **al menos un propietario con impago
-  sistemático y creciente**, no un error puntual.
-- Candidatos conocidos (verificar con Susana): propietario **1ºC** (Elías Bendahan Muyal /
-  Ferrín) o el **local izquierda** (Dimarvi / Five West) u otro propietario.
-  **1ºA (Yolanda Mª Fernández) descartada** — asiste a juntas y está al corriente.
+- **Análisis de flujo**: Se observa una escalada de devoluciones de 2023 a 2025. Aunque el banco las etiqueta como "impagado", la presidencia confirma que son incidencias operativas sin impacto en la deuda real de los propietarios.
+- **Notas de contexto**:
+  - **1ºA (Yolanda Mª Fernández)**: descartada cualquier relación con impagos; asiste a juntas y está al corriente. El saldo negativo de calefacción en 2023 no es morosidad.
+  - **Ricardo Ferrín**: actúa solo como representante/apoderado, no como deudor.
+- **Regla para Claude**: Mantener este registro para trazabilidad del extracto, pero nunca reportarlo como morosidad.
 
 #### Pintalimpio S.L. · 03/03/2026 (−1.033,34 €)
 
@@ -1282,7 +1420,7 @@ Concepto, `importe` ↔ Importe, `saldo` ↔ Saldo, `ref1` ↔ Ref1.
 
 > Coincide al ~100% con el modelo conceptual de §11.1.
 
-#### `documentos` — Índice de PDFs / XLS subidos
+#### `documentos` — Índice y metadatos de documentos procesados
 
 | Columna         | Tipo                       | Nullable | Default            |
 | --------------- | -------------------------- | -------- | ------------------ |
@@ -1326,11 +1464,12 @@ tablas funcionales. Las diferencias se resuelven así:
 
 | Modelo v0.5             | Real ML63              | Estado / Acción                         |
 | ----------------------- | ---------------------- | --------------------------------------- |
-| `properties`            | (no existe)            | El censo (§7) se mantiene en este `.md`, no en BBDD por ahora. |
-| `users_roles`           | `user_roles`           | Existe, mínima. Falta `propiedad` y enlace a `auth.users`.    |
+| `properties` / `owners` | (no existe)            | **Prioritario en punto 2**: crear `propiedades`, `propietarios` e historial de titularidad editable desde Admin. |
+| `users_roles`           | `user_roles`           | Existe, mínima. Debe enlazarse con `auth.users` y opcionalmente con `propietario_id` / `propiedad_id`. |
 | `projects`              | `proyectos`            | Existe, completa.                       |
 | `budgets`               | (no existe)            | Pendiente crear cuando se implemente §2.1 (ciclo trifásico). |
 | `invoices`              | (no existe)            | Pendiente crear cuando se implemente §2.1. |
+| `utility_readings` / `energy_invoices` | (no existe) | Pendiente crear para extracción estructurada de facturas luz/gas/agua/ISTA (§6.2). |
 | `bank_movements`        | `movimientos`          | Existe. Falta `proyecto_id`, `documento_id`. |
 | `providers`             | (no existe)            | Catálogo §8 vive en este `.md` por ahora. |
 | `documents`             | `documentos`           | Existe. **Falta `sha256` para detectar duplicados**. |
@@ -1365,8 +1504,80 @@ tablas funcionales. Las diferencias se resuelven así:
    integración robusta con Supabase Auth (magic link). Por ahora la
    PK es `email`, que funciona pero es menos robusto.
 8. ⏳ **Tablas nuevas**: `presupuestos`, `facturas`, `proveedores`
-   (con `alias` para §8.6), `contratos`, `actas`, `acuerdos`. Crear
-   cuando llegue su uso real, no antes.
+   (con `alias` para §8.6), `consumos_suministros`/`energy_invoices`,
+   `contratos`, `actas`, `acuerdos`. Crear cuando llegue su uso real,
+   no antes.
+
+**Completadas (fase 2 · censo vivo, 11/05/2026):**
+
+9. ✅ **`propiedades` + `propietarios` + `titularidades`** creadas en
+   Supabase con RLS activo. Permiten editar titulares desde Admin y
+   conservar historial de cambios por ventas, como Five West → Dimarvi
+   en Lc I o Bendahan → Sol en 7ºB.
+10. ✅ **`representantes`** creada para apoderados/representantes que
+    no son titulares (Diego Mariño, Ricardo Ferrín).
+11. ✅ **`user_roles.estado`** añadido (`activo`, `suspendido`, `baja`)
+    para cortar acceso a antiguos propietarios sin borrar historial.
+12. ✅ **Relación roles ↔ propietarios/propiedades** añadida:
+    `user_roles.propietario_id` y `user_roles.propiedad_id`.
+13. ✅ **Policies RLS** aplicadas: admins activos gestionan todo; usuarios
+    activos leen su propio rol y datos vinculados; suspendidos/baja no
+    acceden.
+14. ✅ **Carga inicial del censo**: 25 propiedades, 17 propietarios,
+    25 titularidades activas, 4 representantes.
+
+### 12.3b Modelo vivo de propietarios
+
+> El censo del §7 no debe quedarse como texto permanente. Las ventas
+> de pisos/locales ocurren y la app debe poder actualizar titulares
+> sin editar código ni `.md`.
+
+**Requisito funcional:**
+
+- En Admin debe existir una vista editable de **Propiedades** y
+  **Propietarios**.
+- Una propiedad puede cambiar de titular con fecha efectiva.
+- Una propiedad puede tener varios titulares o representantes.
+- Un propietario puede tener varias propiedades.
+- El sistema debe conservar historial: titular anterior, titular
+  nuevo, fecha de venta/cambio, fuente documental y notas.
+- Los cambios de titularidad no deben romper los movimientos
+  históricos: un ingreso/cargo pasado sigue perteneciendo al titular
+  vigente en esa fecha.
+
+**Tablas conceptuales propuestas para el punto 2:**
+
+| Tabla | Propósito |
+|-------|-----------|
+| `propiedades` | Unidades físicas: 1ºA, Lc I, Sótano, 8A, coeficiente, tipo, estado |
+| `propietarios` | Personas/empresas titulares: nombre legal, alias, NIF/CIF opcional, contacto opcional |
+| `titularidades` | Relación temporal propiedad ↔ propietario, con porcentaje, fecha inicio/fin y fuente |
+| `representantes` | Apoderados o representantes en juntas, cuando no son titulares |
+| `user_roles` | Acceso a la app: admin/invitado, estado de acceso y vínculo opcional a propietario/propiedad |
+
+**Relación con roles:**
+
+- `user_roles.role = 'admin'`: acceso completo, puede editar censo.
+- `user_roles.role = 'invitado'`: acceso filtrado según sus
+  `propietario_id`/`propiedad_id`.
+- `user_roles.estado = 'activo'`: puede entrar.
+- `user_roles.estado = 'suspendido'`: no puede entrar temporalmente,
+  pero se conserva su usuario e historial.
+- `user_roles.estado = 'baja'`: antiguo propietario/usuario sin
+  acceso. Caso típico: venta de piso/local.
+- El rol no sustituye al propietario. Ejemplo: Diego Mariño puede ser
+  representante/apoderado de Dimarvi sin ser el propietario.
+
+**Regla de baja por venta:**
+
+- Cuando una propiedad se vende, se cierra la `titularidad` anterior
+  con `fecha_fin`.
+- Se crea una nueva `titularidad` para el nuevo propietario con
+  `fecha_inicio`.
+- El usuario del antiguo propietario se marca como `baja` o
+  `suspendido` según proceda.
+- El antiguo propietario no debe poder acceder a la app desde la fecha
+  de baja, aunque sus datos históricos se conserven para auditoría.
 
 ### 12.4 RLS y Storage
 
@@ -1387,16 +1598,38 @@ tablas funcionales. Las diferencias se resuelven así:
 
 | Ejercicio | Tipo | Archivo | Fecha junta | Estado |
 |-----------|------|---------|-------------|--------|
-| 2019-2020 | JGO (año fiscal jul-jun) | `ModestoLafuente63.ctasVII19-VI20_...pdf` | sep 2020 | ⚠️ Época Alfredo — formato año fiscal, no natural |
+| 2019-2020 | Carta/cuentas (año fiscal jul-jun) | `ModestoLafuente63.ctasVII19-VI20_...pdf` | sep 2020 | ⚠️ Época Alfredo/COVID — no es acta formal de junta |
 | 2021 | — | — | — | ❌ No disponible |
-| 2022 | — | — | — | ❌ No disponible |
-| 2023 | — | — | — | ❌ Solo gsheet de notas (no acta oficial) |
-| 2024 | JGO (cuentas 2023) | `Acta - 2024 - BMC.pdf` | feb 2024 | ✅ Último año BMC |
+| 2022 | JGO | `Recursos/varios../ModestoLafuente63.acta280322.pdf` | 28/03/2022 | ✅ Localizada fuera de `Recursos/Actas` |
+| 2023 | JGE / derrama cubiertas | `Comunicado a CP MODESTO LAFUENTE 63 - Derrama obra terrazas - 13022023 -v1-signed.pdf` + `Cuotas derrama obra cubierta - terrazas - CCPP Modesto Lafuente 63.pdf` | feb 2023 | ⚠️ Hay documentos de derrama 2023; acta JGE 01/02/2023 como tal pendiente de localizar |
+| 2024 | JGO (cuentas 2023) | `Acta - 2024 - BMC.pdf` | 23/01/2024 | ✅ Último año BMC |
 | 2025 | JGO | `ACTA JGO 04 02 2025 FIRMADA Y SELLADA.pdf` | 04/02/2025 | ✅ Primera junta Susana |
 | 2026 | JGE | `ACTA JGE 27 01 2026.pdf` | 27/01/2026 | ✅ + dosier balance 2025 |
 
 **Cambio de era**: hasta BMC, el año fiscal era julio-junio. Desde
 Susana (2025): año natural, junta siempre en **enero**.
+
+**PDFs históricos procesados en la sesión Claude:**
+- **Alfredo 2019-2020**: documento de cuentas/carta COVID, no acta
+  formal. Confirma ejercicio fiscal julio-junio, Alfredo Sánchez
+  Aguirre colegiado 3640, honorarios ~321-327 €/mes y prevención de
+  riesgos ~108 €/trimestre.
+- **BMC JGO 23/01/2024**: Carlos J. Remedios (colegiado 11351).
+  Five West figura todavía con Sótano + Lc I (12,88%). Ricardo Ferrín
+  representa a Five West y a Elías Bendahan Muyal (1ºC). Vanessa
+  Álvarez Gómez (colegiada 8773) queda nombrada administradora en la
+  transición posterior a BMC.
+- **Cuentas 2022-2023 y Presupuesto 2023-v2**: duplican/anexan el
+  bloque financiero de la JGO BMC 2024. Sirven para cuadrar saldos.
+
+**Otros PDFs localizados en `Recursos` para ordenar después:**
+- **Acta JGO 28/03/2022**: localizada en
+  `Recursos/varios../ModestoLafuente63.acta280322.pdf`. Conviene mover
+  o copiar a `Recursos/Actas/Junta 2022/` cuando se ordene la carpeta.
+- **Documentos derrama 2023**: localizados comunicado y cuotas de la
+  derrama de cubiertas/terrazas en `Recursos/varios..`. Sirven para
+  documentar la derrama, pero no equivalen necesariamente al acta JGE
+  01/02/2023 referenciada por BMC.
 
 #### Valores de `documentos.tipo` para actas y balances
 
@@ -1520,6 +1753,8 @@ Ejemplos:
 - **Susana Fernández Robleda**: administradora externa actual de la
   CP, desde julio 2024.
 - **Vanessa Álvarez Gómez**: administradora externa anterior a Susana.
+  Colegiada nº 8773. Nombrada en JGO 23/01/2024 como transición breve
+  entre BMC/Carlos J. Remedios y Susana.
   En `bank_movements` aparece con dos variantes (`VANESA ALVAREZ
   GÓMEZ` y `VANESSA ALVAREZ GOMEZ`); ambas se tratan como la misma
   persona vía alias en `providers`.
@@ -1532,6 +1767,13 @@ Ejemplos:
   En el extracto aparece como `CL SAUCE N 9-LC` en los recibos domiciliados.
 - **Cronología de administradores (de más reciente a más antiguo)**:
   Susana → Vanessa → Carlos (BMC) → Alfredo.
+- **Ricardo Ferrín**: apoderado/representante en juntas. En JGO
+  23/01/2024 representa a Five West Inversiones S.L. y a Elías
+  Bendahan Muyal (1ºC). No tratar como propietario ni como moroso por
+  defecto.
+- **PROINDA CONSULTORES**: titular anterior de 1ºB detectado en
+  cuentas Alfredo 2019-2020; aparece como deudor histórico, previo a
+  Rosario Hernández Recio.
 - **Portero**: puesto laboral histórico de la CP, cubierto hasta 2025
   por personal propio (Pedro Simón Gironés en `bank_movements`).
   Sustituido por servicio externalizado (Prevent XXI / D. Cubo) tras
@@ -1545,22 +1787,24 @@ Ejemplos:
 
 ## 15. Roadmap de migración
 
-1. **Cerrar `.md` v0.5** (este documento) y subirlo al repo.
-2. **Recibir SQL real de Supabase** → actualizar §12 a v0.6.
-3. **Esqueleto del frontend nuevo**: `index.html` + login magic link +
-   estructura de carpetas vacía.
-4. **Carga inicial del histórico bancario** (2021-2026) en
-   `bank_movements`. Una sola vez.
-5. **Migración tab a tab** del HTML legacy al nuevo.
-6. **Pestaña Admin**: CRUD proyectos, subida XLS extracto, subida PDFs
-   (presupuestos y facturas), gestión usuarios.
-7. **Conciliación trifásica**: UI para enlazar `budget → invoice →
+1. **Documento guía consolidado**: `ML63_INSTRUCCIONES.md` v0.25
+   como fuente de verdad operativa.
+2. **Modelo de datos Supabase**: cerrar SQL real para tablas faltantes
+   empezando por `propiedades`, `propietarios`, `titularidades` y su
+   relación con `user_roles`; después `facturas`, `presupuestos`,
+   `consumos_suministros`, `proveedores`, `actas/acuerdos`.
+3. **Esqueleto del frontend nuevo vanilla**: `index.html` + login
+   magic link + estructura `/css`, `/js`, `/app`, `/assets`.
+4. **Migración tab a tab** desde `ML63.html` POC al nuevo frontend.
+5. **Pestaña Admin**: CRUD proyectos, subida incremental de extractos,
+   ingesta de PDFs de trabajo por extracción a BBDD, subida de actas
+   descargables al bucket `actas`, gestión usuarios.
+6. **Conciliación trifásica**: UI para enlazar `budget → invoice →
    bank_movement` con sugerencias automáticas.
-8. **Implementación §11.5 — proyección 8A en tres escenarios** vivos.
-9. **Ingesta automatizada de PDFs** (extracción → validación →
-   inserción).
-10. **Vista invitado** filtrada por RLS.
-11. **Sustitución del HTML legacy** en `esr-design.com/ML63/`.
+7. **Energía y suministros**: extracción estructurada de PDFs
+   luz/gas/agua/ISTA → tablas → gráficos.
+8. **Vista invitado** filtrada por RLS.
+9. **Sustitución del HTML POC** en `esr-design.com/ML63/`.
 
 ---
 
@@ -1577,9 +1821,10 @@ Ejemplos:
   del edificio.
 - **No hay hitos en cadena**: el 8A, las actuaciones del año en curso,
   los imprevistos — todo está dentro del plan plurianual.
-- **Sub-hito relevante 8A** (§11.4): tiene proyección propia (§11.5)
-  porque condiciona la ejecución de un proyecto importante y
-  desbloquea ingreso recurrente futuro.
+- **Sub-hito relevante 8A** (§11.4): El objetivo es alcanzar **50.000 € en caja real** para iniciar la reforma. 
+  - **20.000 €** se mantienen como **colchón financiero de seguridad** (siempre intocable).
+  - **30.000 €** se destinan al presupuesto de la **reforma/proyecto del 8A**.
+  - **Estado actual (2026)**: El piso se ha alquilado temporalmente por **1.700 €** (ingreso único ya en caja) a la propietaria del 7ºB durante sus obras. Este ingreso computa directamente para el objetivo de los 50.000 €.
 
 ### 16.2 Capacidad de ahorro: dos decisiones estratégicas que la han ampliado
 
@@ -1596,11 +1841,11 @@ recientemente han aumentado significativamente esa capacidad:
 - **Coste puntual del despido en 2025**: indemnización + finiquito +
   últimas nóminas + embargos = **~−14.000 €** (cargos concentrados
   en 2025).
-- **Coste anual nuevo** (limpieza externa con Prevent XXI / D. Cubo,
-  2026 anualizado): **−7.947,72 €**.
-- **Ahorro estructural anual recurrente**: **+6.470 €/año** desde 2026.
-- **Ingreso adicional futuro**: alquiler del 8A una vez reformado,
-  estimado **≥ +12.000 €/año** desde ~2028.
+- **Coste anual nuevo (Estabilizado)**: Servicio externalizado íntegro con **Don Cubo / Prevent XXI**. La proyección de futuro se basa en la última cuota estabilizada de **−517,88 €/mes** (~6.215 €/año), eliminando el sesgo de empresas anteriores (El Pilar, MJM).
+- **Ahorro estructural anual recurrente**: **+7.758 €/año** (Diferencia entre el coste total del portero en 2024 y el contrato actual estabilizado).
+- **Ingreso adicional futuro**: alquiler del 8A una vez reformado, estimado **≥ +12.000 €/año** desde ~2028.
+- **Ahorro en Telecomunicaciones (Lasser)**: Se ha sustituido a Prisma por **Lasser**, que ahora integra tres servicios en un solo contrato (**videoportero, antena TV y sistema de seguridad**). Esta unificación genera un ahorro estructural al eliminar contratos dispersos y cuotas duplicadas.
+- **Mantenimiento de Cuotas**: Aunque el fin de las cargas laborales permitía bajarlas, la Junta 2026 acordó **mantener las cuotas actuales** para generar un "remanente" de ahorro más rápido, actuando como un motor de financiación interna para el plan plurianual.
 
 #### Decisión 2 · Cambio de administración externa (BMC → Susana, 2024-2025)
 
@@ -1621,13 +1866,14 @@ recientemente han aumentado significativamente esa capacidad:
 - **Ahorro estructural anual recurrente** vs BMC: **+778 €/año**
   (64,85 €/mes × 12).
 
-> El ahorro de administración es modesto: la decisión estratégica de
-> cambiar de administradora aportó simplicidad operativa y mejor
-> servicio, no un gran ahorro económico. **El error de cálculo de
-> versiones anteriores (~+8.990 €/año) provenía de mezclar honorarios
-> con obras canalizadas por BMC.**
+### 16.3 Cambio de paradigma en la Gestión (Era Susana)
 
-### 16.3 Resumen del ahorro estructural
+A diferencia de las etapas de Alfredo y BMC, donde el control era menos accesible para los propietarios, la etapa iniciada por **Susana Fernández Robleda** se caracteriza por:
+- **Transparencia Total**: Convocatorias y actas distribuidas puntualmente con dosieres de cuentas detallados.
+- **Bancarización Completa**: Todos los movimientos se realizan por banco y, fundamentalmente, con **referencias claras** que permiten la trazabilidad (conciliación) inmediata.
+- **Estabilización de Contratos**: Liquidación de contratos dispersos (como Prisma) y unificación en proveedores más eficientes (como Lasser o Don Cubo).
+
+### 16.4 Resumen del ahorro estructural
 
 | Concepto                                 | Ahorro anual recurrente |
 | ---------------------------------------- | ----------------------- |
@@ -1768,8 +2014,15 @@ puede dedicar al pull de proyectos sin subir cuotas.
 | 0.15    | 07/05/2026  | **§9.9 nueva — Regularizaciones de cargos recurrentes**: algunos proveedores acumulan deuda y la cobran en un único cargo. Caso registrado: Susana Fernández Robleda con cuota habitual −233,20 €/mes desde jul-2024, hueco feb-mar-abr 2026 cubierto por transferencia única de −899,94 € el 20/04/2026 (3 × 233,20 + 200,34 € de ajuste). Regla por defecto: mostrar el cargo en su fecha real (vista cronológica). Vista normalizada (redistribuir entre meses) opcional bajo petición. Claude debe avisar si detecta cargo >2× la cuota habitual de un proveedor recurrente. |
 | 0.16    | 07/05/2026  | **Aclaración clave: Susana subió su cuota en JGE 27/01/2026** de 233,20 € a 300,00 €/mes. Recalculado el desglose del cargo del 20/04/2026: 3 × 300 = 900 (no eran 200 € de ajuste, era la nueva tarifa). Actualizado §8.3 (catálogo proveedores), §9.9 (caso de referencia) y §16.2 (narrativa estratégica) con cifras corregidas. **Coste anual Susana ahora: 3.600 €/año**. Ahorro estructural por cambio de admin recalculado: **+8.793 €/año vs 2024** (antes +8.990). Ahorro estructural total: **+15.263 €/año** (antes +15.460). Capacidad estructural en 6-7 años: **~92-107k** (antes ~93-108k). |
 | 0.17    | 07/05/2026  | **§9.10 nueva — Catálogo de cargos atípicos verificados**. Repaso completo de los 1.304 movimientos identificó 90 cargos atípicos (>2× mediana). Validados con la presidencia y documentados con explicación: avería grande del ascensor (Duplex 1.774 €/mes × 3 meses dic25-feb26 = 5.324 €), proyecto Petter Movistar (Telefónica 200 € retirada cableado), cierre de contratos limpieza MJM y El Pilar, cambio de tarifa Prevent (cubos 166 → limpieza+cubos 518 €/mes desde mar 2026), Multiservicios cuota+cert energético caldera (1.230 € en mar 2025), Iberext renovación anual (513 € dic 2022), Gas Power regularización masiva (28/11/2024), Naturgy crisis energética 2021-2023, BMC honorarios admin anterior, Susana ajustes complementarios. Actualizado §8.2: Telefónica = móvil emergencias ascensor 690941447 (18,15 €/mes); Prevent = cuota nueva 517,88 €/mes desde mar 2026 (limpieza + cubos). |
-| 0.20    | 10/05/2026  | **Cierre de análisis de cargos no clasificados**. §9.10: nuevo bloque **Embargos** (4 cargos, −1.663,56 €) con tabla detallada e hipótesis TGSS (relación con despido portero feb 2025; acreedor pendiente confirmar con Susana). Nuevo bloque **Quirón Prevención cargos erróneos post-despido** (contrato cancelado correctamente; cobros por error reconocidos por Quirón, todos devueltos, impacto neto 0 €; coste real ~550–616 €/año a imputar al coste total del portero). Nuevo bloque **Impagados SEPA** (27 devoluciones, −2.161,39 € en escalada 2022-2026; candidatos morosos Ferrín/Yolanda pendientes de confirmar). Nuevo bloque **Pintalimpio S.L.** (−1.033,34 € el 03/03/2026). **A. Pirtac**: 8 facturas desglosadas (tabla completa Fra. 228-261; Fra. 245 privada Alicia Chocrón, no contabilizable). Fra. 228/229/233 etiquetadas `siniestro sanitas`. **§7.1b nuevo: censo propietarios** (24 unidades, 14 titulares, coeficientes; ⚠️ Lc I vendido Five West → empresa nueva desconocida; ⚠️ 7ºB vendido Bendahan → María Soledad Alonso López + Pedro pendiente). **§8.7 nuevo: alias de propietario**: regla Soledad → Sol (`MARIA SOLEDAD ALONSO LOPEZ` = alias "Sol", 7ºB); mecanismo REMESA RECIBOS documentado; propietarios manual-transfer identificados; Sara Silvo Martin y Adela Puyo Hernández sin identificar (pendiente Susana). **alquiler teórico 8A actualizado** a 1.000 €/mes = 12.000 €/año (ML63.html + §7.5). |
-| 0.19    | 09/05/2026  | **Mundo Reformas identificado y documentado**. §8.4: CIF B87508784, contacto Jorge, datos fiscales completos. §9.10: nuevos bloques para siniestro patinillo A/C 2024 (3.433,54 €), siniestro patio luces 2025 (660 €), bomba calefacción 2022-2023 vía Multiservicios (5.697,20 €) y siniestro sótano 2023 (3.569,50 €). §9.10 Impernova: presupuesto corregido a 31.111 € (antes ~40.000), derrama 32.000 €, sobrecoste 111% (antes 62%). §9.10: nuevo bloque con estado de identificación de los 17 cheques históricos (2968578–2968595): 7 identificados como Impernova (38.739,80 €), 5 identificados via cuentas BMC 2022-2023, 6 sin identificar (sin cuentas Alfredo 2021 disponibles). Impernova total corregido a **−65.729,07 €** (add T/593 humedades 7ºB 1.072,50 €). Siniestro sótano 2023: desglose por proveedor añadido (Pedreño bajada portal 2.007,50 + albañiles BMC 1.562,00). Banco 21/09/2023 Pedreño −2.007,50 € correctamente atribuido a siniestro sótano (no al patinillo 2024). §14 glosario: Carlos J. Remedios (colegiado 11351) y Alfredo Sánchez Aguirre documentados con datos de contacto completos; confirmado que BMC heredó SEPA de Alfredo (mismo despacho C/ Sauce 9). §11.4: Mundo Reformas añadido como proveedor candidato para reforma 8A (PJ.25.033.01). |
 | 0.18    | 07/05/2026  | **CORRECCIÓN MAYOR — Obra Impernova canalizada por BMC**. Los cargos altos de BMC en 2023-2024 (21.854 €) NO eran honorarios, eran pagos canalizados de la obra Impernova cubiertas 7B/8B. Coste real total de la obra: **−64.656,57 €** (37.667 € cheques + 5.135 € recibos directos + 21.854 € vía BMC), 62% por encima del presupuesto inicial de 40k. Obra **pre-plan plurianual**, NO cuenta en donut 180k. **§16.2 reescrita**: ahorro real de admin BMC→Susana es solo **+778 €/año** (no +8.793). **§16.3 corregida**: ahorro estructural total **+7.248 €/año** (no +15.263) = ~43-50k a 6-7 años (no ~92-107k). **Advertencia añadida sobre impacto en viabilidad §16.5**. **§9.10 actualizada** con bloque Impernova + corrección BMC + Susana cargos pequeños son gastos de oficina/sellos. **§8.4 ampliada** con Juan Francisco Agudo Pedreño (fontanería), Mundo Reformas y Obras, Attias Arquitectura, Impernova. A. Pirtac aclarado como Alexandru Pirtac/Pitarc. |
+| 0.19    | 09/05/2026  | **Mundo Reformas identificado y documentado**. §8.4: CIF B87508784, contacto Jorge, datos fiscales completos. §9.10: nuevos bloques para siniestro patinillo A/C 2024 (3.433,54 €), siniestro patio luces 2025 (660 €), bomba calefacción 2022-2023 vía Multiservicios (5.697,20 €) y siniestro sótano 2023 (3.569,50 €). §9.10 Impernova: presupuesto corregido a 31.111 € (antes ~40.000), derrama 32.000 €, sobrecoste 111% (antes 62%). §9.10: nuevo bloque con estado de identificación de los 17 cheques históricos (2968578–2968595): 7 identificados como Impernova (38.739,80 €), 5 identificados via cuentas BMC 2022-2023, 6 sin identificar (sin cuentas Alfredo 2021 disponibles). Impernova total corregido a **−65.729,07 €** (add T/593 humedades 7ºB 1.072,50 €). Siniestro sótano 2023: desglose por proveedor añadido (Pedreño bajada portal 2.007,50 + albañiles BMC 1.562,00). Banco 21/09/2023 Pedreño −2.007,50 € correctamente atribuido a siniestro sótano (no al patinillo 2024). §14 glosario: Carlos J. Remedios (colegiado 11351) y Alfredo Sánchez Aguirre documentados con datos de contacto completos; confirmado que BMC heredó SEPA de Alfredo (mismo despacho C/ Sauce 9). §11.4: Mundo Reformas añadido como proveedor candidato para reforma 8A (PJ.25.033.01). |
+| 0.20    | 10/05/2026  | **Cierre de análisis de cargos no clasificados**. §9.10: nuevo bloque **Embargos** (4 cargos, −1.663,56 €) con tabla detallada e hipótesis TGSS (relación con despido portero feb 2025; acreedor pendiente confirmar con Susana). Nuevo bloque **Quirón Prevención cargos erróneos post-despido** (contrato cancelado correctamente; cobros por error reconocidos por Quirón, todos devueltos, impacto neto 0 €; coste real ~550–616 €/año a imputar al coste total del portero). Nuevo bloque **Impagados SEPA** (27 devoluciones, −2.161,39 € en escalada 2022-2026; propietario devolvente pendiente de confirmar con Susana; 1ºA descartada). Nuevo bloque **Pintalimpio S.L.** (−1.033,34 € el 03/03/2026). **A. Pirtac**: 8 facturas desglosadas (tabla completa Fra. 228-261; Fra. 245 privada Alicia Chocrón, no contabilizable). Fra. 228/229/233 etiquetadas `siniestro sanitas`. **§7.1b nuevo: censo propietarios** (24 unidades, 14 titulares, coeficientes; Lc I vendido Five West → Dimarvi; Sótano sigue Five West; 7ºB vendido Bendahan → María Soledad Alonso López/Sol, titular única). **§8.7 nuevo: alias de propietario**: regla Soledad → Sol (`MARIA SOLEDAD ALONSO LOPEZ` = alias "Sol", 7ºB); mecanismo REMESA RECIBOS documentado; propietarios manual-transfer identificados; Adela Puyo Hernández mapeada operativamente a 1ºB. **alquiler teórico 8A actualizado** a 1.000 €/mes = 12.000 €/año (ML63.html + §7.5). |
+| 0.21    | 11/05/2026  | **Consolidación de los tres PDFs históricos leídos por Claude y correcciones de censo**. §12.6 documenta como procesados: `ModestoLafuente63.ctasVII19-VI20_20200924112352.pdf`, `Acta - 2024 - BMC.pdf` y `Cuentas 2022 y 2023 y Presupuesto 2023-v2.pdf`. Otros PDFs en `Recursos/varios..` quedan marcados como localizados para ordenar después. §7.1b: PROINDA CONSULTORES añadido como titular anterior de 1ºB; Ricardo Ferrín documentado como apoderado de Five West y Elías Bendahan Muyal, no propietario ni moroso; Five West tenía Sótano + Lc I en ene 2024 y solo Lc I se vende a Dimarvi antes de feb 2025. §14: Vanessa Álvarez Gómez colegiada 8773, transición breve entre BMC y Susana. §9.10: 1ºA/Yolanda descartada como morosa; saldo −388,71 € de 2023 era deuda de calefacción, no SEPA. |
+| 0.22    | 11/05/2026  | **Regla definitiva de almacenamiento**. Supabase se usa como fuente de verdad de datos estructurados (movimientos, gastos, ingresos, proyecciones, proyectos y metadatos), no como almacén general de PDFs/XLS. Los archivos de trabajo (extractos, facturas, presupuestos, siniestros, nóminas) permanecen en local y solo sus datos extraídos van a BBDD. Única excepción: bucket Storage `actas` para PDFs exactos de actas/balances descargables por propietarios autenticados mediante URLs firmadas. §1, §2.2 y §6.4 actualizados. |
+| 0.23    | 11/05/2026  | **Extracción estructurada de facturas de suministros**. §6.2 añade flujo específico para PDFs de luz/gas/agua/ISTA: el PDF queda local, pero se extraen período, importes, consumo, unidades, CUPS/contador y desglose fijo/variable/impuestos para alimentar gráficas, comparativas y proyecciones. §12.2/§12.3 anotan tabla futura `consumos_suministros`/`energy_invoices` pendiente de SQL real. |
+| 0.24    | 11/05/2026  | **Arquitectura frontend objetivo aclarada**. §4 distingue estado actual (`ML63.html` monolítico) como POC funcional de la estructura objetivo vanilla (`index.html`, `/css`, `/js`, `/app`, `/assets`). Regla de migración: conservar pestañas, roles, gráficos, flujos y experiencia similar; no introducir framework ni build system; separar responsabilidades; frontend siempre alimentado por datos de Supabase, no por parseo directo de PDFs. |
+| 0.25    | 11/05/2026  | **Visión futura SaaS + censo vivo**. §1.0 añade que ML63 puede evolucionar a producto SaaS para comunidades de propietarios, con modelo multi-comunidad/multi-tenant, admin superior, separación estricta de datos, onboarding, parametrización y RLS/auditoría reforzadas. §12.3b añade que `propiedades`, `propietarios` y `titularidades` son prioridad del punto 2: censo editable desde Admin, historial de ventas/cambios de titularidad y relación con `user_roles` sin confundir rol de acceso con titularidad. `user_roles` debe incluir estado (`activo`, `suspendido`, `baja`) para cortar acceso a antiguos propietarios tras una venta sin borrar historial. Se aclara que el objetivo inmediato sigue siendo migrar la POC `ML63.html` a una app vanilla sólida para ML63. |
+| 0.26    | 11/05/2026  | **Fase 2 Supabase aplicada: censo vivo y acceso**. Creadas tablas `propiedades`, `propietarios`, `titularidades` y `representantes`; ampliada `user_roles` con `estado`, `user_id`, `propietario_id`, `propiedad_id`; RLS activo y policies aplicadas. Cargado censo inicial: 25 propiedades, 17 propietarios, 25 titularidades activas y 4 representantes. §12.3 actualizado para mover esta parte de pendiente a completada. |
+| 0.27    | 12/05/2026  | **Corrección de estado de morosidad**. Confirmación por parte de la presidencia de que **no existen morosos**. Las devoluciones SEPA se identifican como incidencias técnicas o administrativas ya regularizadas. Reescrita sección §9.10 para eliminar referencias a "moroso persistente" y establecer nueva regla de interpretación de estos movimientos bancarios. |
 
 > Cualquier modificación posterior se anota aquí con resumen del cambio.
