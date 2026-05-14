@@ -15,24 +15,41 @@
     rel="stylesheet">
   <style>
     :root {
-      --primary: #4F46E5;
-      --primary-light: #EEF2FF;
+      --chart-1: #EF4444; /* Red */
+      --chart-2: #F59E0B; /* Orange */
+      --chart-3: #10B981; /* Emerald */
+      --chart-4: #0EA5E9; /* Sky Blue */
+      --chart-5: #8B5CF6; /* Violet */
+      --chart-6: #6366F1; /* Indigo */
+      --chart-7: #14B8A6; /* Teal */
+      
+      --c1: var(--chart-1); --c1-light: #FEE2E2;
+      --c2: var(--chart-2); --c2-light: #FEF3C7;
+      --c3: var(--chart-3); --c3-light: #D1FAE5;
+      --c4: var(--chart-4); --c4-light: #E0F2FE;
+      --c5: var(--chart-5); --c5-light: #F5F3FF;
+      --c6: var(--chart-6); --c6-light: #EEF2FF;
+      --c7: var(--chart-7); --c7-light: #F0FDFA;
+      
+      --primary: #6366F1;
       --secondary: #10B981;
-      --secondary-light: #D1FAE5;
       --accent: #F59E0B;
-      --accent-light: #FEF3C7;
       --danger: #EF4444;
-      --danger-light: #FEE2E2;
       --info: #0EA5E9;
-      --info-light: #E0F2FE;
       --purple: #8B5CF6;
-      --bg: #FAFBFC;
-      --surface: #FFFFFF;
-      --surface-alt: #F8FAFC;
+
+      --bg-white: #FFFFFF;
+      --bg-light: #FAFBFC;
+      --bg-gray: #F1F5F9;
+      --bg-darker: #E2E8F0;
+      
+      --bg: var(--bg-light);
+      --surface: var(--bg-white);
+      --surface-alt: var(--bg-gray);
       --text: #0F172A;
       --text-soft: #475569;
       --text-muted: #64748B;
-      --border: #E2E8F0;
+      --border: var(--bg-darker);
       --dark: #1E2330;
       --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
       --shadow-lg: 0 10px 25px -5px rgba(0, 0, 0, 0.08);
@@ -499,21 +516,23 @@
       font-weight: 500;
     }
 
-    .kpi.success .kpi-value {
-      color: var(--secondary);
-    }
+    .kpi.c1 { border-bottom-color: var(--c1); background: var(--c1-light); } .kpi.c1 .kpi-value { color: var(--c1) !important; }
+    .kpi.c2 { border-bottom-color: var(--c2); background: var(--c2-light); } .kpi.c2 .kpi-value { color: var(--c2) !important; }
+    .kpi.c3 { border-bottom-color: var(--c3); background: var(--c3-light); } .kpi.c3 .kpi-value { color: var(--c3) !important; }
+    .kpi.c4 { border-bottom-color: var(--c4); background: var(--c4-light); } .kpi.c4 .kpi-value { color: var(--c4) !important; }
+    .kpi.c5 { border-bottom-color: var(--c5); background: var(--c5-light); } .kpi.c5 .kpi-value { color: var(--c5) !important; }
+    .kpi.c6 { border-bottom-color: var(--c6); background: var(--c6-light); } .kpi.c6 .kpi-value { color: var(--c6) !important; }
+    .kpi.c7 { border-bottom-color: var(--c7); background: var(--c7-light); } .kpi.c7 .kpi-value { color: var(--c7) !important; }
+    .kpi.c8 { border-bottom-color: var(--c8); background: var(--c8-light); } .kpi.c8 .kpi-value { color: var(--c8) !important; }
 
-    .kpi.warning .kpi-value {
-      color: var(--accent);
-    }
-
-    .kpi.danger .kpi-value {
-      color: var(--danger);
-    }
-
-    .kpi.info .kpi-value {
-      color: var(--info);
-    }
+    .kpi.success { border-bottom-color: var(--c3); background: var(--c3-light); }
+    .kpi.success .kpi-value { color: var(--c3) !important; }
+    .kpi.warning { border-bottom-color: var(--c4); background: var(--c4-light); }
+    .kpi.warning .kpi-value { color: var(--c4) !important; }
+    .kpi.danger { border-bottom-color: var(--c5); background: var(--c5-light); }
+    .kpi.danger .kpi-value { color: var(--c5) !important; }
+    .kpi.info { border-bottom-color: var(--c2); background: var(--c2-light); }
+    .kpi.info .kpi-value { color: var(--c2) !important; }
 
     /* Desglose Gastos: 2 columnas anchas */
     .kpi-grid-split {
@@ -1800,7 +1819,7 @@
           <div class="kpi-label">2025</div>
           <div class="kpi-value" id="luz2025">---€</div>
         </div>
-        <div class="kpi info">
+        <div class="kpi success">
           <div class="kpi-label">2026</div>
           <div class="kpi-value" id="luz2026">---€</div>
         </div>
@@ -1815,25 +1834,21 @@
     <div class="card">
       <div class="card-title">🔥 Gas & Calefacción</div>
       <div class="kpi-grid">
-        <div class="kpi danger">
+        <div class="kpi c1">
           <div class="kpi-label">TEMP. 22/23</div>
           <div class="kpi-value" id="calef2223">---€</div>
-          <div class="kpi-sub">✅ Asiento Banco</div>
         </div>
-        <div class="kpi warning">
+        <div class="kpi c2">
           <div class="kpi-label">TEMP. 23/24</div>
           <div class="kpi-value" id="calef2324">---€</div>
-          <div class="kpi-sub">✅ Asiento Banco</div>
         </div>
-        <div class="kpi success">
+        <div class="kpi c3">
           <div class="kpi-label">TEMP. 24/25</div>
           <div class="kpi-value" id="calef2425">---€</div>
-          <div class="kpi-sub">✅ Asiento Banco</div>
         </div>
-        <div class="kpi info">
+        <div class="kpi c4">
           <div class="kpi-label">TEMP. 25/26*</div>
           <div class="kpi-value" id="calef2526">---€</div>
-          <div class="kpi-sub">✅ Asiento Banco</div>
         </div>
       </div>
       <div class="chart-section" style="margin-top:30px; border-top:1px solid var(--border); padding-top:20px">
@@ -1848,13 +1863,13 @@
         </div>
         <div class="legend">
           <div class="legend-item">
-            <div class="legend-color" style="background: #EF4444"></div>Gas Power (Gas)
+            <div class="legend-color" style="background: var(--c1)"></div>Gas Power (Gas)
           </div>
           <div class="legend-item">
-            <div class="legend-color" style="background: #F59E0B"></div>Multiservicios (Mantenimiento)
+            <div class="legend-color" style="background: var(--c2)"></div>Multiservicios (Mantenimiento)
           </div>
           <div class="legend-item">
-            <div class="legend-color" style="background: #4F46E5"></div>Techem (Lecturas)
+            <div class="legend-color" style="background: var(--c3)"></div>Techem (Lecturas)
           </div>
         </div>
       </div>
@@ -1869,22 +1884,52 @@
 
     <!-- AGUA -->
     <div class="card">
-      <div class="card-title">💧 Agua · Canal de Isabel II + ISTA</div>
+      <div class="card-title">💧 Agua · Canal de Isabel II + ISTA (Contadores)</div>
+      <div style="margin-bottom: 20px; padding: 12px 16px; background: #D1FAE5; border-left: 3px solid #10B981; border-radius: 6px; font-size: 14px; color: #065F46;">
+        ✅ <strong>Contadores regularizados:</strong> Todos los contadores de agua del edificio están ahora con sus mediciones correctas. Proyecto «ISTA Contadores de agua regularizados» completado en 2026.
+      </div>
+      <p class="card-desc">
+        <strong>Dos conceptos del agua del edificio:</strong> el <strong>Canal de Isabel II</strong> factura el suministro de agua bimensualmente (6 cargos al año), e <strong>ISTA Metering Services</strong> gestiona los contadores individuales de agua (cargo anual). La administración regulariza con los vecinos según consumo individual.
+      </p>
       <div class="kpi-grid">
-        <div class="kpi">
-          <div class="kpi-label">2021</div>
-          <div class="kpi-value" id="agua2021">---€</div>
-        </div>
-        <div class="kpi info">
-          <div class="kpi-label">2026</div>
-          <div class="kpi-value" id="agua2026">---€</div>
-        </div>
+        <div class="kpi c1"><div class="kpi-label">2021 Total</div><div class="kpi-value" id="agua2021">---€</div></div>
+        <div class="kpi c2"><div class="kpi-label">2022 Total</div><div class="kpi-value" id="agua2022">---€</div></div>
+        <div class="kpi c3"><div class="kpi-label">2023 Total</div><div class="kpi-value" id="agua2023">---€</div></div>
+        <div class="kpi c4"><div class="kpi-label">2024 Total</div><div class="kpi-value" id="agua2024">---€</div></div>
+        <div class="kpi c5"><div class="kpi-label">2025 Total</div><div class="kpi-value" id="agua2025">---€</div></div>
+        <div class="kpi c6"><div class="kpi-label">2026 Total</div><div class="kpi-value" id="agua2026">---€</div></div>
       </div>
       <div class="chart-section">
-        <div class="chart-title">Consumo Histórico Agua</div>
+        <div class="chart-title">Coste Anual Agua · Desglose Canal de Isabel II + ISTA</div>
         <div class="chart-container">
           <div class="stacked-chart" id="aguaChart"></div>
         </div>
+        <div class="legend">
+          <div class="legend-item"><div class="legend-color" style="background: var(--c1)"></div>Canal de Isabel II (suministro · bimensual)</div>
+          <div class="legend-item"><div class="legend-color" style="background: var(--c2)"></div>ISTA Metering (contadores · anual)</div>
+        </div>
+      </div>
+
+
+      <div style="margin-top:40px; padding-top:30px; border-top:1px solid var(--border)">
+        <div class="card-title" style="font-size:18px">📋 Liquidación bimestral ISTA · Reparto vecinos/CP</div>
+        <p class="card-desc">
+          Cada 2 meses ISTA emite una liquidación con los consumos individuales medidos en cada contador. La administración cobra a los vecinos su parte (incluida en la remesa) y la <strong>CP paga directamente sus 3 contadores comunitarios</strong>: limpieza (grifo basura), caldera y la vivienda CP del 8º A.
+        </p>
+        <div style="font-size: 14px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px;">📅 Período actual · 01/01/2026 – 01/03/2026 (59 días)</div>
+        <div class="kpi-grid">
+          <div class="kpi c1"><div class="kpi-label">Total liquidación finca</div><div class="kpi-value">535,91€</div><div class="kpi-sub">26 recibos · 327 m³</div></div>
+          <div class="kpi c2"><div class="kpi-label">Cobrado a vecinos</div><div class="kpi-value">514,36€</div><div class="kpi-sub">23 contadores individuales · 96%</div></div>
+          <div class="kpi c3"><div class="kpi-label">Pagado por la CP</div><div class="kpi-value">21,55€</div><div class="kpi-sub">3 contadores comunitarios · 4%</div></div>
+        </div>
+        <div style="font-size: 14px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin: 18px 0 10px;">🏢 Desglose de los 3 contadores que paga la CP</div>
+        <div class="kpi-grid">
+          <div class="kpi c4"><div class="kpi-label">🧹 Limpieza</div><div class="kpi-value">8,51€</div><div class="kpi-sub">Grifo basura · 2 m³ consumidos</div></div>
+          <div class="kpi c5"><div class="kpi-label">🔥 Caldera</div><div class="kpi-value">6,52€</div><div class="kpi-sub">Cuarto calderas · 0 m³ (cuota fija)</div></div>
+          <div class="kpi c6"><div class="kpi-label">🏠 Vivienda CP</div><div class="kpi-value">6,52€</div><div class="kpi-sub">8º A · 0 m³ (cuota fija)</div></div>
+        </div>
+
+
       </div>
     </div>
 
@@ -2657,12 +2702,12 @@
       makeBars('planProgressChart',
         [Math.round(completedCosts), Math.round(progressCosts), Math.round(pendingCosts), Math.round(totalGrossCosts)],
         ['Completados', 'En progreso', 'Pendientes', 'Gasto total'],
-        { fmt: v => Math.round(v / 1000) + 'k€', colorFn: (v, i) => ['#10B981', '#F59E0B', '#94A3B8', '#1E3A8A'][i] });
+        { fmt: v => Math.round(v / 1000) + 'k€', colorFn: (v, i) => ['var(--chart-3)', 'var(--chart-4)', '#94A3B8', 'var(--chart-1)'][i] });
 
       makeBars('burndownChart',
         [Math.round(totalNet), Math.round(unassignedFrame), PRESUPUESTO],
         ['Con cifra', 'Sin cifra', 'Marco total'],
-        { fmt: v => Math.round(v / 1000) + 'k€', colorFn: (v, i) => ['#0F172A', '#CBD5E1', '#94A3B8'][i] });
+        { fmt: v => Math.round(v / 1000) + 'k€', colorFn: (v, i) => ['var(--chart-1)', '#CBD5E1', '#94A3B8'][i] });
     }
 
     // Las llamadas a makeBars se gestionan ahora dinámicamente desde loadDashboardData()
@@ -2909,15 +2954,19 @@
         });
 
         // 1. Gráficos de Suministros
+        // Paleta Global de 7 colores alineada con la comparativa: Rojo, Naranja, Verde, Azul...
+        const pal = ['#EF4444', '#F59E0B', '#10B981', '#0EA5E9', '#8B5CF6', '#6366F1', '#14B8A6'];
+
+        // 1. Gráficos de Suministros
         makeBars('luzAnualChart', years.map(y => stats.luz[y]), yAxis, {
           fmt: v => Math.round(v).toLocaleString('es-ES') + '€',
-          colorFn: (v, i) => i < 2 ? '#EF4444' : i < 3 ? '#F59E0B' : '#10B981'
+          colorFn: (v, i) => pal[i % pal.length] // Secuencia del 1 al 7
         });
 
         makeStackedBars('aguaChart', [
           years.map(y => stats.agua.canal[y]),
           years.map(y => stats.agua.ista[y])
-        ], yAxis, ['#0EA5E9', '#4F46E5']);
+        ], yAxis, [pal[0], pal[1]]); // chart-1, chart-2
 
         // 2. Gráfico del Portero (Histórico)
         makeStackedBars('porteroHistChart', [
@@ -2926,41 +2975,41 @@
           years.map(y => stats.portero.quiron[y]),
           years.map(y => stats.portero.elportero[y]),
           years.map(y => stats.portero.vivienda[y])
-        ], ['2021', '2022', '2023', '2024'], ['#EF4444', '#F59E0B', '#8B5CF6', '#06B6D4', '#0F172A']);
+        ], ['2021', '2022', '2023', '2024'], pal.slice(0, 5));
 
         // 3. Gráficos de Servicios
         makeStackedBars('comunicChart', [
           years.map(y => stats.comunic.prisma[y]),
           years.map(y => stats.comunic.lasser[y])
-        ], yAxis, ['#EF4444', '#10B981']);
+        ], yAxis, [pal[0], pal[1]]);
 
         const limpYears = ['2024', '2025', '2026'];
         makeStackedBars('limpiezaChart', [
           limpYears.map(y => stats.limpieza.mjm[y]),
           limpYears.map(y => stats.limpieza.pilar[y]),
           limpYears.map(y => stats.limpieza.cubo[y])
-        ], ['2024', '2025', '2026*'], ['#EF4444', '#F59E0B', '#10B981']);
+        ], ['2024', '2025', '2026*'], [pal[0], pal[1], pal[2]]);
 
         makeStackedBars('gasDestinyChart', [
           years.map(y => stats.calef.gas[y]),
           years.map(y => stats.calef.mant[y]),
           years.map(y => stats.calef.techem[y])
-        ], yAxis, ['#EF4444', '#F59E0B', '#4F46E5']);
+        ], yAxis, [pal[0], pal[1], pal[2]]);
 
         makeBars('adminChart', years.map(y => stats.admin[y]), yAxis, {
           fmt: v => Math.round(v).toLocaleString('es-ES') + '€',
-          colorFn: (v, i) => i < 3 ? '#EF4444' : '#10B981'
+          colorFn: (v, i) => pal[i % pal.length] // Secuencia del 1 al 7
         });
 
         makeStackedBars('comisionesBancoChart', [
           years.map(y => stats.banco[y] * 0.8),
           years.map(y => stats.banco[y] * 0.2)
-        ], yAxis, ['#4F46E5', '#F59E0B']);
+        ], yAxis, [pal[0], pal[1]]);
 
         makeStackedBars('ascensorChart', [
           years.map(y => stats.ascensor[y] * 0.95),
           years.map(y => stats.ascensor[y] * 0.05)
-        ], yAxis, ['#4F46E5', '#0EA5E9']);
+        ], yAxis, [pal[0], pal[1]]);
 
         // 4. Tesorería 2026
         const moves2026 = moves.filter(m => m._iso && m._iso.startsWith('2026'));
@@ -3045,8 +3094,8 @@
         setInner('ahorroAnualCaja', '~' + fmtNum(ahorroPortero) + '€');
         setInner('auditDespido', `🏦 <strong style="color:#1E3A8A">Cruce banco:</strong> Nóminas mensuales (621€/mes 2021-22, 708€/mes 2023, 771€/mes 2024) · TGSS (Seg.Social mensual) · Quirón Prevención (4 cargos/año) · el Portero transferencias extra verano 2024 (731€) · <strong>Dinámico: Finiquito e indemnización (${fmtNum(stats.despido.finiquito)}€)</strong> · <strong>Embargos Hacienda atrasos IRPF (${fmtNum(stats.despido.embargos)}€)</strong>`);
 
-        // 8. KPIs Energía
-        ['2021', '2022', '2023', '2024', '2025', '2026'].forEach(y => {
+        // 8. KPIs Energía (Ordenados por paleta)
+        ['2021', '2022', '2023', '2024', '2025', '2026'].forEach((y, i) => {
           setInner('luz' + y, fmtNum(stats.luz[y]) + '€');
           setInner('agua' + y, fmtNum(stats.agua.canal[y] + stats.agua.ista[y]) + '€');
         });
@@ -3109,12 +3158,12 @@
         setInner('audit2025', `Datos dinámicos Supabase (2025). Ingresos: <b>${fmtNum(ing2025)}€</b> · Gastos: <b>${fmtNum(gas2025)}€</b>. Movimientos: <b>${moves2025.length}</b>.`);
 
         // 11. Grids de KPIs restantes
-        setInner('kpiComunicaciones', years.map(y => `<div class="kpi"><div class="kpi-label">${y}</div><div class="kpi-value">${fmtNum(stats.comunic.prisma[y] + stats.comunic.lasser[y])}€</div></div>`).join(''));
-        setInner('kpiProtesins', years.map(y => `<div class="kpi"><div class="kpi-label">${y}</div><div class="kpi-value">${fmtNum(stats.protesins[y])}€</div></div>`).join(''));
-        setInner('kpiExtintores', years.map(y => `<div class="kpi"><div class="kpi-label">${y}</div><div class="kpi-value">${fmtNum(stats.extintores[y])}€</div></div>`).join(''));
-        setInner('kpiAscensores', years.map(y => `<div class="kpi"><div class="kpi-label">${y}</div><div class="kpi-value">${fmtNum(stats.ascensor[y])}€</div></div>`).join(''));
-        setInner('kpiAdmin', years.map(y => `<div class="kpi"><div class="kpi-label">${y}</div><div class="kpi-value">${fmtNum(stats.admin[y])}€</div></div>`).join(''));
-        setInner('kpiLuzGrid', years.map(y => `<div class="kpi"><div class="kpi-label">${y}</div><div class="kpi-value">${fmtNum(stats.luz[y])}€</div></div>`).join(''));
+        setInner('kpiLuzGrid', years.map((y, i) => `<div class="kpi c${i + 1}"><div class="kpi-label">${y}</div><div class="kpi-value">${fmtNum(stats.luz[y])}€</div></div>`).join(''));
+        setInner('kpiComunicaciones', years.map((y, i) => `<div class="kpi c${i + 1}"><div class="kpi-label">${y}</div><div class="kpi-value">${fmtNum(stats.comunic.prisma[y] + stats.comunic.lasser[y])}€</div></div>`).join(''));
+        setInner('kpiProtesins', years.map((y, i) => `<div class="kpi c${i + 1}"><div class="kpi-label">${y}</div><div class="kpi-value">${fmtNum(stats.protesins[y])}€</div></div>`).join(''));
+        setInner('kpiExtintores', years.map((y, i) => `<div class="kpi c${i + 1}"><div class="kpi-label">${y}</div><div class="kpi-value">${fmtNum(stats.extintores[y])}€</div></div>`).join(''));
+        setInner('kpiAscensores', years.map((y, i) => `<div class="kpi c${i + 1}"><div class="kpi-label">${y}</div><div class="kpi-value">${fmtNum(stats.ascensor[y])}€</div></div>`).join(''));
+        setInner('kpiAdmin', years.map((y, i) => `<div class="kpi c${i + 1}"><div class="kpi-label">${y}</div><div class="kpi-value">${fmtNum(stats.admin[y])}€</div></div>`).join(''));
 
         // 12. Gráficos de Gas
         await loadGasChartData();
@@ -3124,7 +3173,7 @@
         const dataNaturgy = yearsNaturgy.map(y => stats.luz[y] || 0);
         makeBars('naturgyChart', dataNaturgy, yearsNaturgy, {
           fmt: v => fmtNum(v) + '€',
-          colorFn: (v, i) => i === 0 || i === 1 ? '#FCA5A5' : i === 5 ? '#10B981' : '#FDBA74'
+          colorFn: (v, i) => pal[i % pal.length]
         });
       } catch (err) {
         console.error('Error crítico en loadDashboardData:', err);
@@ -3904,17 +3953,17 @@
           data: {
             labels: ['Oct', 'Nov', 'Dic', 'Ene', 'Feb', 'Mar', 'Abr', 'May'],
             datasets: [
-              { label: 'Temp. 22/23', data: s2223, backgroundColor: '#EF4444', borderRadius: 2 }, // Rojo (danger)
-              { label: 'Temp. 23/24', data: s2324, backgroundColor: '#F59E0B', borderRadius: 2 }, // Naranja (warning)
-              { label: 'Temp. 24/25', data: s2425, backgroundColor: '#10B981', borderRadius: 2 }, // Verde (success)
-              { label: 'Temp. 25/26 (Actual)', data: s2526, backgroundColor: '#0EA5E9', borderRadius: 2 } // Azul (info)
+              { label: 'Temp. 22/23', data: s2223, backgroundColor: '#EF4444', borderRadius: 2 }, // Rojo
+              { label: 'Temp. 23/24', data: s2324, backgroundColor: '#F59E0B', borderRadius: 2 }, // Naranja
+              { label: 'Temp. 24/25', data: s2425, backgroundColor: '#10B981', borderRadius: 2 }, // Verde
+              { label: 'Temp. 25/26 (Actual)', data: s2526, backgroundColor: '#0EA5E9', borderRadius: 2 } // Azul
             ]
           },
           options: {
             responsive: true,
             maintainAspectRatio: false,
             plugins: {
-              legend: { position: 'bottom', labels: { boxWidth: 12, font: { size: 10 } } },
+              legend: { position: 'bottom', labels: { boxWidth: 12, font: { size: 14 } } },
               tooltip: {
                 callbacks: {
                   label: (ctx) => `${ctx.dataset.label}: ${Math.round(ctx.raw).toLocaleString()} €`
@@ -3924,10 +3973,10 @@
             scales: {
               y: {
                 beginAtZero: true,
-                title: { display: true, text: 'Coste Facturas (€)', font: { size: 10 } },
-                ticks: { font: { size: 10 }, callback: v => v.toLocaleString() + '€' }
+                title: { display: true, text: 'Coste Facturas (€)', font: { size: 14 } },
+                ticks: { font: { size: 14 }, callback: v => v.toLocaleString() + '€' }
               },
-              x: { ticks: { font: { size: 10 } } }
+              x: { ticks: { font: { size: 14 } } }
             }
           }
         });
