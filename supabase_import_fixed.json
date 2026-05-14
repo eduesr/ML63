@@ -1,0 +1,252 @@
+[
+  {
+    "fecha_inicio": "2022-12-21",
+    "fecha_fin": "2023-01-16",
+    "consumo_kwh": 10402,
+    "tipo_suministro": "gas",
+    "proveedor": "Comercializadora Regulada",
+    "numero_factura": "FE231370018903",
+    "consumo_valido": true,
+    "validacion_notas": "Extraído de FE23137001890342.pdf"
+  },
+  {
+    "fecha_inicio": "2023-01-17",
+    "fecha_fin": "2023-02-15",
+    "consumo_kwh": 27263,
+    "tipo_suministro": "gas",
+    "proveedor": "Comercializadora Regulada",
+    "numero_factura": "FE231370043109",
+    "consumo_valido": true,
+    "validacion_notas": "Extraído de FE23137004310957.pdf"
+  },
+  {
+    "fecha_inicio": "2023-02-16",
+    "fecha_fin": "2023-03-15",
+    "consumo_kwh": 17900,
+    "tipo_suministro": "gas",
+    "proveedor": "Comercializadora Regulada",
+    "numero_factura": "FE231370067490",
+    "consumo_valido": true,
+    "validacion_notas": "Extraído de FE23137006749032.pdf"
+  },
+  {
+    "fecha_inicio": "2023-03-16",
+    "fecha_fin": "2023-04-14",
+    "consumo_kwh": 6772,
+    "tipo_suministro": "gas",
+    "proveedor": "Comercializadora Regulada",
+    "numero_factura": "FE231370090362",
+    "consumo_valido": true,
+    "validacion_notas": "Extraído de FE23137009036208.pdf"
+  },
+  {
+    "fecha_inicio": "2023-04-15",
+    "fecha_fin": "2023-05-16",
+    "consumo_kwh": 1479,
+    "tipo_suministro": "gas",
+    "proveedor": "Comercializadora Regulada",
+    "numero_factura": "FE231370116502",
+    "consumo_valido": true,
+    "validacion_notas": "Extraído de FE23137011650280.pdf"
+  },
+  {
+    "fecha_inicio": "2023-10-17",
+    "fecha_fin": "2023-11-15",
+    "consumo_kwh": 8682,
+    "tipo_suministro": "gas",
+    "proveedor": "Comercializadora Regulada",
+    "numero_factura": "FE231370267905",
+    "consumo_valido": true,
+    "validacion_notas": "Extraído de FE23137026790521.pdf"
+  },
+  {
+    "fecha_inicio": "2023-11-16",
+    "fecha_fin": "2023-12-15",
+    "consumo_kwh": 18829,
+    "tipo_suministro": "gas",
+    "proveedor": "Comercializadora Regulada",
+    "numero_factura": "FE231370296400",
+    "consumo_valido": true,
+    "validacion_notas": "Extraído de FE23137029640071.pdf"
+  },
+  {
+    "fecha_inicio": "2023-12-16",
+    "fecha_fin": "2024-01-15",
+    "consumo_kwh": 8816,
+    "tipo_suministro": "gas",
+    "proveedor": "Comercializadora Regulada",
+    "numero_factura": "FE241370116842",
+    "consumo_valido": true,
+    "validacion_notas": "Extraído de FE24137011684224.pdf"
+  },
+  {
+    "fecha_inicio": "2024-01-16",
+    "fecha_fin": "2024-02-15",
+    "consumo_kwh": 15570,
+    "tipo_suministro": "gas",
+    "proveedor": "Comercializadora Regulada",
+    "numero_factura": "FE241370116843",
+    "consumo_valido": true,
+    "validacion_notas": "Extraído de FE24137011684274.pdf"
+  },
+  {
+    "fecha_inicio": "2024-02-16",
+    "fecha_fin": "2024-03-15",
+    "consumo_kwh": 16225,
+    "tipo_suministro": "gas",
+    "proveedor": "Comercializadora Regulada",
+    "numero_factura": "FE241370116844",
+    "consumo_valido": true,
+    "validacion_notas": "Extraído de FE24137011684328.pdf"
+  },
+  {
+    "fecha_inicio": "2024-03-16",
+    "fecha_fin": "2024-04-15",
+    "consumo_kwh": 10024,
+    "tipo_suministro": "gas",
+    "proveedor": "Comercializadora Regulada",
+    "numero_factura": "FE241370116845",
+    "consumo_valido": true,
+    "validacion_notas": "Extraído de FE24137011684383.pdf"
+  },
+  {
+    "fecha_inicio": "2024-04-16",
+    "fecha_fin": "2024-05-14",
+    "consumo_kwh": 3586,
+    "tipo_suministro": "gas",
+    "proveedor": "Comercializadora Regulada",
+    "numero_factura": "FE241370116846",
+    "consumo_valido": true,
+    "validacion_notas": "Extraído de FE24137011684420.pdf"
+  },
+  {
+    "fecha_inicio": "2024-10-16",
+    "fecha_fin": "2024-11-15",
+    "consumo_kwh": 5191,
+    "tipo_suministro": "gas",
+    "proveedor": "Comercializadora Regulada",
+    "numero_factura": "FE241370265667",
+    "consumo_valido": true,
+    "validacion_notas": "Extraído de FE24137026566729.pdf"
+  },
+  {
+    "fecha_inicio": "2024-11-16",
+    "fecha_fin": "2024-12-16",
+    "consumo_kwh": 17468,
+    "tipo_suministro": "gas",
+    "proveedor": "Gas Power",
+    "numero_factura": "FE251370001444",
+    "consumo_valido": true,
+    "validacion_notas": "Extraído de FE25137000144451.pdf"
+  },
+  {
+    "fecha_inicio": "2024-12-17",
+    "fecha_fin": "2025-01-15",
+    "consumo_kwh": 18585,
+    "tipo_suministro": "gas",
+    "proveedor": "Gas Power",
+    "numero_factura": "FE251370013265",
+    "consumo_valido": true,
+    "validacion_notas": "Extraído de FE25137001326566.pdf"
+  },
+  {
+    "fecha_inicio": "2025-01-16",
+    "fecha_fin": "2025-02-14",
+    "consumo_kwh": 21811,
+    "tipo_suministro": "gas",
+    "proveedor": "Gas Power",
+    "numero_factura": "FE251370041635",
+    "consumo_valido": true,
+    "validacion_notas": "Extraído de FE25137004163561.pdf"
+  },
+  {
+    "fecha_inicio": "2025-02-15",
+    "fecha_fin": "2025-03-14",
+    "consumo_kwh": 15159,
+    "tipo_suministro": "gas",
+    "proveedor": "Gas Power",
+    "numero_factura": "FE251370063237",
+    "consumo_valido": true,
+    "validacion_notas": "Extraído de FE25137006323795.pdf"
+  },
+  {
+    "fecha_inicio": "2025-03-15",
+    "fecha_fin": "2025-04-15",
+    "consumo_kwh": 17297,
+    "tipo_suministro": "gas",
+    "proveedor": "Gas Power",
+    "numero_factura": "FE251370090597",
+    "consumo_valido": true,
+    "validacion_notas": "Extraído de FE25137009059737.pdf"
+  },
+  {
+    "fecha_inicio": "2025-04-16",
+    "fecha_fin": "2025-05-14",
+    "consumo_kwh": 3448,
+    "tipo_suministro": "gas",
+    "proveedor": "Gas Power",
+    "numero_factura": "FE251370112620",
+    "consumo_valido": true,
+    "validacion_notas": "Extraído de FE25137011262073.pdf"
+  },
+  {
+    "fecha_inicio": "2025-09-16",
+    "fecha_fin": "2025-10-15",
+    "consumo_kwh": 11,
+    "tipo_suministro": "gas",
+    "proveedor": "Gas Power",
+    "numero_factura": "FE251370232121",
+    "consumo_valido": true,
+    "validacion_notas": "Extraído de FE25137023212108.pdf"
+  },
+  {
+    "fecha_inicio": "2025-10-16",
+    "fecha_fin": "2025-11-14",
+    "consumo_kwh": 5314,
+    "tipo_suministro": "gas",
+    "proveedor": "Gas Power",
+    "numero_factura": "FE251370256988",
+    "consumo_valido": true,
+    "validacion_notas": "Extraído de FE25137025698878.pdf"
+  },
+  {
+    "fecha_inicio": "2025-11-15",
+    "fecha_fin": "2025-12-16",
+    "consumo_kwh": 17528,
+    "tipo_suministro": "gas",
+    "proveedor": "Gas Power",
+    "numero_factura": "FE251370284019",
+    "consumo_valido": true,
+    "validacion_notas": "Extraído de FE25137028401915.pdf"
+  },
+  {
+    "fecha_inicio": "2025-12-17",
+    "fecha_fin": "2026-01-16",
+    "consumo_kwh": 18073,
+    "tipo_suministro": "gas",
+    "proveedor": "Gas Power",
+    "numero_factura": "FE261370019061",
+    "consumo_valido": true,
+    "validacion_notas": "Extraído de FE26137001906182.pdf"
+  },
+  {
+    "fecha_inicio": "2026-01-17",
+    "fecha_fin": "2026-02-16",
+    "consumo_kwh": 27735,
+    "tipo_suministro": "gas",
+    "proveedor": "Gas Power",
+    "numero_factura": "FE261370044305",
+    "consumo_valido": true,
+    "validacion_notas": "Extraído de FE26137004430546.pdf"
+  },
+  {
+    "fecha_inicio": "2026-02-17",
+    "fecha_fin": "2026-03-16",
+    "consumo_kwh": 13421,
+    "tipo_suministro": "gas",
+    "proveedor": "Gas Power",
+    "numero_factura": "FE261370069091",
+    "consumo_valido": true,
+    "validacion_notas": "Extraído de FE26137006909149.pdf"
+  }
+]
