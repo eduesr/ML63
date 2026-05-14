@@ -56,8 +56,8 @@ ML63/
 
 | Tabla | Operaciones | Descripción |
 |-------|-------------|-------------|
-| `proyectos` | SELECT / INSERT / UPDATE / DELETE | Proyectos de mejora con presupuesto, estado, notas |
-| `movimientos` | SELECT / INSERT | Movimientos bancarios (fecha, concepto, importe, saldo, ref1) |
+| `proyectos` | SELECT / INSERT / UPDATE / DELETE | Proyectos de mejora con presupuesto, estado, notas. **UNIQUE(nombre, año)** |
+| `movimientos` | SELECT / INSERT | Movimientos bancarios (fecha, concepto, importe, saldo, ref1). **UNIQUE(fecha, concepto, importe, saldo)** |
 | `user_roles` | SELECT / INSERT / UPDATE / UPSERT | Email → rol (admin / viewer) |
 | `session_log` | SELECT / INSERT | Auditoría de logins/logouts |
 | `documentos` | SELECT | Extractos bancarios y documentos subidos |
@@ -106,9 +106,10 @@ ML63/
 ## Datos bancarios
 
 - Fuente: Banc Sabadell, cuenta `0081-7125-93-0001279538`
-- Rango histórico: 2020-12-31 → 2026-04-20
-- Total: 1.304 movimientos
+- Rango histórico: 2020-12-31 → 2026-05-12
+- Total: 1.326 movimientos (tras deduplicación 13/05/2026)
 - La carga inicial está en `carga_inicial_movimientos.sql` — ejecutar **solo** si `movimientos` está vacía
+- **Estado Supabase:** Tablas pobladas y en producción ✅
 
 ## Normas de desarrollo
 
