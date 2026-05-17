@@ -10,7 +10,7 @@ with open('/Users/eduardosr/Documents/GitHub/ML63/supabase_import.json') as f:
     records = json.load(f)
 
 SUPABASE_URL = "https://byqtsuskdbgwpyvyiprc.supabase.co"
-SERVICE_ROLE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ5cXRzdXNrZGJnd3B5dnlpcHJjIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3Nzc2MTc5NCwiZXhwIjoyMDkzMzM3Nzk0fQ.sq7ik4LUxOXErsnRBdYZZP-70CFzrxWoy4qb2DsUymg"
+SERVICE_ROLE_KEY = "TU_SERVICE_ROLE_KEY_AQUI"
 supabase = create_client(SUPABASE_URL, SERVICE_ROLE_KEY)
 
 print("\n" + "="*80)

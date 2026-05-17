@@ -1939,59 +1939,82 @@
 
     <!-- LIMPIEZA EXTERNALIZADA -->
     <div class="card">
-      <div class="card-title">🧹 Limpieza externalizada · Histórico de proveedores</div>
+      <div class="card-title">🧹 Limpieza externalizada · Dos servicios, tres proveedores</div>
       <p class="card-desc">
-        Cronología de empresas de limpieza: <strong>MJM</strong> (anterior) → <strong>Cubos El Pilar</strong> (may
-        2025–feb 2026) → <strong>Don Cubo / Prevent XXI</strong> (actual desde jun 2025, asumió todo el servicio en
-        marzo 2026 con cuota única). Cada empresa hacía limpieza + cubos.
+        La comunidad contrata <strong>dos servicios independientes</strong>: sacado diario de cubos de basura y limpieza del edificio.
+        MJM prestó ambos hasta cancelación en abr'25. Desde may'25 Prevent XXI (Don Cubo) asumió los cubos y El Pilar la limpieza.
+        En mar'26 Prevent XXI absorbió también la limpieza con cuota única.
       </p>
+
+      <!-- Timeline visual -->
+      <div style="margin: 16px 0; overflow-x:auto">
+        <table style="width:100%;border-collapse:collapse;font-size:13px;min-width:520px">
+          <thead>
+            <tr style="background:#F8FAFC">
+              <th style="padding:8px 12px;text-align:left;border-bottom:2px solid #E2E8F0;color:var(--text-muted);font-weight:600">Periodo</th>
+              <th style="padding:8px 12px;text-align:center;border-bottom:2px solid #E2E8F0">🗑️ Cubos</th>
+              <th style="padding:8px 12px;text-align:center;border-bottom:2px solid #E2E8F0">🧹 Limpieza</th>
+              <th style="padding:8px 12px;text-align:right;border-bottom:2px solid #E2E8F0;color:var(--text-muted);font-weight:600">Coste mensual</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="background:#FEF2F2">
+              <td style="padding:8px 12px;border-bottom:1px solid #FEE2E2;font-weight:600;color:#B91C1C">oct'24 – abr'25</td>
+              <td style="padding:8px 12px;border-bottom:1px solid #FEE2E2;text-align:center"><span style="background:#EF4444;color:white;padding:2px 8px;border-radius:4px;font-size:12px">MJM</span></td>
+              <td style="padding:8px 12px;border-bottom:1px solid #FEE2E2;text-align:center"><span style="background:#EF4444;color:white;padding:2px 8px;border-radius:4px;font-size:12px">MJM</span></td>
+              <td style="padding:8px 12px;border-bottom:1px solid #FEE2E2;text-align:right;font-weight:700;color:#EF4444" id="limpMesMJM">---€</td>
+            </tr>
+            <tr style="background:#FFFBEB">
+              <td style="padding:8px 12px;border-bottom:1px solid #FEF3C7;font-weight:600;color:#92400E">may'25 – feb'26</td>
+              <td style="padding:8px 12px;border-bottom:1px solid #FEF3C7;text-align:center"><span style="background:#0EA5E9;color:white;padding:2px 8px;border-radius:4px;font-size:12px">Prevent XXI</span></td>
+              <td style="padding:8px 12px;border-bottom:1px solid #FEF3C7;text-align:center"><span style="background:#F59E0B;color:white;padding:2px 8px;border-radius:4px;font-size:12px">El Pilar</span></td>
+              <td style="padding:8px 12px;border-bottom:1px solid #FEF3C7;text-align:right;font-weight:700;color:#92400E" id="limpMesDual">---€</td>
+            </tr>
+            <tr style="background:#ECFDF5">
+              <td style="padding:8px 12px;font-weight:600;color:#065F46">mar'26 → actual</td>
+              <td style="padding:8px 12px;text-align:center"><span style="background:#10B981;color:white;padding:2px 8px;border-radius:4px;font-size:12px">Prevent XXI</span></td>
+              <td style="padding:8px 12px;text-align:center"><span style="background:#10B981;color:white;padding:2px 8px;border-radius:4px;font-size:12px">Prevent XXI</span></td>
+              <td style="padding:8px 12px;text-align:right;font-weight:700;color:#10B981" id="limpMesActual">---€</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- KPIs totales por proveedor -->
+      <div style="font-size:12px;font-weight:600;color:var(--text-muted);margin:16px 0 8px;text-transform:uppercase;letter-spacing:0.05em">Total pagado por proveedor</div>
       <div class="kpi-grid">
-        <div class="kpi danger">
-          <div class="kpi-label">MJM</div>
-          <div class="kpi-value" id="limpAnterior">---€</div>
+        <div class="kpi" style="border-left: 4px solid #EF4444; background: #FEF2F2;">
+          <div class="kpi-label" style="color:#B91C1C">MJM · total</div>
+          <div class="kpi-value" style="color:#EF4444" id="limpAnterior">---€</div>
+          <div class="kpi-sub">oct'24 – abr'25 · ambos servicios</div>
         </div>
-        <div class="kpi warning">
-          <div class="kpi-label">El Pilar</div>
-          <div class="kpi-value" id="limpIntermedio">---€</div>
+        <div class="kpi" style="border-left: 4px solid #0EA5E9; background: #EFF6FF;">
+          <div class="kpi-label" style="color:#1E40AF">Prevent XXI · cubos</div>
+          <div class="kpi-value" style="color:#0EA5E9" id="limpPreventSolo">---€</div>
+          <div class="kpi-sub">may'25 – feb'26 · solo cubos</div>
         </div>
-        <div class="kpi success">
-          <div class="kpi-label">Don Cubo</div>
-          <div class="kpi-value" id="limpActual">---€</div>
+        <div class="kpi" style="border-left: 4px solid #F59E0B; background: #FFFBEB;">
+          <div class="kpi-label" style="color:#92400E">El Pilar · limpieza</div>
+          <div class="kpi-value" style="color:#F59E0B" id="limpIntermedio">---€</div>
+          <div class="kpi-sub">may'25 – feb'26 · solo limpieza</div>
+        </div>
+        <div class="kpi" style="border-left: 4px solid #10B981; background: #ECFDF5;">
+          <div class="kpi-label" style="color:#065F46">Prevent XXI · ambos</div>
+          <div class="kpi-value" style="color:#10B981" id="limpActual">---€</div>
+          <div class="kpi-sub">mar'26 → actual · cuota única</div>
         </div>
       </div>
-      <div class="kpi-grid">
-        <div class="kpi danger">
-          <div class="kpi-label">Mensual MJM</div>
-          <div class="kpi-value" id="limpMesAnterior">---€</div>
-        </div>
-        <div class="kpi warning">
-          <div class="kpi-label">Mensual Pilar</div>
-          <div class="kpi-value" id="limpMesIntermedio">---€</div>
-        </div>
-        <div class="kpi success">
-          <div class="kpi-label">Mensual Don Cubo</div>
-          <div class="kpi-value" id="limpMesActual">---€</div>
-        </div>
-        <div class="kpi success">
-          <div class="kpi-label">Ahorro anual</div>
-          <div class="kpi-value" id="limpAhorro">---€</div>
-        </div>
-      </div>
+
       <div class="chart-section">
-        <div class="chart-title">Evolución Coste Limpieza por Año (MJM + El Pilar + Don Cubo)</div>
+        <div class="chart-title">Coste total limpieza por año · Cubos + Limpieza</div>
         <div class="chart-container">
           <div class="stacked-chart" id="limpiezaChart"></div>
         </div>
         <div class="legend">
-          <div class="legend-item">
-            <div class="legend-color" style="background: #EF4444"></div>MJM (anterior)
-          </div>
-          <div class="legend-item">
-            <div class="legend-color" style="background: #F59E0B"></div>Cubos El Pilar (intermedio)
-          </div>
-          <div class="legend-item">
-            <div class="legend-color" style="background: #10B981"></div>Don Cubo / Prevent XXI (actual)
-          </div>
+          <div class="legend-item"><div class="legend-color" style="background:#EF4444"></div>MJM (ambos)</div>
+          <div class="legend-item"><div class="legend-color" style="background:#0EA5E9"></div>Prevent XXI (cubos)</div>
+          <div class="legend-item"><div class="legend-color" style="background:#F59E0B"></div>El Pilar (limpieza)</div>
+          <div class="legend-item"><div class="legend-color" style="background:#10B981"></div>Prevent XXI (ambos)</div>
         </div>
       </div>
     </div>
@@ -2443,6 +2466,26 @@
 
     <div class="card">
       <details>
+        <summary style="list-style:none;display:flex;align-items:center;justify-content:space-between;cursor:pointer;padding:4px 0">
+          <div class="card-title" style="margin-bottom:0">🔗 Vincular facturas a movimientos</div>
+          <span style="font-size:13px;color:var(--text-muted)">▼ Abrir</span>
+        </summary>
+        <div style="margin-top:16px">
+          <p class="card-desc" style="margin-bottom:12px">Busca un movimiento bancario por concepto y añade la referencia de factura correspondiente.</p>
+          <div style="display:flex;gap:8px;margin-bottom:12px">
+            <input type="text" id="facturaSearchInput" placeholder="Buscar por concepto, ej: MJM"
+              style="flex:1;padding:10px 14px;border:1.5px solid var(--border);border-radius:8px;font-size:14px;outline:none;font-family:inherit"
+              oninput="buscarMovimientosFactura(this.value)">
+            <button onclick="buscarMovimientosFactura(document.getElementById('facturaSearchInput').value)"
+              style="padding:10px 18px;background:var(--primary);color:white;border:none;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit">Buscar</button>
+          </div>
+          <div id="facturaSearchResults"></div>
+        </div>
+      </details>
+    </div>
+
+    <div class="card">
+      <details>
         <summary
           style="list-style:none;display:flex;align-items:center;justify-content:space-between;cursor:pointer;padding:4px 0">
           <div class="card-title" style="margin-bottom:0">📋 Log de sesiones</div>
@@ -2537,9 +2580,11 @@
           : 'border-left: 3px solid var(--border);';
 
       let meatball = '';
+      let dragAttr = '';
       if (typeof _isAdmin !== 'undefined' && _isAdmin) {
         const uid = (p._id || p.nombre).replace(/[^a-zA-Z0-9]/g, '_');
         const menuId = 'menu_' + uid;
+        dragAttr = `draggable="true" ondragstart="handleDragStart(event, '${p._id}')" ondragend="handleDragEnd(event)"`;
         meatball = `<button class="card-menu-btn" onclick="event.stopPropagation();toggleMenu('${menuId}')">⋮</button>
       <div class="card-menu-dropdown" id="${menuId}">
         <button class="card-menu-item" onclick="event.stopPropagation();closeMenus();openModal('${p._id || ''}')">✏️ Editar</button>
@@ -2547,7 +2592,7 @@
       </div>`;
       }
 
-      return `<div class="project-card" style="position:relative;${cardAccent}">
+      return `<div class="project-card" data-id="${p._id}" ${dragAttr} style="position:relative;${cardAccent} ${_isAdmin ? 'cursor: grab;' : ''}">
     ${meatball}
     <div class="project-card-header">
       <span class="project-icon">${icon}</span>
@@ -2562,14 +2607,89 @@
 
     function renderProjectsByState(year, elemId) {
       const projects = DATA[year] || [];
-      const progreso = projects.filter(p => p.cat === 'progreso').sort((a, b) => b.progreso - a.progreso);
-      const completados = projects.filter(p => p.cat === 'completado');
-      const pendientes = projects.filter(p => p.cat === 'pendiente');
+      const progreso = projects.filter(p => p.cat === 'progreso').sort((a, b) => a.orden !== b.orden ? a.orden - b.orden : b.progreso - a.progreso);
+      const completados = projects.filter(p => p.cat === 'completado').sort((a, b) => a.orden - b.orden);
+      const pendientes = projects.filter(p => p.cat === 'pendiente').sort((a, b) => a.orden - b.orden);
       let html = '';
-      if (progreso.length) html += `<details class="project-section"><summary>⏳ En progreso <span class="count">${progreso.length}</span></summary><div class="project-list">${progreso.map(_baseProjectHTML).join('')}</div></details>`;
-      if (pendientes.length) html += `<details class="project-section"><summary>📋 Pendientes <span class="count">${pendientes.length}</span></summary><div class="project-list">${pendientes.map(_baseProjectHTML).join('')}</div></details>`;
-      if (completados.length) html += `<details class="project-section"><summary>✓ Completados <span class="count">${completados.length}</span></summary><div class="project-list">${completados.map(_baseProjectHTML).join('')}</div></details>`;
+      if (progreso.length) html += `<details class="project-section" open><summary>⏳ En curso <span class="count">${progreso.length}</span></summary><div class="project-list" data-cat="progreso" ondragover="allowDrop(event)" ondrop="handleDrop(event)">${progreso.map(_baseProjectHTML).join('')}</div></details>`;
+      if (pendientes.length) html += `<details class="project-section" open><summary>📅 Gastos previstos · Resto de 2026 <span class="count">${pendientes.length}</span></summary><div class="project-list" data-cat="pendiente" ondragover="allowDrop(event)" ondrop="handleDrop(event)">${pendientes.map(_baseProjectHTML).join('')}</div></details>`;
+      if (completados.length) html += `<details class="project-section" open><summary>✓ Completados <span class="count">${completados.length}</span></summary><div class="project-list" data-cat="completado" ondragover="allowDrop(event)" ondrop="handleDrop(event)">${completados.map(_baseProjectHTML).join('')}</div></details>`;
       setInner(elemId, html);
+    }
+
+    let draggedProjectId = null;
+    let draggedItem = null;
+
+    function handleDragStart(e, id) {
+      if (!_isAdmin) return;
+      draggedProjectId = id;
+      draggedItem = e.target.closest('.project-card');
+      e.dataTransfer.effectAllowed = 'move';
+      e.dataTransfer.setData('text/plain', id);
+      setTimeout(() => draggedItem.style.opacity = '0.5', 0);
+    }
+
+    function handleDragEnd(e) {
+      if (draggedItem) {
+        draggedItem.style.opacity = '1';
+      }
+      draggedItem = null;
+      draggedProjectId = null;
+    }
+
+    function allowDrop(e) {
+      if (!_isAdmin) return;
+      e.preventDefault();
+      const list = e.target.closest('.project-list');
+      if (!list) return;
+      const afterElement = getDragAfterElement(list, e.clientY);
+      if (afterElement == null) {
+        list.appendChild(draggedItem);
+      } else {
+        list.insertBefore(draggedItem, afterElement);
+      }
+    }
+
+    function getDragAfterElement(container, y) {
+      const draggableElements = [...container.querySelectorAll('.project-card:not([style*="opacity: 0.5"])')];
+      return draggableElements.reduce((closest, child) => {
+        const box = child.getBoundingClientRect();
+        const offset = y - box.top - box.height / 2;
+        if (offset < 0 && offset > closest.offset) {
+          return { offset: offset, element: child };
+        } else {
+          return closest;
+        }
+      }, { offset: Number.NEGATIVE_INFINITY }).element;
+    }
+
+    async function handleDrop(e) {
+      if (!_isAdmin) return;
+      e.preventDefault();
+      const list = e.target.closest('.project-list');
+      if (!list) return;
+      
+      const newCat = list.getAttribute('data-cat');
+      const cards = Array.from(list.querySelectorAll('.project-card'));
+      const updates = cards.map((card, index) => {
+        return {
+          id: card.getAttribute('data-id'),
+          orden: index,
+          cat: newCat
+        };
+      });
+      
+      try {
+        for (const item of updates) {
+          if (!item.id) continue;
+          await db.from('proyectos').update({ orden: item.orden, cat: item.cat }).eq('id', item.id);
+        }
+        toast('Prioridad actualizada ✓', 'ok');
+        loadFromSupabase();
+      } catch (err) {
+        console.error(err);
+        toast('Error al guardar el orden', 'err');
+      }
     }
 
     function renderProjects2026() {
@@ -2809,7 +2929,8 @@
           pres: p.pres !== null ? parseFloat(p.pres) : null,
           obs: p.obs || '',
           banco_ref: p.banco_ref || '',
-          etiqueta: p.etiqueta || 'Normal'
+          etiqueta: p.etiqueta || 'Normal',
+          orden: p.orden || 0
         };
         if (DATA[p.año]) DATA[p.año].push(proj);
       });
@@ -2983,12 +3104,7 @@
           years.map(y => stats.comunic.lasser[y])
         ], yAxis, [pal[0], pal[1]]);
 
-        const limpYears = ['2024', '2025', '2026'];
-        makeStackedBars('limpiezaChart', [
-          limpYears.map(y => stats.limpieza.mjm[y]),
-          limpYears.map(y => stats.limpieza.pilar[y]),
-          limpYears.map(y => stats.limpieza.cubo[y])
-        ], ['2024', '2025', '2026*'], [pal[0], pal[1], pal[2]]);
+        // limpiezaChart se renderiza al final de la sección limpieza (ver bloque KPIs)
 
         makeStackedBars('gasDestinyChart', [
           years.map(y => stats.calef.gas[y]),
@@ -3121,37 +3237,53 @@
         setInner('calef2425', fmtNum(heatingSeasons['2425']) + '€');
         setInner('calef2526', fmtNum(heatingSeasons['2526']) + '€');
 
-        // 9. KPIs Limpieza
+        // 9. KPIs Limpieza — separados por proveedor y servicio
         const totMJM = Object.values(stats.limpieza.mjm).reduce((a, b) => a + b, 0);
         const totPilar = Object.values(stats.limpieza.pilar).reduce((a, b) => a + b, 0);
-        const totCubo = Object.values(stats.limpieza.cubo).reduce((a, b) => a + b, 0);
         setInner('limpAnterior', fmtNum(totMJM) + '€');
         setInner('limpIntermedio', fmtNum(totPilar) + '€');
-        setInner('limpActual', fmtNum(totCubo) + '€');
 
-        // Medias mensuales limpieza (100% dinámico)
+        // Prevent XXI: distinguir periodo solo-limpieza (<300€) vs periodo completo (>400€)
+        const recibosPrevent = moves
+          .filter(m => m.importe < 0 && (m.concepto || '').toUpperCase().includes('PREVENT'))
+          .sort((a, b) => a._iso.localeCompare(b._iso));
+        const recibosPreventSolo  = recibosPrevent.filter(m => Math.abs(m.importe) < 300); // solo limpieza
+        const recibosPreventAmbos = recibosPrevent.filter(m => Math.abs(m.importe) >= 400); // cubos + limpieza
+
+        const totPreventSolo  = recibosPreventSolo.reduce((s, m) => s + Math.abs(m.importe), 0);
+        const totPreventAmbos = recibosPreventAmbos.reduce((s, m) => s + Math.abs(m.importe), 0);
+        setInner('limpPreventSolo', fmtNum(totPreventSolo) + '€');
+        setInner('limpActual', fmtNum(totPreventAmbos) + '€');
+
+        // Cuotas mensuales por periodo
         const recibosMJM = moves.filter(m => m.importe < 0 && (m.concepto || '').toUpperCase().includes('MJM'));
         const avgMJM = recibosMJM.length ? (recibosMJM.reduce((s, m) => s + Math.abs(m.importe), 0) / recibosMJM.length) : 0;
-        setInner('limpMesAnterior', fmtNum(avgMJM) + '€');
 
-        const recibosPilar = moves.filter(m => m.importe < 0 && (m.concepto || '').toUpperCase().includes('EL PILAR'));
+        const recibosPilar = moves.filter(m => m.importe < 0 && (m.concepto || '').toUpperCase().includes('EL PILAR')
+          && !m._iso.startsWith('2025-05')); // excluir primer mes (gastos de alta dobles)
         const avgPilar = recibosPilar.length ? (recibosPilar.reduce((s, m) => s + Math.abs(m.importe), 0) / recibosPilar.length) : 0;
-        setInner('limpMesIntermedio', fmtNum(avgPilar) + '€');
+        const avgPreventSolo = recibosPreventSolo.length ? (totPreventSolo / recibosPreventSolo.length) : 0;
+        const cuotaActual = recibosPreventAmbos.length > 0 ? Math.abs(recibosPreventAmbos[recibosPreventAmbos.length - 1].importe) : 0;
 
-        const recibosCuboTodos = moves.filter(m => m.importe < 0 && ((m.concepto || '').toUpperCase().includes('DON CUBO') || (m.concepto || '').toUpperCase().includes('PREVENT'))).sort((a, b) => b._iso.localeCompare(a._iso));
+        const costeModeloDual = avgPreventSolo + avgPilar; // cubos (Prevent) + limpieza (El Pilar)
+        const ahorroMensual = costeModeloDual - cuotaActual;
+        setInner('limpMesMJM',   fmtNum(avgMJM) + '€/mes (todo incluido)');
+        setInner('limpMesDual',  fmtNum(avgPreventSolo) + '€ cubos (Prevent) + ' + fmtNum(avgPilar) + '€ limpieza (El Pilar) = ' + fmtNum(costeModeloDual) + '€/mes');
+        setInner('limpMesActual', fmtNum(cuotaActual) + '€/mes · ahorro ' + fmtNum(ahorroMensual) + '€/mes vs modelo anterior');
 
-        // Cuota unificada actual = importe del último recibo cobrado
-        const cuotaActualCubo = recibosCuboTodos.length > 0 ? Math.abs(recibosCuboTodos[0].importe) : 0;
-        setInner('limpMesActual', fmtNum(cuotaActualCubo) + '€');
+        // Gráfico: 4 series (MJM, El Pilar, Prevent solo, Prevent ambos)
+        const limpYears = ['2024', '2025', '2026'];
+        const limpPrevSoloByYear  = {}; const limpPrevAmbosByYear = {};
+        limpYears.forEach(y => { limpPrevSoloByYear[y] = 0; limpPrevAmbosByYear[y] = 0; });
+        recibosPreventSolo.forEach(m  => { const y = m._iso.substring(0,4); if (limpPrevSoloByYear[y]  !== undefined) limpPrevSoloByYear[y]  += Math.abs(m.importe); });
+        recibosPreventAmbos.forEach(m => { const y = m._iso.substring(0,4); if (limpPrevAmbosByYear[y] !== undefined) limpPrevAmbosByYear[y] += Math.abs(m.importe); });
 
-        // Cuota antigua de cubos (cuando Prevent solo hacía cubos y cobraba menos de 300€)
-        const recibosCuboAntiguos = recibosCuboTodos.filter(m => Math.abs(m.importe) < 300);
-        const avgCuboAntiguo = recibosCuboAntiguos.length ? (recibosCuboAntiguos.reduce((s, m) => s + Math.abs(m.importe), 0) / recibosCuboAntiguos.length) : 0;
-
-        // Ahorro dinámico = (Media El Pilar + Media Cubos Antiguo) - Cuota Unificada Actual
-        const costeModeloAnterior = avgPilar + avgCuboAntiguo;
-        const ahorroAnual = (costeModeloAnterior - cuotaActualCubo) * 12;
-        setInner('limpAhorro', fmtNum(ahorroAnual) + '€/año');
+        makeStackedBars('limpiezaChart', [
+          limpYears.map(y => stats.limpieza.mjm[y] || 0),
+          limpYears.map(y => stats.limpieza.pilar[y] || 0),
+          limpYears.map(y => limpPrevSoloByYear[y] || 0),
+          limpYears.map(y => limpPrevAmbosByYear[y] || 0)
+        ], ['2024', '2025', '2026*'], ['#EF4444', '#F59E0B', '#0EA5E9', '#10B981']);
 
         // 10. Auditoría Footer (Solo log en consola si es necesario)
         console.log(`Cifras dinámicas: ${moves.length} movimientos hasta el ${ultimaFechaOriginal}. Saldo: ${fmtNum(ultimoSaldo)}€.`);
@@ -3546,6 +3678,61 @@
       loadUsersList();
       loadSessionLog();
       loadDocsList();
+    }
+
+    async function buscarMovimientosFactura(query) {
+      const q = (query || '').trim();
+      const el = document.getElementById('facturaSearchResults');
+      if (!el) return;
+      if (q.length < 2) { el.innerHTML = ''; return; }
+      el.innerHTML = '<div style="color:var(--text-muted);font-size:13px">Buscando...</div>';
+      const { data, error } = await db.from('movimientos')
+        .select('id, fecha, concepto, importe, factura_ref')
+        .ilike('concepto', `%${q}%`)
+        .order('fecha', { ascending: false })
+        .limit(30);
+      if (error || !data?.length) {
+        el.innerHTML = '<div style="color:var(--text-muted);font-size:13px">Sin resultados</div>';
+        return;
+      }
+      el.innerHTML = `
+        <table style="width:100%;border-collapse:collapse;font-size:13px">
+          <thead><tr style="background:#F8FAFC">
+            <th style="padding:8px 10px;text-align:left;border-bottom:2px solid #E2E8F0;color:var(--text-muted);font-weight:600">Fecha</th>
+            <th style="padding:8px 10px;text-align:left;border-bottom:2px solid #E2E8F0;color:var(--text-muted);font-weight:600">Concepto</th>
+            <th style="padding:8px 10px;text-align:right;border-bottom:2px solid #E2E8F0;color:var(--text-muted);font-weight:600">Importe</th>
+            <th style="padding:8px 10px;text-align:left;border-bottom:2px solid #E2E8F0;color:var(--text-muted);font-weight:600">Nº Factura</th>
+            <th style="padding:8px 10px;border-bottom:2px solid #E2E8F0"></th>
+          </tr></thead>
+          <tbody>${data.map(m => `
+            <tr style="border-bottom:1px solid #F1F5F9" id="mrow_${m.id}">
+              <td style="padding:8px 10px;white-space:nowrap">${m.fecha}</td>
+              <td style="padding:8px 10px;color:var(--text-soft)">${m.concepto}</td>
+              <td style="padding:8px 10px;text-align:right;font-weight:700;color:${m.importe < 0 ? '#EF4444' : '#10B981'}">${m.importe.toFixed(2).replace('.', ',')}€</td>
+              <td style="padding:8px 10px">
+                <input type="text" id="fref_${m.id}" value="${m.factura_ref || ''}"
+                  placeholder="Ej: 7717"
+                  style="width:100px;padding:5px 8px;border:1.5px solid #E2E8F0;border-radius:6px;font-size:13px;font-family:inherit;outline:none">
+              </td>
+              <td style="padding:8px 10px">
+                <button onclick="guardarFacturaRef('${m.id}')"
+                  style="background:#EEF2FF;color:var(--primary);border:none;padding:5px 12px;border-radius:6px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit">
+                  Guardar
+                </button>
+              </td>
+            </tr>`).join('')}
+          </tbody>
+        </table>`;
+    }
+
+    async function guardarFacturaRef(id) {
+      const val = document.getElementById('fref_' + id)?.value.trim() || null;
+      const { error } = await db.from('movimientos').update({ factura_ref: val }).eq('id', id);
+      if (error) { toast('Error al guardar: ' + error.message, 'err'); return; }
+      const row = document.getElementById('mrow_' + id);
+      if (row) row.style.background = '#ECFDF5';
+      setTimeout(() => { if (row) row.style.background = ''; }, 1500);
+      toast('Referencia guardada ✓', 'ok');
     }
 
     async function loadUsersList() {
