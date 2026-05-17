@@ -2537,9 +2537,11 @@
           : 'border-left: 3px solid var(--border);';
 
       let meatball = '';
+      let dragAttr = '';
       if (typeof _isAdmin !== 'undefined' && _isAdmin) {
         const uid = (p._id || p.nombre).replace(/[^a-zA-Z0-9]/g, '_');
         const menuId = 'menu_' + uid;
+        dragAttr = `draggable="true" ondragstart="handleDragStart(event, '${p._id}')" ondragend="handleDragEnd(event)"`;
         meatball = `<button class="card-menu-btn" onclick="event.stopPropagation();toggleMenu('${menuId}')">⋮</button>
       <div class="card-menu-dropdown" id="${menuId}">
         <button class="card-menu-item" onclick="event.stopPropagation();closeMenus();openModal('${p._id || ''}')">✏️ Editar</button>
@@ -2547,7 +2549,7 @@
       </div>`;
       }
 
-      return `<div class="project-card" style="position:relative;${cardAccent}">
+      return `<div class="project-card" data-id="${p._id}" ${dragAttr} style="position:relative;${cardAccent} ${_isAdmin ? 'cursor: grab;' : ''}">
     ${meatball}
     <div class="project-card-header">
       <span class="project-icon">${icon}</span>
@@ -2562,14 +2564,89 @@
 
     function renderProjectsByState(year, elemId) {
       const projects = DATA[year] || [];
-      const progreso = projects.filter(p => p.cat === 'progreso').sort((a, b) => b.progreso - a.progreso);
-      const completados = projects.filter(p => p.cat === 'completado');
-      const pendientes = projects.filter(p => p.cat === 'pendiente');
+      const progreso = projects.filter(p => p.cat === 'progreso').sort((a, b) => a.orden !== b.orden ? a.orden - b.orden : b.progreso - a.progreso);
+      const completados = projects.filter(p => p.cat === 'completado').sort((a, b) => a.orden - b.orden);
+      const pendientes = projects.filter(p => p.cat === 'pendiente').sort((a, b) => a.orden - b.orden);
       let html = '';
-      if (progreso.length) html += `<details class="project-section"><summary>⏳ En progreso <span class="count">${progreso.length}</span></summary><div class="project-list">${progreso.map(_baseProjectHTML).join('')}</div></details>`;
-      if (pendientes.length) html += `<details class="project-section"><summary>📋 Pendientes <span class="count">${pendientes.length}</span></summary><div class="project-list">${pendientes.map(_baseProjectHTML).join('')}</div></details>`;
-      if (completados.length) html += `<details class="project-section"><summary>✓ Completados <span class="count">${completados.length}</span></summary><div class="project-list">${completados.map(_baseProjectHTML).join('')}</div></details>`;
+      if (progreso.length) html += `<details class="project-section" open><summary>⏳ En curso <span class="count">${progreso.length}</span></summary><div class="project-list" data-cat="progreso" ondragover="allowDrop(event)" ondrop="handleDrop(event)">${progreso.map(_baseProjectHTML).join('')}</div></details>`;
+      if (pendientes.length) html += `<details class="project-section" open><summary>📅 Gastos previstos · Resto de 2026 <span class="count">${pendientes.length}</span></summary><div class="project-list" data-cat="pendiente" ondragover="allowDrop(event)" ondrop="handleDrop(event)">${pendientes.map(_baseProjectHTML).join('')}</div></details>`;
+      if (completados.length) html += `<details class="project-section" open><summary>✓ Completados <span class="count">${completados.length}</span></summary><div class="project-list" data-cat="completado" ondragover="allowDrop(event)" ondrop="handleDrop(event)">${completados.map(_baseProjectHTML).join('')}</div></details>`;
       setInner(elemId, html);
+    }
+
+    let draggedProjectId = null;
+    let draggedItem = null;
+
+    function handleDragStart(e, id) {
+      if (!_isAdmin) return;
+      draggedProjectId = id;
+      draggedItem = e.target.closest('.project-card');
+      e.dataTransfer.effectAllowed = 'move';
+      e.dataTransfer.setData('text/plain', id);
+      setTimeout(() => draggedItem.style.opacity = '0.5', 0);
+    }
+
+    function handleDragEnd(e) {
+      if (draggedItem) {
+        draggedItem.style.opacity = '1';
+      }
+      draggedItem = null;
+      draggedProjectId = null;
+    }
+
+    function allowDrop(e) {
+      if (!_isAdmin) return;
+      e.preventDefault();
+      const list = e.target.closest('.project-list');
+      if (!list) return;
+      const afterElement = getDragAfterElement(list, e.clientY);
+      if (afterElement == null) {
+        list.appendChild(draggedItem);
+      } else {
+        list.insertBefore(draggedItem, afterElement);
+      }
+    }
+
+    function getDragAfterElement(container, y) {
+      const draggableElements = [...container.querySelectorAll('.project-card:not([style*="opacity: 0.5"])')];
+      return draggableElements.reduce((closest, child) => {
+        const box = child.getBoundingClientRect();
+        const offset = y - box.top - box.height / 2;
+        if (offset < 0 && offset > closest.offset) {
+          return { offset: offset, element: child };
+        } else {
+          return closest;
+        }
+      }, { offset: Number.NEGATIVE_INFINITY }).element;
+    }
+
+    async function handleDrop(e) {
+      if (!_isAdmin) return;
+      e.preventDefault();
+      const list = e.target.closest('.project-list');
+      if (!list) return;
+      
+      const newCat = list.getAttribute('data-cat');
+      const cards = Array.from(list.querySelectorAll('.project-card'));
+      const updates = cards.map((card, index) => {
+        return {
+          id: card.getAttribute('data-id'),
+          orden: index,
+          cat: newCat
+        };
+      });
+      
+      try {
+        for (const item of updates) {
+          if (!item.id) continue;
+          await db.from('proyectos').update({ orden: item.orden, cat: item.cat }).eq('id', item.id);
+        }
+        toast('Prioridad actualizada ✓', 'ok');
+        loadFromSupabase();
+      } catch (err) {
+        console.error(err);
+        toast('Error al guardar el orden', 'err');
+      }
     }
 
     function renderProjects2026() {
@@ -2809,7 +2886,8 @@
           pres: p.pres !== null ? parseFloat(p.pres) : null,
           obs: p.obs || '',
           banco_ref: p.banco_ref || '',
-          etiqueta: p.etiqueta || 'Normal'
+          etiqueta: p.etiqueta || 'Normal',
+          orden: p.orden || 0
         };
         if (DATA[p.año]) DATA[p.año].push(proj);
       });
