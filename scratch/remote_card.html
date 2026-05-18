@@ -1,0 +1,19 @@
+    <div class="card">
+      <details>
+        <summary style="list-style:none;display:flex;align-items:center;justify-content:space-between;cursor:pointer;padding:4px 0">
+          <div class="card-title" style="margin-bottom:0">🔗 Vincular facturas a movimientos</div>
+          <span style="font-size:13px;color:var(--text-muted)">▼ Abrir</span>
+        </summary>
+        <div style="margin-top:16px">
+          <p class="card-desc" style="margin-bottom:12px">Busca un movimiento bancario por concepto y añade la referencia de factura correspondiente.</p>
+          <div style="display:flex;gap:8px;margin-bottom:12px">
+            <input type="text" id="facturaSearchInput" placeholder="Buscar por concepto, ej: MJM"
+              style="flex:1;padding:10px 14px;border:1.5px solid var(--border);border-radius:8px;font-size:14px;outline:none;font-family:inherit"
+              oninput="buscarMovimientosFactura(this.value)">
+            <button onclick="buscarMovimientosFactura(document.getElementById('facturaSearchInput').value)"
+              style="padding:10px 18px;background:var(--primary);color:white;border:none;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit">Buscar</button>
+          </div>
+          <div id="facturaSearchResults"></div>
+        </div>
+      </details>
+    </div>
