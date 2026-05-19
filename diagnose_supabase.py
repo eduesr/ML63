@@ -41,7 +41,7 @@ def diagnose_with_python_api():
 
     # Supabase credentials from previous session
     SUPABASE_URL = "https://byqtsuskdbgwpyvyiprc.supabase.co"
-    SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ5cXRzdXNrZGJnd3B5dmlwcmMiLCJyb2xlIjoiYW5vbiIsImlhdCI6MTcyNDk0NDA1NywiZXhwIjoxODgyNzA0MDU3fQ.0tKOb-pMIQXB-KJ7vXLM9dYIj-HvHa9D7fHN2QA4cBg"
+    SUPABASE_ANON_KEY = "sb_publishable_LVuLdmu3YUa0HhMZGdBKtg_VHPZUizx"
 
     print("\n" + "="*80)
     print("SUPABASE DIAGNOSIS")

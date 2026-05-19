@@ -1335,4 +1335,54 @@ SELECT
   ROUND((SELECT saldo FROM public.movimientos ORDER BY fecha DESC, uploaded_at DESC LIMIT 1)::numeric, 2) AS saldo_actual
 FROM public.movimientos;
 
+-- =============================================================================
+-- Carga inicial y actualización de Proyectos (2026)
+-- =============================================================================
+
+-- 1. UPDATE/INSERT: "Tuberías agua · Proyecto grande" (A. Pirtac)
+-- Presupuesto: 12.700,00 € (Base Imponible sin IVA) | 13.970,00 € (con 10% IVA)
+INSERT INTO public.proyectos (año, cat, nombre, pres, progreso, obs, banco_ref)
+VALUES (
+  '2026',
+  'progreso',
+  'Tuberías agua · Proyecto grande',
+  -12700.00,
+  0.25,
+  'Proveedor: A. Pirtac. Presupuesto de Cliente nº 0001-000034 (12.700,00€ sin IVA, 13.970,00€ con 10% IVA = 13.970,00€). Factura y conciliación bancaria pendientes.',
+  NULL
+)
+ON CONFLICT (nombre, año) 
+DO UPDATE SET 
+  cat = EXCLUDED.cat,
+  pres = EXCLUDED.pres,
+  obs = EXCLUDED.obs,
+  banco_ref = NULL;
+
+-- 2. UPDATE/INSERT: "Sellado y limpieza ventanal · Navacon Vertical" (reemplaza Pinta Limpio)
+-- Primero renombramos el proyecto antiguo si existe en la base de datos
+UPDATE public.proyectos
+SET 
+  nombre = 'Sellado y limpieza ventanal · Navacon Vertical',
+  pres = -3051.00,
+  obs = 'Proveedor: Navacon Vertical (sustituye a Pinta Limpio). Presupuesto nuevo PTTO090A-2026 (3.051,00€ sin IVA, 3.356,10€ con 10% IVA). Factura y conciliación bancaria pendientes.'
+WHERE nombre = 'Sellado y limpieza ventanal · Pinta Limpio' AND año = '2026';
+
+-- En caso de que no existiera antes, hacemos el INSERT limpio
+INSERT INTO public.proyectos (año, cat, nombre, pres, progreso, obs, banco_ref)
+VALUES (
+  '2026',
+  'pendiente',
+  'Sellado y limpieza ventanal · Navacon Vertical',
+  -3051.00,
+  0.00,
+  'Proveedor: Navacon Vertical (sustituye a Pinta Limpio). Presupuesto nuevo PTTO090A-2026 (3.051,00€ sin IVA, 3.356,10€ con 10% IVA). Factura y conciliación bancaria pendientes.',
+  NULL
+)
+ON CONFLICT (nombre, año) 
+DO UPDATE SET 
+  cat = EXCLUDED.cat,
+  pres = EXCLUDED.pres,
+  obs = EXCLUDED.obs,
+  banco_ref = NULL;
+
 COMMIT;
