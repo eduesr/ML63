@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Gestión CP ML63 (v11)</title>
+  <title>Gestión CP ML63 (v19)</title>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -15,36 +15,22 @@
     rel="stylesheet">
   <style>
     :root {
-      --chart-1: #EF4444;
-      /* Red */
-      --chart-2: #F59E0B;
-      /* Orange */
-      --chart-3: #10B981;
-      /* Emerald */
-      --chart-4: #0EA5E9;
-      /* Sky Blue */
-      --chart-5: #8B5CF6;
-      /* Violet */
-      --chart-6: #6366F1;
-      /* Indigo */
-      --chart-7: #14B8A6;
-      /* Teal */
-
-      --c1: var(--chart-1);
-      --c1-light: #FEE2E2;
-      --c2: var(--chart-2);
-      --c2-light: #FEF3C7;
-      --c3: var(--chart-3);
-      --c3-light: #D1FAE5;
-      --c4: var(--chart-4);
-      --c4-light: #E0F2FE;
-      --c5: var(--chart-5);
-      --c5-light: #F5F3FF;
-      --c6: var(--chart-6);
-      --c6-light: #EEF2FF;
-      --c7: var(--chart-7);
-      --c7-light: #F0FDFA;
-
+      --chart-1: #EF4444; /* Red */
+      --chart-2: #F59E0B; /* Orange */
+      --chart-3: #10B981; /* Emerald */
+      --chart-4: #0EA5E9; /* Sky Blue */
+      --chart-5: #8B5CF6; /* Violet */
+      --chart-6: #6366F1; /* Indigo */
+      --chart-7: #14B8A6; /* Teal */
+      
+      --c1: var(--chart-1); --c1-light: #FEE2E2;
+      --c2: var(--chart-2); --c2-light: #FEF3C7;
+      --c3: var(--chart-3); --c3-light: #D1FAE5;
+      --c4: var(--chart-4); --c4-light: #E0F2FE;
+      --c5: var(--chart-5); --c5-light: #F5F3FF;
+      --c6: var(--chart-6); --c6-light: #EEF2FF;
+      --c7: var(--chart-7); --c7-light: #F0FDFA;
+      
       --primary: #6366F1;
       --secondary: #10B981;
       --accent: #F59E0B;
@@ -56,7 +42,7 @@
       --bg-light: #FAFBFC;
       --bg-gray: #F1F5F9;
       --bg-darker: #E2E8F0;
-
+      
       --bg: var(--bg-light);
       --surface: var(--bg-white);
       --surface-alt: var(--bg-gray);
@@ -530,113 +516,23 @@
       font-weight: 500;
     }
 
-    .kpi.c1 {
-      border-bottom-color: var(--c1);
-      background: var(--c1-light);
-    }
+    .kpi.c1 { border-bottom-color: var(--c1); background: var(--c1-light); } .kpi.c1 .kpi-value { color: var(--c1) !important; }
+    .kpi.c2 { border-bottom-color: var(--c2); background: var(--c2-light); } .kpi.c2 .kpi-value { color: var(--c2) !important; }
+    .kpi.c3 { border-bottom-color: var(--c3); background: var(--c3-light); } .kpi.c3 .kpi-value { color: var(--c3) !important; }
+    .kpi.c4 { border-bottom-color: var(--c4); background: var(--c4-light); } .kpi.c4 .kpi-value { color: var(--c4) !important; }
+    .kpi.c5 { border-bottom-color: var(--c5); background: var(--c5-light); } .kpi.c5 .kpi-value { color: var(--c5) !important; }
+    .kpi.c6 { border-bottom-color: var(--c6); background: var(--c6-light); } .kpi.c6 .kpi-value { color: var(--c6) !important; }
+    .kpi.c7 { border-bottom-color: var(--c7); background: var(--c7-light); } .kpi.c7 .kpi-value { color: var(--c7) !important; }
+    .kpi.c8 { border-bottom-color: var(--c8); background: var(--c8-light); } .kpi.c8 .kpi-value { color: var(--c8) !important; }
 
-    .kpi.c1 .kpi-value {
-      color: var(--c1) !important;
-    }
-
-    .kpi.c2 {
-      border-bottom-color: var(--c2);
-      background: var(--c2-light);
-    }
-
-    .kpi.c2 .kpi-value {
-      color: var(--c2) !important;
-    }
-
-    .kpi.c3 {
-      border-bottom-color: var(--c3);
-      background: var(--c3-light);
-    }
-
-    .kpi.c3 .kpi-value {
-      color: var(--c3) !important;
-    }
-
-    .kpi.c4 {
-      border-bottom-color: var(--c4);
-      background: var(--c4-light);
-    }
-
-    .kpi.c4 .kpi-value {
-      color: var(--c4) !important;
-    }
-
-    .kpi.c5 {
-      border-bottom-color: var(--c5);
-      background: var(--c5-light);
-    }
-
-    .kpi.c5 .kpi-value {
-      color: var(--c5) !important;
-    }
-
-    .kpi.c6 {
-      border-bottom-color: var(--c6);
-      background: var(--c6-light);
-    }
-
-    .kpi.c6 .kpi-value {
-      color: var(--c6) !important;
-    }
-
-    .kpi.c7 {
-      border-bottom-color: var(--c7);
-      background: var(--c7-light);
-    }
-
-    .kpi.c7 .kpi-value {
-      color: var(--c7) !important;
-    }
-
-    .kpi.c8 {
-      border-bottom-color: var(--c8);
-      background: var(--c8-light);
-    }
-
-    .kpi.c8 .kpi-value {
-      color: var(--c8) !important;
-    }
-
-    .kpi.success {
-      border-bottom-color: var(--c3);
-      background: var(--c3-light);
-    }
-
-    .kpi.success .kpi-value {
-      color: var(--c3) !important;
-    }
-
-    .kpi.warning {
-      border-bottom-color: var(--c4);
-      background: var(--c4-light);
-    }
-
-    .kpi.warning .kpi-value {
-      color: var(--c4) !important;
-    }
-
-    .kpi.danger {
-      border-bottom-color: var(--c5);
-      background: var(--c5-light);
-    }
-
-    .kpi.danger .kpi-value {
-      color: var(--c5) !important;
-    }
-
-    .kpi.info {
-      border-bottom-color: var(--c2);
-      background: var(--c2-light);
-    }
-
-    .kpi.info .kpi-value {
-      color: var(--c2) !important;
-    }
+    .kpi.success { border-bottom-color: var(--c3); background: var(--c3-light); }
+    .kpi.success .kpi-value { color: var(--c3) !important; }
+    .kpi.info { border-bottom-color: var(--c4); background: var(--c4-light); }
+    .kpi.info .kpi-value { color: var(--c4) !important; }
+    .kpi.warning { border-bottom-color: var(--c2); background: var(--c2-light); }
+    .kpi.warning .kpi-value { color: var(--c2) !important; }
+    .kpi.danger { border-bottom-color: var(--c1); background: var(--c1-light); }
+    .kpi.danger .kpi-value { color: var(--c1) !important; }
 
     /* Desglose Gastos: 2 columnas anchas */
     .kpi-grid-split {
@@ -962,6 +858,14 @@
     .project-card:hover {
       box-shadow: var(--shadow-lg);
       transform: translateY(-2px);
+    }
+
+    .project-card.dragging {
+      opacity: 0.4 !important;
+      border: 2px dashed var(--primary) !important;
+      box-shadow: none !important;
+      transform: scale(0.98) !important;
+      cursor: grabbing !important;
     }
 
     .project-card-header {
@@ -1610,6 +1514,16 @@
     .toast.err {
       background: #991B1B;
     }
+
+    /* Estilos Premium para la sección de Limpieza */
+    .cleaning-timeline-row {
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .cleaning-timeline-row:hover {
+      transform: translateY(-2px) scale(1.005);
+      box-shadow: 0 6px 12px rgba(0,0,0,0.04) !important;
+      border-color: rgba(0,0,0,0.12) !important;
+    }
   </style>
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-CPCRKD0JRE"></script>
@@ -1786,7 +1700,7 @@
   <div class="page-wrapper">
     <header class="site-header" id="siteHeader">
       <div class="site-header-inner" style="justify-content:space-between;display:flex;align-items:center;height:60px;">
-        <div class="site-header-title">Gestión CP ML63 (v11)</div>
+        <div class="site-header-title">Gestión CP ML63 (v21)</div>
         <div style="display:flex;align-items:center;gap:10px">
           <button class="avatar-btn" id="avatarBtn" onclick="toggleAvatarMenu()" style="display:none">?</button>
         </div>
@@ -1831,7 +1745,6 @@
             <div class="kpi-sub">proyectos de la hoja de ruta</div>
           </div>
         </div>
-        
         <!-- Coeficientes de Participación -->
         <div style="margin-top: 24px; border-top: 1px solid var(--border); padding-top: 20px; width: 100%;">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 10px; width: 100%;">
@@ -1867,823 +1780,936 @@
       </div>
     </div>
 
-    <!-- ============ TAB 2025 ============ -->
-    <div id="tab2025" class="tab-content">
-      <div class="card">
-        <div class="card-title">Tesorería 2025 <span class="badge success">✓ Cerrado</span></div>
-        <div class="kpi-grid" id="kpiTesoria2025"></div>
-        <div class="kpi-grid kpi-grid-split">
-          <div class="kpi kpi-operativo">
-            <div class="kpi-label">⚙️ Gastos Comunes (operativos)</div>
-            <div class="kpi-value" id="gastoOperativo2025">---€</div>
-          </div>
-          <div class="kpi kpi-mejora">
-            <div class="kpi-label">🔨 Mejoras del Edificio (proyectos)</div>
-            <div class="kpi-value" id="gastoMejora2025">---€</div>
-          </div>
+  <!-- ============ TAB 2025 ============ -->
+  <div id="tab2025" class="tab-content">
+    <div class="card">
+      <div class="card-title">Tesorería 2025 <span class="badge success">✓ Cerrado</span></div>
+      <div class="kpi-grid" id="kpiTesoria2025"></div>
+      <div class="kpi-grid kpi-grid-split">
+        <div class="kpi kpi-operativo">
+          <div class="kpi-label">⚙️ Gastos Comunes (operativos)</div>
+          <div class="kpi-value" id="gastoOperativo2025">---€</div>
         </div>
-      </div>
-      <div class="card">
-        <div class="card-title">Proyectos 2025 · Ejecutados</div>
-        <p class="card-desc">Ejercicio cerrado: solo se muestran los proyectos que fueron finalizados y facturados en
-          2025. Los proyectos no iniciados o en curso han sido trasladados al ejercicio 2026 para su seguimiento dentro
-          del Plan Plurianual.</p>
-        <div id="projects2025"></div>
-      </div>
-      <div class="card">
-        <div class="card-title">📊 Coste Real del Portero (servicio cerrado en 2025)</div>
-        <p class="card-desc">
-          Este bloque mide el <strong>coste estructural total</strong> del antiguo modelo: Nómina + Seguridad Social +
-          Vivienda.
-        </p>
-        <div class="kpi-grid">
-          <div class="kpi danger">
-            <div class="kpi-label">2021 Total</div>
-            <div class="kpi-value" id="portero2021">---€</div>
-          </div>
-          <div class="kpi danger">
-            <div class="kpi-label">2022 Total</div>
-            <div class="kpi-value" id="portero2022">---€</div>
-          </div>
-          <div class="kpi danger">
-            <div class="kpi-label">2023 Total</div>
-            <div class="kpi-value" id="portero2023">---€</div>
-          </div>
-          <div class="kpi danger">
-            <div class="kpi-label">2024 Total</div>
-            <div class="kpi-value" id="portero2024">---€</div>
-          </div>
-        </div>
-        <div class="chart-section">
-          <div class="chart-title">Desglose Histórico Portería</div>
-          <div class="chart-container">
-            <div class="stacked-chart" id="porteroHistChart"></div>
-          </div>
-        </div>
-        <div id="auditDespido" style="margin-top:20px; font-size:12px; color:var(--text-muted)"></div>
-      </div>
-    </div>
-
-    <!-- ============ TAB SUMINISTROS ============ -->
-    <div id="energia" class="tab-content">
-
-      <!-- LUZ (ELECTRICIDAD) -->
-      <div class="card">
-        <div class="card-title">⚡ Electricidad</div>
-        <p class="card-desc">Seguimiento de consumos y costes reales (Naturgy).</p>
-        <div class="kpi-grid" id="kpiLuzGrid">
-          <div class="kpi danger">
-            <div class="kpi-label">2021</div>
-            <div class="kpi-value" id="luz2021">---€</div>
-          </div>
-          <div class="kpi danger">
-            <div class="kpi-label">2022</div>
-            <div class="kpi-value" id="luz2022">---€</div>
-          </div>
-          <div class="kpi warning">
-            <div class="kpi-label">2023</div>
-            <div class="kpi-value" id="luz2023">---€</div>
-          </div>
-          <div class="kpi success">
-            <div class="kpi-label">2024</div>
-            <div class="kpi-value" id="luz2024">---€</div>
-          </div>
-          <div class="kpi success">
-            <div class="kpi-label">2025</div>
-            <div class="kpi-value" id="luz2025">---€</div>
-          </div>
-          <div class="kpi success">
-            <div class="kpi-label">2026</div>
-            <div class="kpi-value" id="luz2026">---€</div>
-          </div>
-        </div>
-        <div class="chart-section">
-          <div class="chart-title">Gasto Anual Naturgy</div>
-          <div class="chart-container" id="luzAnualChart"></div>
-        </div>
-      </div>
-
-      <!-- GAS -->
-      <div class="card">
-        <div class="card-title">🔥 Gas & Calefacción</div>
-        <div class="kpi-grid">
-          <div class="kpi c1">
-            <div class="kpi-label">TEMP. 22/23</div>
-            <div class="kpi-value" id="calef2223">---€</div>
-          </div>
-          <div class="kpi c2">
-            <div class="kpi-label">TEMP. 23/24</div>
-            <div class="kpi-value" id="calef2324">---€</div>
-          </div>
-          <div class="kpi c3">
-            <div class="kpi-label">TEMP. 24/25</div>
-            <div class="kpi-value" id="calef2425">---€</div>
-          </div>
-          <div class="kpi c4">
-            <div class="kpi-label">TEMP. 25/26*</div>
-            <div class="kpi-value" id="calef2526">---€</div>
-          </div>
-        </div>
-        <div class="chart-section" style="margin-top:30px; border-top:1px solid var(--border); padding-top:20px">
-          <div class="chart-title">📦 Desglose por Proveedor: Gas Power + Multiservicios + Techem</div>
-          <p class="card-desc" style="font-size:13px">
-            La calefacción no es solo gas: <strong>Gas Power</strong> suministra el combustible,
-            <strong>Multiservicios</strong> mantiene la caldera comunitaria y <strong>Techem</strong> gestiona los
-            repartidores de costes para que cada vecino pague según su consumo real.
-          </p>
-          <div class="chart-container">
-            <div class="stacked-chart" id="gasDestinyChart"></div>
-          </div>
-          <div class="legend">
-            <div class="legend-item">
-              <div class="legend-color" style="background: var(--c1)"></div>Gas Power (Gas)
-            </div>
-            <div class="legend-item">
-              <div class="legend-color" style="background: var(--c2)"></div>Multiservicios (Mantenimiento)
-            </div>
-            <div class="legend-item">
-              <div class="legend-color" style="background: var(--c3)"></div>Techem (Lecturas)
-            </div>
-          </div>
-        </div>
-
-        <div class="chart-section" style="margin-top:30px; border-top:1px solid var(--border); padding-top:20px">
-          <div class="chart-title">📊 Comparativa de Coste Real (€)</div>
-          <div style="height:300px; margin-top:20px">
-            <canvas id="gasCompareChart"></canvas>
-          </div>
-        </div>
-      </div>
-
-      <!-- AGUA -->
-      <div class="card">
-        <div class="card-title">💧 Agua · Canal de Isabel II + ISTA (Contadores)</div>
-        <div
-          style="margin-bottom: 20px; padding: 12px 16px; background: #D1FAE5; border-left: 3px solid #10B981; border-radius: 6px; font-size: 14px; color: #065F46;">
-          ✅ <strong>Contadores regularizados:</strong> Todos los contadores de agua del edificio están ahora con sus
-          mediciones correctas. Proyecto «ISTA Contadores de agua regularizados» completado en 2026.
-        </div>
-        <p class="card-desc">
-          <strong>Dos conceptos del agua del edificio:</strong> el <strong>Canal de Isabel II</strong> factura el
-          suministro de agua bimensualmente (6 cargos al año), e <strong>ISTA Metering Services</strong> gestiona los
-          contadores individuales de agua (cargo anual). La administración regulariza con los vecinos según consumo
-          individual.
-        </p>
-        <div class="kpi-grid">
-          <div class="kpi c1">
-            <div class="kpi-label">2021 Total</div>
-            <div class="kpi-value" id="agua2021">---€</div>
-          </div>
-          <div class="kpi c2">
-            <div class="kpi-label">2022 Total</div>
-            <div class="kpi-value" id="agua2022">---€</div>
-          </div>
-          <div class="kpi c3">
-            <div class="kpi-label">2023 Total</div>
-            <div class="kpi-value" id="agua2023">---€</div>
-          </div>
-          <div class="kpi c4">
-            <div class="kpi-label">2024 Total</div>
-            <div class="kpi-value" id="agua2024">---€</div>
-          </div>
-          <div class="kpi c5">
-            <div class="kpi-label">2025 Total</div>
-            <div class="kpi-value" id="agua2025">---€</div>
-          </div>
-          <div class="kpi c6">
-            <div class="kpi-label">2026 Total</div>
-            <div class="kpi-value" id="agua2026">---€</div>
-          </div>
-        </div>
-        <div class="chart-section">
-          <div class="chart-title">Coste Anual Agua · Desglose Canal de Isabel II + ISTA</div>
-          <div class="chart-container">
-            <div class="stacked-chart" id="aguaChart"></div>
-          </div>
-          <div class="legend">
-            <div class="legend-item">
-              <div class="legend-color" style="background: var(--c1)"></div>Canal de Isabel II (suministro · bimensual)
-            </div>
-            <div class="legend-item">
-              <div class="legend-color" style="background: var(--c2)"></div>ISTA Metering (contadores · anual)
-            </div>
-          </div>
-        </div>
-
-
-        <div style="margin-top:40px; padding-top:30px; border-top:1px solid var(--border)">
-          <div class="card-title" style="font-size:18px">📋 Liquidación bimestral ISTA · Reparto vecinos/CP</div>
-          <p class="card-desc">
-            Cada 2 meses ISTA emite una liquidación con los consumos individuales medidos en cada contador. La
-            administración cobra a los vecinos su parte (incluida en la remesa) y la <strong>CP paga directamente sus 3
-              contadores comunitarios</strong>: limpieza (grifo basura), caldera y la vivienda CP del 8º A.
-          </p>
-          <div
-            style="font-size: 14px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px;">
-            📅 Período actual · 01/01/2026 – 01/03/2026 (59 días)</div>
-          <div class="kpi-grid">
-            <div class="kpi c1">
-              <div class="kpi-label">Total liquidación finca</div>
-              <div class="kpi-value">535,91€</div>
-              <div class="kpi-sub">26 recibos · 327 m³</div>
-            </div>
-            <div class="kpi c2">
-              <div class="kpi-label">Cobrado a vecinos</div>
-              <div class="kpi-value">514,36€</div>
-              <div class="kpi-sub">23 contadores individuales · 96%</div>
-            </div>
-            <div class="kpi c3">
-              <div class="kpi-label">Pagado por la CP</div>
-              <div class="kpi-value">21,55€</div>
-              <div class="kpi-sub">3 contadores comunitarios · 4%</div>
-            </div>
-          </div>
-          <div
-            style="font-size: 14px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin: 18px 0 10px;">
-            🏢 Desglose de los 3 contadores que paga la CP</div>
-          <div class="kpi-grid">
-            <div class="kpi c4">
-              <div class="kpi-label">🧹 Limpieza</div>
-              <div class="kpi-value">8,51€</div>
-              <div class="kpi-sub">Grifo basura · 2 m³ consumidos</div>
-            </div>
-            <div class="kpi c5">
-              <div class="kpi-label">🔥 Caldera</div>
-              <div class="kpi-value">6,52€</div>
-              <div class="kpi-sub">Cuarto calderas · 0 m³ (cuota fija)</div>
-            </div>
-            <div class="kpi c6">
-              <div class="kpi-label">🏠 Vivienda CP</div>
-              <div class="kpi-value">6,52€</div>
-              <div class="kpi-sub">8º A · 0 m³ (cuota fija)</div>
-            </div>
-          </div>
-
-
-        </div>
-      </div>
-
-    </div>
-    <!-- ============ TAB GASTOS & SERVICIOS (sin portero) ============ -->
-    <div id="gastos" class="tab-content">
-
-      <!-- LIMPIEZA EXTERNALIZADA -->
-      <div class="card">
-        <div class="card-title">🧹 Limpieza externalizada · Histórico de proveedores</div>
-        <p class="card-desc">
-          Cronología de proveedores: <strong>MJM</strong> (anterior, realizaba limpieza y cubos en cuota única) → <strong>Cubos El Pilar</strong> (mayo 2025–feb 2026, limpieza únicamente; cubos contratados en paralelo con Prevent) → <strong>Don Cubo / Prevent XXI</strong> (actual, unificó ambos servicios en marzo 2026). Para una comparativa equilibrada ("Limpieza + Cubos"), el KPI mensual de El Pilar suma de forma dinámica la cuota media de cubos de Prevent de esa época.
-        </p>
-        <div class="kpi-grid">
-          <div class="kpi c1">
-            <div class="kpi-label">MJM</div>
-            <div class="kpi-value" id="limpAnterior">---€</div>
-          </div>
-          <div class="kpi c2">
-            <div class="kpi-label">El Pilar</div>
-            <div class="kpi-value" id="limpIntermedio">---€</div>
-          </div>
-          <div class="kpi c3">
-            <div class="kpi-label">Don Cubo</div>
-            <div class="kpi-value" id="limpActual">---€</div>
-          </div>
-        </div>
-        <div class="kpi-grid">
-          <div class="kpi c1">
-            <div class="kpi-label">Mensual MJM</div>
-            <div class="kpi-value" id="limpMesAnterior">---€</div>
-          </div>
-          <div class="kpi c2">
-            <div class="kpi-label">Mensual Pilar</div>
-            <div class="kpi-value" id="limpMesIntermedio">---€</div>
-          </div>
-          <div class="kpi c3">
-            <div class="kpi-label">Mensual Don Cubo</div>
-            <div class="kpi-value" id="limpMesActual">---€</div>
-          </div>
-          <div class="kpi success">
-            <div class="kpi-label">Ahorro anual</div>
-            <div class="kpi-value" id="limpAhorro">---€</div>
-          </div>
-        </div>
-
-        <!-- Desglose Explicativo de Servicios (Limpieza + Cubos) -->
-        <div style="margin: 16px 0; background: #F8FAFC; border: 1px solid var(--border); border-radius: 10px; padding: 16px;">
-          <div style="font-size: 12px; font-weight: 800; color: var(--text-soft); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 12px; display: flex; align-items: center; gap: 6px;">
-            <span>💡 Cómo se calculan estas cuotas (Limpieza + Cubos en paralelo)</span>
-          </div>
-          <div style="display: flex; flex-direction: column; gap: 10px;">
-            <div style="display: flex; justify-content: space-between; align-items: center; font-size: 13px; flex-wrap: wrap; gap: 6px;">
-              <span style="font-weight: 700; color: var(--text);">Mensual MJM (Histórico):</span>
-              <span style="color: var(--text-soft);" id="desgloseMJM">Cargando...</span>
-            </div>
-            <div style="display: flex; justify-content: space-between; align-items: center; font-size: 13px; border-top: 1px solid rgba(0,0,0,0.04); padding-top: 10px; flex-wrap: wrap; gap: 6px;">
-              <span style="font-weight: 700; color: var(--text);">Mensual El Pilar (Histórico):</span>
-              <span style="color: var(--text-soft);" id="desglosePilar">Cargando...</span>
-            </div>
-            <div style="display: flex; justify-content: space-between; align-items: center; font-size: 13px; border-top: 1px solid rgba(0,0,0,0.04); padding-top: 10px; flex-wrap: wrap; gap: 6px;">
-              <span style="font-weight: 700; color: var(--text);">Mensual Don Cubo (Actual):</span>
-              <span style="color: var(--text-soft);" id="desgloseCubo">Cargando...</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- COMUNICACIONES -->
-      <div class="card">
-        <div class="card-title">📡 Comunicaciones · Antena, Vídeo y Cámaras</div>
-        <p class="card-desc">
-          Cambio en 2026: <strong>Prisma → Lasser</strong> (Antenas Lasser + Seguridad Lasser).
-        </p>
-        <div class="kpi-grid" id="kpiComunicaciones">
-          <div class="kpi">
-            <div class="kpi-label">Cargando...</div>
-          </div>
-        </div>
-        <div class="chart-section">
-          <div class="chart-title">Comunicaciones por Año (Prisma vs Lasser)</div>
-          <div class="chart-container">
-            <div class="stacked-chart" id="comunicChart"></div>
-          </div>
-          <div class="legend">
-            <div class="legend-item">
-              <div class="legend-color" style="background: #EF4444"></div>Prisma (anterior)
-            </div>
-            <div class="legend-item">
-              <div class="legend-color" style="background: #10B981"></div>Lasser (actual)
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- ASCENSORES -->
-      <div class="card">
-        <div class="card-title">🦟 Desinsectación anual · Protesins</div>
-        <p class="card-desc">
-          Tratamiento anual de desinsectación del edificio. Proveedor: <strong>Protesins</strong>. Cargo único anual,
-          habitualmente en mayo–junio. Obligatorio para comunidades de propietarios.
-        </p>
-        <div class="kpi-grid" id="kpiProtesins">
-          <div class="kpi">
-            <div class="kpi-label">Cargando...</div>
-          </div>
-        </div>
-        <p id="footerProtesins"
-          style="font-size: 14px; color: var(--text-muted); margin-top: 10px; padding: 10px 14px; background: #EFF6FF; border-left: 3px solid #3B82F6; border-radius: 4px;">
-          🏦 <strong style="color:#1E3A8A">Auditoría:</strong> Datos dinámicos.
-        </p>
-      </div>
-
-      <div class="card">
-        <div class="card-title">🧯 Extintores · Iberext S.A.</div>
-        <p class="card-desc">
-          Revisión anual obligatoria de extintores del edificio. Proveedor: <strong>Iberext S.A.</strong> (aparece en
-          banco como "ADEUDO RECIBO IBEREXT S.A."). Cargo irregular — varía según el año por incorporación de nuevos
-          elementos al sistema.
-        </p>
-        <div class="kpi-grid" id="kpiExtintores">
-          <div class="kpi">
-            <div class="kpi-label">Cargando...</div>
-          </div>
-        </div>
-        <p
-          style="font-size: 14px; color: var(--text-muted); margin-top: 6px; padding: 10px 14px; background: #EFF6FF; border-left: 3px solid #3B82F6; border-radius: 4px;">
-          🏦 <strong style="color:#1E3A8A">Cruce banco:</strong> 2022: 105,14€ (feb) + 109,35€ (nov) + 513,12€ (dic) ·
-          2023: 113,72€ (oct) · 2024: 279,61€ (may) + 166,17€ (nov) · 2025: 170,32€ (nov)
-        </p>
-      </div>
-
-      <div class="card">
-        <div class="card-title">🛗 Ascensores · Mantenimiento + Móvil</div>
-        <p class="card-desc">
-          Empresa <strong>Duplex Elevación</strong> (mantenimiento) + línea Movistar 18,15€/mes (teléfono de emergencia
-          del ascensor, obligatorio por normativa).
-          Aumento 2025 por avería y cambio de máquina (8.000€ proyecto del año).
-        </p>
-        <div class="kpi-grid" id="kpiAscensores">
-          <div class="kpi">
-            <div class="kpi-label">Cargando...</div>
-          </div>
-        </div>
-        <div class="chart-section">
-          <div class="chart-title">Coste Ascensor por Año (Duplex + Móvil)</div>
-          <div class="chart-container">
-            <div class="stacked-chart" id="ascensorChart"></div>
-          </div>
-          <div class="legend">
-            <div class="legend-item">
-              <div class="legend-color" style="background: #4F46E5"></div>Duplex Elevación
-            </div>
-            <div class="legend-item">
-              <div class="legend-color" style="background: #0EA5E9"></div>Móvil Telefónica
-            </div>
-          </div>
+        <div class="kpi kpi-mejora">
+          <div class="kpi-label">🔨 Mejoras del Edificio (proyectos)</div>
+          <div class="kpi-value" id="gastoMejora2025">---€</div>
         </div>
       </div>
     </div>
+    <div class="card">
+      <div class="card-title">Proyectos 2025 · Ejecutados</div>
+      <p class="card-desc">Ejercicio cerrado: solo se muestran los proyectos que fueron finalizados y facturados en
+        2025. Los proyectos no iniciados o en curso han sido trasladados al ejercicio 2026 para su seguimiento dentro
+        del Plan Plurianual.</p>
+      <div id="projects2025"></div>
+    </div>
+    <div class="card">
+      <div class="card-title">📊 Coste Real del Portero (servicio cerrado en 2025)</div>
+      <p class="card-desc">
+        Este bloque mide el <strong>coste estructural total</strong> del antiguo modelo: Nómina + Seguridad Social +
+        Vivienda.
+      </p>
+      <div class="kpi-grid">
+        <div class="kpi c1">
+          <div class="kpi-label">2021 Total</div>
+          <div class="kpi-value" id="portero2021">---€</div>
+        </div>
+        <div class="kpi c2">
+          <div class="kpi-label">2022 Total</div>
+          <div class="kpi-value" id="portero2022">---€</div>
+        </div>
+        <div class="kpi c3">
+          <div class="kpi-label">2023 Total</div>
+          <div class="kpi-value" id="portero2023">---€</div>
+        </div>
+        <div class="kpi c4">
+          <div class="kpi-label">2024 Total</div>
+          <div class="kpi-value" id="portero2024">---€</div>
+        </div>
+      </div>
+      <div class="chart-section">
+        <div class="chart-title">Desglose Histórico Portería</div>
+        <div class="chart-container">
+          <div class="stacked-chart" id="porteroHistChart"></div>
+        </div>
+      </div>
+      <div id="auditDespido" style="margin-top:20px; font-size:12px; color:var(--text-muted)"></div>
+    </div>
+  </div>
 
-    <!-- ============ TAB GESTIÓN ============ -->
-    <div id="admin" class="tab-content">
+  <!-- ============ TAB SUMINISTROS ============ -->
+  <div id="energia" class="tab-content">
 
-      <!-- COMISIONES BANCARIAS -->
-      <div class="card">
-        <div class="card-title">🏦 Comisiones bancarias · Banc Sabadell</div>
-        <p class="card-desc">
-          Cargos del banco: <strong>comisiones de mantenimiento</strong> (cuenta y remesas de cuotas),
-          <strong>intereses</strong>, <strong>gastos por gestión de devoluciones</strong> (recibos impagados) e
-          <strong>IVA sobre comisiones</strong>. Las comisiones se han <strong>triplicado</strong> entre 2021 y 2025
-          (220€
-          → 760€). En 2026 se proyectan ~1.360€ anuales.
+    <!-- LUZ (ELECTRICIDAD) -->
+    <div class="card">
+      <div class="card-title">⚡ Electricidad</div>
+      <p class="card-desc">Seguimiento de consumos y costes reales (Naturgy).</p>
+      <div class="kpi-grid" id="kpiLuzGrid">
+        <div class="kpi danger">
+          <div class="kpi-label">2021</div>
+          <div class="kpi-value" id="luz2021">---€</div>
+        </div>
+        <div class="kpi danger">
+          <div class="kpi-label">2022</div>
+          <div class="kpi-value" id="luz2022">---€</div>
+        </div>
+        <div class="kpi warning">
+          <div class="kpi-label">2023</div>
+          <div class="kpi-value" id="luz2023">---€</div>
+        </div>
+        <div class="kpi success">
+          <div class="kpi-label">2024</div>
+          <div class="kpi-value" id="luz2024">---€</div>
+        </div>
+        <div class="kpi success">
+          <div class="kpi-label">2025</div>
+          <div class="kpi-value" id="luz2025">---€</div>
+        </div>
+        <div class="kpi success">
+          <div class="kpi-label">2026</div>
+          <div class="kpi-value" id="luz2026">---€</div>
+        </div>
+      </div>
+      <div class="chart-section">
+        <div class="chart-title">Gasto Anual Naturgy</div>
+        <div class="chart-container" id="luzAnualChart"></div>
+      </div>
+    </div>
+
+    <!-- GAS -->
+    <div class="card">
+      <div class="card-title">🔥 Gas & Calefacción</div>
+      <div class="kpi-grid">
+        <div class="kpi c1">
+          <div class="kpi-label">TEMP. 22/23</div>
+          <div class="kpi-value" id="calef2223">---€</div>
+        </div>
+        <div class="kpi c2">
+          <div class="kpi-label">TEMP. 23/24</div>
+          <div class="kpi-value" id="calef2324">---€</div>
+        </div>
+        <div class="kpi c3">
+          <div class="kpi-label">TEMP. 24/25</div>
+          <div class="kpi-value" id="calef2425">---€</div>
+        </div>
+        <div class="kpi c4">
+          <div class="kpi-label">TEMP. 25/26*</div>
+          <div class="kpi-value" id="calef2526">---€</div>
+        </div>
+      </div>
+      <div class="chart-section" style="margin-top:30px; border-top:1px solid var(--border); padding-top:20px">
+        <div class="chart-title">📦 Desglose por Proveedor: Gas Power + Multiservicios + Techem</div>
+        <p class="card-desc" style="font-size:13px">
+          La calefacción no es solo gas: <strong>Gas Power</strong> suministra el combustible,
+          <strong>Multiservicios</strong> mantiene la caldera comunitaria y <strong>Techem</strong> gestiona los
+          repartidores de costes para que cada vecino pague según su consumo real.
         </p>
-        <div class="kpi-grid">
-          <div class="kpi">
-            <div class="kpi-label">2021</div>
-            <div class="kpi-value">220€</div>
-          </div>
-          <div class="kpi">
-            <div class="kpi-label">2022</div>
-            <div class="kpi-value">345€</div>
-          </div>
-          <div class="kpi">
-            <div class="kpi-label">2023</div>
-            <div class="kpi-value">399€</div>
-          </div>
-          <div class="kpi warning">
-            <div class="kpi-label">2024</div>
-            <div class="kpi-value">569€</div>
-          </div>
-          <div class="kpi danger">
-            <div class="kpi-label">2025</div>
-            <div class="kpi-value">760€</div>
-          </div>
-          <div class="kpi info">
-            <div class="kpi-label">2026 (ene-abr)</div>
-            <div class="kpi-value">454€</div>
-            <div class="kpi-sub">→ ~1.360€ proyección anual</div>
-          </div>
-        </div>
-        <div
-          style="margin: 14px 0; padding: 12px 16px; background: #FEF3C7; border-left: 3px solid #F59E0B; border-radius: 6px; font-size: 14px; color: #92400E;">
-          ⚠️ <strong>Alerta:</strong> Las comisiones crecen un 34% anual de media. Considerar negociar condiciones con
-          Banc Sabadell o evaluar otras entidades en 2026–2027.
-        </div>
-        <div class="chart-section">
-          <div class="chart-title">Evolución comisiones bancarias por año</div>
-          <div class="chart-container" id="comisionesBancoChart"></div>
+        <div class="chart-container">
+          <div class="stacked-chart" id="gasDestinyChart"></div>
         </div>
         <div class="legend">
           <div class="legend-item">
-            <div class="legend-color" style="background:#4F46E5"></div>Comisiones mantenimiento y remesas
+            <div class="legend-color" style="background: var(--c1)"></div>Gas Power (Gas)
           </div>
           <div class="legend-item">
-            <div class="legend-color" style="background:#F59E0B"></div>Intereses cuenta
+            <div class="legend-color" style="background: var(--c2)"></div>Multiservicios (Mantenimiento)
           </div>
           <div class="legend-item">
-            <div class="legend-color" style="background:#EF4444"></div>Devoluciones / impagados
-          </div>
-          <div class="legend-item">
-            <div class="legend-color" style="background:#94A3B8"></div>IVA comisiones
+            <div class="legend-color" style="background: var(--c3)"></div>Techem (Lecturas)
           </div>
         </div>
       </div>
 
-      <!-- IMPUESTOS Y OBLIGACIONES -->
-      <div class="card">
-        <div class="card-title">⚖️ Impuestos y obligaciones legales</div>
+      <div class="chart-section" style="margin-top:30px; border-top:1px solid var(--border); padding-top:20px">
+        <div class="chart-title">📊 Comparativa de Coste Real (€)</div>
+        <div style="height:300px; margin-top:20px">
+          <canvas id="gasCompareChart"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- AGUA -->
+    <div class="card">
+      <div class="card-title">💧 Agua · Canal de Isabel II + ISTA (Contadores)</div>
+      <div style="margin-bottom: 20px; padding: 12px 16px; background: #D1FAE5; border-left: 3px solid #10B981; border-radius: 6px; font-size: 14px; color: #065F46;">
+        ✅ <strong>Contadores regularizados:</strong> Todos los contadores de agua del edificio están ahora con sus mediciones correctas. Proyecto «ISTA Contadores de agua regularizados» completado en 2026.
+      </div>
+      <p class="card-desc">
+        <strong>Dos conceptos del agua del edificio:</strong> el <strong>Canal de Isabel II</strong> factura el suministro de agua bimensualmente (6 cargos al año), e <strong>ISTA Metering Services</strong> gestiona los contadores individuales de agua (cargo anual). La administración regulariza con los vecinos según consumo individual.
+      </p>
+      <div class="kpi-grid">
+        <div class="kpi c1"><div class="kpi-label">2021 Total</div><div class="kpi-value" id="agua2021">---€</div></div>
+        <div class="kpi c2"><div class="kpi-label">2022 Total</div><div class="kpi-value" id="agua2022">---€</div></div>
+        <div class="kpi c3"><div class="kpi-label">2023 Total</div><div class="kpi-value" id="agua2023">---€</div></div>
+        <div class="kpi c4"><div class="kpi-label">2024 Total</div><div class="kpi-value" id="agua2024">---€</div></div>
+        <div class="kpi c5"><div class="kpi-label">2025 Total</div><div class="kpi-value" id="agua2025">---€</div></div>
+        <div class="kpi c6"><div class="kpi-label">2026 Total</div><div class="kpi-value" id="agua2026">---€</div></div>
+      </div>
+      <div class="chart-section">
+        <div class="chart-title">Coste Anual Agua · Desglose Canal de Isabel II + ISTA</div>
+        <div class="chart-container">
+          <div class="stacked-chart" id="aguaChart"></div>
+        </div>
+        <div class="legend">
+          <div class="legend-item"><div class="legend-color" style="background: var(--c1)"></div>Canal de Isabel II (suministro · bimensual)</div>
+          <div class="legend-item"><div class="legend-color" style="background: var(--c2)"></div>ISTA Metering (contadores · anual)</div>
+        </div>
+      </div>
+
+
+      <div style="margin-top:40px; padding-top:30px; border-top:1px solid var(--border)">
+        <div class="card-title" style="font-size:18px">📋 Liquidación bimestral ISTA · Reparto vecinos/CP</div>
         <p class="card-desc">
-          La CP tributa <strong>IRPF de retenciones trimestralmente</strong> (modelo 111, autoliquidación a Hacienda
-          sobre
-          los pagos a administradora) y mantiene un servicio de <strong>cumplimiento LOPD/RGPD con Conversia</strong>
-          (protección de datos personales de los vecinos, obligatorio para comunidades de propietarios).
+          Cada 2 meses ISTA emite una liquidación con los consumos individuales medidos en cada contador. La administración cobra a los vecinos su parte (incluida en la remesa) y la <strong>CP paga directamente sus 3 contadores comunitarios</strong>: limpieza (grifo basura), caldera y la vivienda CP del 8º A.
         </p>
-        <div
-          style="font-size: 14px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px;">
-          IRPF · Retenciones trimestrales</div>
+        <div style="font-size: 14px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px;">📅 Período actual · 01/01/2026 – 01/03/2026 (59 días)</div>
         <div class="kpi-grid">
-          <div class="kpi">
-            <div class="kpi-label">2024 (T2–T4)</div>
-            <div class="kpi-value">218€</div>
-            <div class="kpi-sub">inicio con Susana</div>
-          </div>
-          <div class="kpi">
-            <div class="kpi-label">2025</div>
-            <div class="kpi-value">396€</div>
-            <div class="kpi-sub">99€ × 4 trimestres</div>
-          </div>
-          <div class="kpi info">
-            <div class="kpi-label">2026 (T1+T2)</div>
-            <div class="kpi-value">217€</div>
-            <div class="kpi-sub">→ ~396€ proyección anual</div>
-          </div>
+          <div class="kpi c1"><div class="kpi-label">Total liquidación finca</div><div class="kpi-value">535,91€</div><div class="kpi-sub">26 recibos · 327 m³</div></div>
+          <div class="kpi c2"><div class="kpi-label">Cobrado a vecinos</div><div class="kpi-value">514,36€</div><div class="kpi-sub">23 contadores individuales · 96%</div></div>
+          <div class="kpi c3"><div class="kpi-label">Pagado por la CP</div><div class="kpi-value">21,55€</div><div class="kpi-sub">3 contadores comunitarios · 4%</div></div>
         </div>
-        <div
-          style="font-size: 14px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin: 18px 0 10px;">
-          LOPD/RGPD · Conversia (cumplimiento protección de datos)</div>
+        <div style="font-size: 14px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin: 18px 0 10px;">🏢 Desglose de los 3 contadores que paga la CP</div>
         <div class="kpi-grid">
-          <div class="kpi">
-            <div class="kpi-label">2025</div>
-            <div class="kpi-value">242€</div>
-            <div class="kpi-sub">anual</div>
-          </div>
-          <div class="kpi info">
-            <div class="kpi-label">2026 (ene-abr)</div>
-            <div class="kpi-value">242€</div>
-            <div class="kpi-sub">cargo anual feb 2026</div>
-          </div>
+          <div class="kpi c4"><div class="kpi-label">🧹 Limpieza</div><div class="kpi-value">8,51€</div><div class="kpi-sub">Grifo basura · 2 m³ consumidos</div></div>
+          <div class="kpi c5"><div class="kpi-label">🔥 Caldera</div><div class="kpi-value">6,52€</div><div class="kpi-sub">Cuarto calderas · 0 m³ (cuota fija)</div></div>
+          <div class="kpi c6"><div class="kpi-label">🏠 Vivienda CP</div><div class="kpi-value">6,52€</div><div class="kpi-sub">8º A · 0 m³ (cuota fija)</div></div>
         </div>
-        <div
-          style="font-size: 14px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin: 18px 0 10px;">
-          Notificaciones electrónicas · DEH (Dirección Electrónica Habilitada)</div>
-        <div class="kpi-grid">
-          <div class="kpi">
-            <div class="kpi-label">2024</div>
-            <div class="kpi-value">73€</div>
-          </div>
-          <div class="kpi">
-            <div class="kpi-label">2025</div>
-            <div class="kpi-value">73€</div>
-          </div>
-          <div class="kpi info">
-            <div class="kpi-label">2026 (ene-abr)</div>
-            <div class="kpi-value">—</div>
-            <div class="kpi-sub">pendiente de cargo</div>
-          </div>
-        </div>
-        <p
-          style="font-size: 14px; color: var(--text-muted); margin-top: 14px; padding: 10px 14px; background: #EFF6FF; border-left: 3px solid #3B82F6; border-radius: 4px;">
-          🏦 <strong style="color:#1E3A8A">Cruce banco:</strong> IRPF · cargos trimestrales 99€ (ene-20 y abr-19 de
-          2026)
-          · Conversia 242€ cargo 10/02/2026 · DEH Notificaciones cargo dic 2024 y dic 2025 (72,60€)
-        </p>
-      </div>
 
-      <!-- ADMINISTRACIÓN -->
-      <div class="card">
-        <div class="card-title">📋 Administración de la Comunidad</div>
-        <div class="kpi-grid" id="kpiAdmin">
-          <div class="kpi">
-            <div class="kpi-label">Cargando...</div>
-          </div>
-        </div>
-        <p class="card-desc">
-          Histórico: <strong>Alfredo Sánchez Aguirre / BMC</strong> (Cl. Sauce 9) → <strong>Vanessa Álvarez</strong> →
-          <strong>Susana Fernández Robleda</strong> (actual desde julio 2024). Cuota aprobada en junta con ligera subida
-          respecto al año anterior. Los cargos de Susana en banco corresponden a <strong>cuota de administración de la
-            comunidad</strong>, no a limpieza.
-        </p>
-        <div class="kpi-grid">
-          <div class="kpi danger">
-            <div class="kpi-label">2021 BMC/Alfredo</div>
-            <div class="kpi-value">5.026€</div>
-          </div>
-          <div class="kpi danger">
-            <div class="kpi-label">2022 BMC/Alfredo</div>
-            <div class="kpi-value">4.260€</div>
-          </div>
-          <div class="kpi danger">
-            <div class="kpi-label">2023 BMC/Alfredo</div>
-            <div class="kpi-value">19.281€</div>
-            <div class="kpi-sub">incluye atrasos</div>
-          </div>
-          <div class="kpi warning">
-            <div class="kpi-label">2024 transición</div>
-            <div class="kpi-value">11.037€</div>
-            <div class="kpi-sub">BMC + Vanessa + Susana</div>
-          </div>
-          <div class="kpi success">
-            <div class="kpi-label">2025 Susana</div>
-            <div class="kpi-value">2.830€</div>
-            <div class="kpi-sub">~233€/mes</div>
-          </div>
-          <div class="kpi info">
-            <div class="kpi-label">2026 (ene-abr)</div>
-            <div class="kpi-value">1.133€</div>
-          </div>
-        </div>
-        <div class="chart-section">
-          <div class="chart-title">Coste Administración por Año</div>
-          <div class="chart-container" id="adminChart"></div>
-        </div>
-        <div
-          style="font-size: 14px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin: 18px 0 10px;">
-          🖥️ Software de gestión · IESA / Aareon Proptech</div>
-        <p style="font-size: 14px; color: var(--text-soft); margin-bottom: 10px;">Portal de gestión de comunidades de
-          propietarios utilizado por Susana para la administración. Dos cargos anuales (suscripción + módulo adicional).
-        </p>
-        <div class="kpi-grid">
-          <div class="kpi">
-            <div class="kpi-label">2025 · Fac. NC8995</div>
-            <div class="kpi-value">78,65€</div>
-            <div class="kpi-sub">cargo 12/05/2025</div>
-          </div>
-          <div class="kpi">
-            <div class="kpi-label">2025 · Fac. NC9461</div>
-            <div class="kpi-value">24,20€</div>
-            <div class="kpi-sub">cargo 12/05/2025</div>
-          </div>
-          <div class="kpi info">
-            <div class="kpi-label">Total anual estimado</div>
-            <div class="kpi-value">~103€</div>
-          </div>
-        </div>
-        <p
-          style="font-size: 14px; color: var(--text-muted); margin-top: 10px; padding: 10px 14px; background: #EFF6FF; border-left: 3px solid #3B82F6; border-radius: 4px;">
-          🏦 <strong style="color:#1E3A8A">Cruce banco:</strong> IESA-CCPP-Aareon Proptech · 78,65€ + 24,20€
-          (12/05/2025)
-          · Comisión emisión certificado digital: 2,42€ (14/03/2025)
-        </p>
-      </div>
 
-    </div>
-
-    <!-- ============ TAB PLAN 2025-2031 ============ -->
-    <div id="plan" class="tab-content">
-      <div class="card">
-        <div class="card-title">📅 Gastos previstos · Resto de 2026</div>
-        <p class="card-desc">Solo quedan dos partidas significativas pendientes para cerrar el ejercicio 2026:</p>
-        <div class="kpi-grid">
-          <div class="kpi warning">
-            <div class="kpi-label">Sellado y limpieza ventanal con descuelgue</div>
-            <div class="kpi-value">2.988€</div>
-            <div class="kpi-sub">Pinta Limpio · presupuesto real · mayo/junio · distinto al de desprendimientos 1C (ya
-              pagado)</div>
-          </div>
-          <div class="kpi warning">
-            <div class="kpi-label">Quitar maderas pared portal</div>
-            <div class="kpi-value">~2.700€</div>
-            <div class="kpi-sub">A. Pirtac · iniciado 25% · pladur tras quitar maderas</div>
-          </div>
-          <div class="kpi info">
-            <div class="kpi-label">Total restante 2026</div>
-            <div class="kpi-value">~5.700€</div>
-            <div class="kpi-sub">~7k previstos en total</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="card" id="planEstadoCard">
-        <div class="card-title">🎯 Estado del Plan Plurianual</div>
-        <p class="card-desc">La reforma de la vivienda 8A solo se ejecutará cuando la comunidad acumule 30.000€ de
-          ahorro
-          específico para la obra y mantenga además un colchón mínimo de seguridad de 20.000€. A partir de ahí, 8A se
-          plantea como una inversión para generar fondos adicionales sin comprometer la tesorería ordinaria. Una vez
-          reformada y alquilada la vivienda, junto con el ahorro estructural por no tener portero, la comunidad podrá
-          acometer con más rapidez el resto de proyectos del plan.</p>
-        <p
-          style="font-size: 14px; color: var(--text-muted); margin-top: 12px; padding: 10px 14px; background: #FFF7ED; border-left: 3px solid #F59E0B; border-radius: 4px;">
-          🛡️ <strong style="color:#9A3412">Versión conservadora:</strong> descontando primero el descuelgue y la
-          retirada
-          de maderas del portal ya presupuestados, y asumiendo que siempre surgirán imprevistos, la referencia prudente
-          para alcanzar los 50.000€ de caja (30.000€ para la obra + 20.000€ de colchón) es verano de 2028. Esta
-          estimación
-          no cuenta ingresos teóricos de la vivienda hasta que se conviertan en cobros reales.
-        </p>
-        <div class="kpi-grid" id="planKpis"></div>
-        <div class="chart-section">
-          <div class="chart-title">Gasto Presupuestado por Estado (€)</div>
-          <div class="chart-container" id="planProgressChart"></div>
-        </div>
-      </div>
-
-      <div class="card" id="planDesglosCard">
-        <div class="card-title">📊 Contabilización del Plan</div>
-        <div class="kpi-grid" id="planDesglose"></div>
-        <div class="chart-section">
-          <div class="chart-title">Cobertura del Marco del Plan</div>
-          <div class="chart-container" id="burndownChart"></div>
-        </div>
       </div>
     </div>
 
-    <!-- ============ TAB ADMIN ============ -->
-    <div id="admin-panel" class="tab-content">
+  </div>
+  <!-- ============ TAB GASTOS & SERVICIOS (sin portero) ============ -->
+  <div id="gastos" class="tab-content">
 
-      <div class="card">
-        <div class="card-title" style="display:flex;justify-content:space-between;align-items:center">
-          <span>➕ Acciones rápidas</span>
-        </div>
-        <div style="display:flex;gap:12px;flex-wrap:wrap">
-          <button onclick="openModal()"
-            style="background:var(--primary);color:white;border:none;padding:12px 20px;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;display:flex;align-items:center;gap:6px">+
-            Nuevo proyecto</button>
-          <button onclick="openBancoModal()"
-            style="background:var(--surface);color:var(--text);border:1.5px solid var(--border);padding:12px 20px;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;display:flex;align-items:center;gap:6px">📤
-            Subir extracto bancario</button>
-          <button onclick="forceCleanGas()"
-            style="background:#FEF2F2;color:#EF4444;border:1.5px solid #FCA5A5;padding:12px 20px;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit">🧨
-            Limpiar todo el Gas</button>
+    <!-- LIMPIEZA EXTERNALIZADA -->
+    <div class="card">
+      <div class="card-title">🧹 Limpieza externalizada · Dos servicios, tres proveedores</div>
+      
+      <!-- Informational Description in Premium Callout -->
+      <div style="background: var(--bg-light); border: 1px solid var(--border); border-radius: 12px; padding: 16px 20px; margin-bottom: 24px; display: flex; gap: 14px; align-items: flex-start; box-shadow: inset 0 1px 2px rgba(0,0,0,0.01);">
+        <div style="font-size: 20px; margin-top: 2px;">ℹ️</div>
+        <div style="font-size: 13px; line-height: 1.5; color: var(--text-soft);">
+          La comunidad contrata <strong>dos servicios independientes</strong>: el sacado diario de cubos de basura y la limpieza general del edificio. 
+          Históricamente, <strong>MJM</strong> prestó ambos servicios hasta su cancelación en abril de 2025. 
+          Posteriormente, en mayo de 2025, se dividió la gestión contratando a <strong>Prevent XXI</strong> para los cubos y a <strong>El Pilar</strong> para la limpieza. 
+          Finalmente, en marzo de 2026, <strong>Prevent XXI</strong> unificó ambos servicios bajo una cuota única mensual optimizada.
         </div>
       </div>
 
-      <div class="card">
-        <div class="card-title">👥 Gestión de usuarios</div>
-        <p class="card-desc">Usuarios con acceso al dashboard. Para invitar a un nuevo usuario, ve a <strong>Supabase →
-            Authentication → Users → Invite user</strong> y luego añade su rol aquí.</p>
-        <div id="usersList" style="margin-top:16px">
-          <div style="color:var(--text-muted);font-size:14px">Cargando usuarios...</div>
-        </div>
-        <div style="margin-top:16px;display:flex;gap:10px;flex-wrap:wrap">
-          <input type="email" id="newUserEmail" placeholder="nuevo@email.com"
-            style="padding:10px 14px;border:1.5px solid var(--border);border-radius:8px;font-size:14px;outline:none;flex:1;min-width:200px">
-          <select id="newUserRole"
-            style="padding:10px 14px;border:1.5px solid var(--border);border-radius:8px;font-size:14px;background:white">
-            <option value="viewer">👁️ Visualizador</option>
-            <option value="admin">⚙️ Admin</option>
-          </select>
-          <button onclick="addUserRole()"
-            style="padding:10px 20px;background:var(--primary);color:white;border:none;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit">Añadir</button>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="card-title">📤 Subida de documentos</div>
-        <p class="card-desc">Sube facturas y extractos para tenerlos registrados. También puedes procesar todo el
-          histórico de golpe seleccionando la carpeta con los PDFs.</p>
-        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin-top:16px">
-          <label
-            style="border:2px dashed var(--border);border-radius:10px;padding:24px;text-align:center;cursor:pointer;transition:all 0.2s;display:block"
-            onmouseover="this.style.borderColor='var(--primary)'" onmouseout="this.style.borderColor='var(--border)'">
-            <div style="font-size:28px;margin-bottom:8px">🗂️</div>
-            <div style="font-weight:700;font-size:14px">Carpeta histórica</div>
-            <div style="font-size:12px;color:var(--text-muted);margin-top:4px">Procesa decenas de facturas de golpe
+      <!-- Línea temporal de servicios (Rediseño Premium - Columnas Alineadas) -->
+      <div style="display: flex; flex-direction: column; gap: 12px; margin: 20px 0;">
+        
+        <!-- Periodo 1: MJM -->
+        <div class="cleaning-timeline-row" style="display: flex; align-items: center; justify-content: space-between; padding: 16px 20px; border-radius: 12px; border: 1px solid rgba(239, 68, 68, 0.12); background: linear-gradient(135deg, #FFF5F5 0%, #FFF 100%); box-shadow: 0 1px 3px rgba(0,0,0,0.01); flex-wrap: wrap; gap: 16px; cursor: default;">
+          <div style="flex: 0 0 25%; min-width: 150px; display: flex; align-items: center; gap: 12px;">
+            <div style="background: rgba(239, 68, 68, 0.08); color: #EF4444; width: 34px; height: 34px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: bold;">📅</div>
+            <div>
+              <div style="font-size: 10px; font-weight: 700; color: #9B2C2C; text-transform: uppercase; letter-spacing: 0.5px;">Histórico</div>
+              <div style="font-size: 14px; font-weight: 700; color: #9B2C2C;">oct'24 – abr'25</div>
             </div>
-            <input type="file" id="batchFolderInput" webkitdirectory directory multiple style="display:none"
-              onchange="handleBatchFolder(event)">
-          </label>
-          <div onclick="openDocUpload('banco')"
-            style="border:2px dashed var(--border);border-radius:10px;padding:24px;text-align:center;cursor:pointer;transition:all 0.2s"
-            onmouseover="this.style.borderColor='var(--primary)'" onmouseout="this.style.borderColor='var(--border)'">
-            <div style="font-size:28px;margin-bottom:8px">🏦</div>
-            <div style="font-weight:700;font-size:14px">Extracto banco</div>
-            <div style="font-size:12px;color:var(--text-muted);margin-top:4px">XLS Sabadell mensual</div>
           </div>
-          <div onclick="openDocUpload('naturgy')"
-            style="border:2px dashed var(--border);border-radius:10px;padding:24px;text-align:center;cursor:pointer;transition:all 0.2s"
-            onmouseover="this.style.borderColor='var(--primary)'" onmouseout="this.style.borderColor='var(--border)'">
-            <div style="font-size:28px;margin-bottom:8px">⚡</div>
-            <div style="font-weight:700;font-size:14px">Factura Naturgy</div>
-            <div style="font-size:12px;color:var(--text-muted);margin-top:4px">Electricidad zonas comunes</div>
+          <div style="flex: 0 0 20%; min-width: 120px; display: flex; flex-direction: column; gap: 3px;">
+            <span style="font-size: 10px; color: var(--text-muted); font-weight: 600; text-transform: uppercase;">🗑️ Cubos</span>
+            <div><span style="background: rgba(239, 68, 68, 0.08); color: #EF4444; border: 1px solid rgba(239, 68, 68, 0.15); padding: 4px 10px; border-radius: 6px; font-size: 11px; font-weight: 700; display: inline-block;">MJM</span></div>
           </div>
-          <div onclick="openDocUpload('gas_power')"
-            style="border:2px dashed var(--border);border-radius:10px;padding:24px;text-align:center;cursor:pointer;transition:all 0.2s"
-            onmouseover="this.style.borderColor='var(--primary)'" onmouseout="this.style.borderColor='var(--border)'">
-            <div style="font-size:28px;margin-bottom:8px">🔥</div>
-            <div style="font-weight:700;font-size:14px">Factura Gas Power</div>
-            <div style="font-size:12px;color:var(--text-muted);margin-top:4px">Gas calefacción</div>
+          <div style="flex: 0 0 20%; min-width: 120px; display: flex; flex-direction: column; gap: 3px;">
+            <span style="font-size: 10px; color: var(--text-muted); font-weight: 600; text-transform: uppercase;">🧹 Limpieza</span>
+            <div><span style="background: rgba(239, 68, 68, 0.08); color: #EF4444; border: 1px solid rgba(239, 68, 68, 0.15); padding: 4px 10px; border-radius: 6px; font-size: 11px; font-weight: 700; display: inline-block;">MJM</span></div>
           </div>
-          <div onclick="openDocUpload('factura')"
-            style="border:2px dashed var(--border);border-radius:10px;padding:24px;text-align:center;cursor:pointer;transition:all 0.2s"
-            onmouseover="this.style.borderColor='var(--primary)'" onmouseout="this.style.borderColor='var(--border)'">
-            <div style="font-size:28px;margin-bottom:8px">📄</div>
-            <div style="font-weight:700;font-size:14px">Factura proveedor</div>
-            <div style="font-size:12px;color:var(--text-muted);margin-top:4px">Pirtac, Perón, etc.</div>
+          <div style="flex: 0 0 30%; min-width: 180px; text-align: right;">
+            <div style="font-size: 10px; color: #9B2C2C; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 2px;">Coste Mensual</div>
+            <div id="limpMesMJM" style="font-size: 16px; font-weight: 800; color: #EF4444;">---€</div>
           </div>
         </div>
-        <div id="docsList" style="margin-top:20px"></div>
-      </div>
 
-      <div class="card">
-        <details>
-          <summary style="list-style:none;display:flex;align-items:center;justify-content:space-between;cursor:pointer;padding:4px 0">
-            <div class="card-title" style="margin-bottom:0">🔗 Vincular facturas a movimientos</div>
-            <span style="font-size:13px;color:var(--text-muted)">▼ Abrir</span>
-          </summary>
-          <div style="margin-top:16px">
-            <p class="card-desc" style="margin-bottom:12px">Busca un movimiento bancario por concepto y añade la referencia de factura correspondiente.</p>
-            <div style="display:flex;gap:8px;margin-bottom:12px">
-              <input type="text" id="facturaSearchInput" placeholder="Buscar por concepto, ej: MJM"
-                style="flex:1;padding:10px 14px;border:1.5px solid var(--border);border-radius:8px;font-size:14px;outline:none;font-family:inherit"
-                oninput="buscarMovimientosFactura(this.value)">
-              <button onclick="buscarMovimientosFactura(document.getElementById('facturaSearchInput').value)"
-                style="padding:10px 18px;background:var(--primary);color:white;border:none;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit">Buscar</button>
+        <!-- Periodo 2: Dual (Prevent + El Pilar) -->
+        <div class="cleaning-timeline-row" style="display: flex; align-items: center; justify-content: space-between; padding: 16px 20px; border-radius: 12px; border: 1px solid rgba(245, 158, 11, 0.12); background: linear-gradient(135deg, #FFFDF5 0%, #FFF 100%); box-shadow: 0 1px 3px rgba(0,0,0,0.01); flex-wrap: wrap; gap: 16px; cursor: default;">
+          <div style="flex: 0 0 25%; min-width: 150px; display: flex; align-items: center; gap: 12px;">
+            <div style="background: rgba(245, 158, 11, 0.08); color: #F59E0B; width: 34px; height: 34px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: bold;">📅</div>
+            <div>
+              <div style="font-size: 10px; font-weight: 700; color: #92400E; text-transform: uppercase; letter-spacing: 0.5px;">Transición</div>
+              <div style="font-size: 14px; font-weight: 700; color: #92400E;">may'25 – feb'26</div>
             </div>
-            <div id="facturaSearchResults"></div>
           </div>
-        </details>
-      </div>
-
-      <div class="card">
-        <details>
-          <summary
-            style="list-style:none;display:flex;align-items:center;justify-content:space-between;cursor:pointer;padding:4px 0">
-            <div class="card-title" style="margin-bottom:0">📋 Log de sesiones</div>
-            <span style="font-size:13px;color:var(--text-muted)">▼ Ver registro</span>
-          </summary>
-          <div style="margin-top:16px">
-            <div style="display:flex;gap:8px;margin-bottom:12px;align-items:center">
-              <button onclick="loadSessionLog(0)"
-                style="background:var(--bg);border:1px solid var(--border);padding:6px 14px;border-radius:6px;font-size:13px;cursor:pointer;font-family:inherit">⟳
-                Actualizar</button>
-              <span id="sessionLogInfo" style="font-size:12px;color:var(--text-muted)"></span>
-            </div>
-            <div id="sessionLog">
-              <div style="color:var(--text-muted);font-size:14px">Haz clic en "Actualizar" para cargar el log</div>
-            </div>
-            <div id="sessionLogPager" style="display:flex;gap:8px;margin-top:12px;align-items:center"></div>
+          <div style="flex: 0 0 20%; min-width: 120px; display: flex; flex-direction: column; gap: 3px;">
+            <span style="font-size: 10px; color: var(--text-muted); font-weight: 600; text-transform: uppercase;">🗑️ Cubos</span>
+            <div><span style="background: rgba(14, 165, 233, 0.08); color: #0EA5E9; border: 1px solid rgba(14, 165, 233, 0.15); padding: 4px 10px; border-radius: 6px; font-size: 11px; font-weight: 700; display: inline-block;">Prevent XXI</span></div>
           </div>
-        </details>
+          <div style="flex: 0 0 20%; min-width: 120px; display: flex; flex-direction: column; gap: 3px;">
+            <span style="font-size: 10px; color: var(--text-muted); font-weight: 600; text-transform: uppercase;">🧹 Limpieza</span>
+            <div><span style="background: rgba(245, 158, 11, 0.08); color: #F59E0B; border: 1px solid rgba(245, 158, 11, 0.15); padding: 4px 10px; border-radius: 6px; font-size: 11px; font-weight: 700; display: inline-block;">El Pilar</span></div>
+          </div>
+          <div style="flex: 0 0 30%; min-width: 180px; text-align: right;">
+            <div style="font-size: 10px; color: #92400E; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 2px;">Coste Mensual</div>
+            <div id="limpMesDual" style="font-size: 14px; font-weight: 800; color: #D97706;">---€</div>
+          </div>
+        </div>
+
+        <!-- Periodo 3: Prevent XXI Completo -->
+        <div class="cleaning-timeline-row" style="display: flex; align-items: center; justify-content: space-between; padding: 16px 20px; border-radius: 12px; border: 1px solid rgba(16, 185, 129, 0.22); background: linear-gradient(135deg, #F0FDF4 0%, #FFF 100%); box-shadow: 0 3px 6px rgba(16, 185, 129, 0.03); flex-wrap: wrap; gap: 16px; position: relative; cursor: default;">
+          <span style="position: absolute; top: -10px; right: 20px; background: #10B981; color: white; font-size: 9px; font-weight: 800; padding: 2px 8px; border-radius: 10px; text-transform: uppercase; letter-spacing: 0.5px; box-shadow: 0 2px 4px rgba(16,185,129,0.15);">Activo</span>
+          <div style="flex: 0 0 25%; min-width: 150px; display: flex; align-items: center; gap: 12px;">
+            <div style="background: rgba(16, 185, 129, 0.08); color: #10B981; width: 34px; height: 34px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: bold;">⚡</div>
+            <div>
+              <div style="font-size: 10px; font-weight: 700; color: #047857; text-transform: uppercase; letter-spacing: 0.5px;">Optimizado</div>
+              <div style="font-size: 14px; font-weight: 700; color: #047857;">mar'26 → actual</div>
+            </div>
+          </div>
+          <div style="flex: 0 0 20%; min-width: 120px; display: flex; flex-direction: column; gap: 3px;">
+            <span style="font-size: 10px; color: var(--text-muted); font-weight: 600; text-transform: uppercase;">🗑️ Cubos</span>
+            <div><span style="background: rgba(16, 185, 129, 0.08); color: #10B981; border: 1px solid rgba(16, 185, 129, 0.15); padding: 4px 10px; border-radius: 6px; font-size: 11px; font-weight: 700; display: inline-block;">Prevent XXI</span></div>
+          </div>
+          <div style="flex: 0 0 20%; min-width: 120px; display: flex; flex-direction: column; gap: 3px;">
+            <span style="font-size: 10px; color: var(--text-muted); font-weight: 600; text-transform: uppercase;">🧹 Limpieza</span>
+            <div><span style="background: rgba(16, 185, 129, 0.08); color: #10B981; border: 1px solid rgba(16, 185, 129, 0.15); padding: 4px 10px; border-radius: 6px; font-size: 11px; font-weight: 700; display: inline-block;">Prevent XXI</span></div>
+          </div>
+          <div style="flex: 0 0 30%; min-width: 180px; text-align: right;">
+            <div style="font-size: 10px; color: #047857; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 2px;">Coste Mensual</div>
+            <div id="limpMesActual" style="font-size: 16px; font-weight: 800; color: #10B981;">---€</div>
+          </div>
+        </div>
+
       </div>
 
+      <!-- KPIs totales por proveedor (Rediseño Premium) -->
+      <div style="font-size: 11px; font-weight: 700; color: var(--text-muted); margin: 26px 0 12px; text-transform: uppercase; letter-spacing: 0.5px;">💰 Total Pagado por Proveedor</div>
+      <div class="kpi-grid">
+        
+        <!-- Card 1: MJM -->
+        <div class="kpi" id="limpCard_MJM" onclick="showLimpiezaAudit('MJM')" style="border: 1px solid rgba(239, 68, 68, 0.12); border-left: 4px solid #EF4444; background: linear-gradient(135deg, #FFF5F5 0%, #FFF 100%); transition: all 0.25s ease; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 1px 3px rgba(0,0,0,0.01); cursor: pointer;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 10px rgba(0,0,0,0.04)';" onmouseout="this.style.transform='none'; this.style.boxShadow='0 1px 3px rgba(0,0,0,0.01)';">
+          <div>
+            <div style="color: #9B2C2C; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px;">MJM • Total</div>
+            <div id="limpAnterior" style="color: #EF4444; font-size: 24px; font-weight: 800;">---€</div>
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 8px;">
+            <span style="color: #E53E3E; font-size: 11px; font-weight: 600;">oct'24 – abr'25 • ambos</span>
+            <span style="font-size: 13px; color: #EF4444; text-transform: uppercase; font-weight: 800; display: inline-flex; align-items: center; gap: 5px; opacity: 1.0; padding: 3px 8px; background: rgba(239, 68, 68, 0.08); border-radius: 4px;">🔍 Auditar</span>
+          </div>
+        </div>
+
+        <!-- Card 2: Prevent Cubos -->
+        <div class="kpi" id="limpCard_PREVENT_SOLO" onclick="showLimpiezaAudit('PREVENT_SOLO')" style="border: 1px solid rgba(245, 158, 11, 0.12); border-left: 4px solid #F59E0B; background: linear-gradient(135deg, #FFFDF5 0%, #FFF 100%); transition: all 0.25s ease; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 1px 3px rgba(0,0,0,0.01); cursor: pointer;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 10px rgba(0,0,0,0.04)';" onmouseout="this.style.transform='none'; this.style.boxShadow='0 1px 3px rgba(0,0,0,0.01)';">
+          <div>
+            <div style="color: #B45309; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px;">Prevent XXI • Cubos</div>
+            <div id="limpPreventSolo" style="color: #F59E0B; font-size: 24px; font-weight: 800;">---€</div>
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 8px;">
+            <span style="color: #D97706; font-size: 11px; font-weight: 600;">may'25 – feb'26 • solo cubos</span>
+            <span style="font-size: 13px; color: #F59E0B; text-transform: uppercase; font-weight: 800; display: inline-flex; align-items: center; gap: 5px; opacity: 1.0; padding: 3px 8px; background: rgba(245, 158, 11, 0.08); border-radius: 4px;">🔍 Auditar</span>
+          </div>
+        </div>
+
+        <!-- Card 3: El Pilar -->
+        <div class="kpi" id="limpCard_EL_PILAR" onclick="showLimpiezaAudit('EL_PILAR')" style="border: 1px solid rgba(16, 185, 129, 0.12); border-left: 4px solid #10B981; background: linear-gradient(135deg, #F0FDF4 0%, #FFF 100%); transition: all 0.25s ease; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 1px 3px rgba(0,0,0,0.01); cursor: pointer;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 10px rgba(0,0,0,0.04)';" onmouseout="this.style.transform='none'; this.style.boxShadow='0 1px 3px rgba(0,0,0,0.01)';">
+          <div>
+            <div style="color: #047857; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px;">El Pilar • Limpieza</div>
+            <div id="limpIntermedio" style="color: #10B981; font-size: 24px; font-weight: 800;">---€</div>
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 8px;">
+            <span style="color: #059669; font-size: 11px; font-weight: 600;">may'25 – feb'26 • solo limp.</span>
+            <span style="font-size: 13px; color: #10B981; text-transform: uppercase; font-weight: 800; display: inline-flex; align-items: center; gap: 5px; opacity: 1.0; padding: 3px 8px; background: rgba(16, 185, 129, 0.08); border-radius: 4px;">🔍 Auditar</span>
+          </div>
+        </div>
+
+        <!-- Card 4: Prevent Ambos -->
+        <div class="kpi" id="limpCard_PREVENT_AMBOS" onclick="showLimpiezaAudit('PREVENT_AMBOS')" style="border: 1px solid rgba(14, 165, 233, 0.22); border-left: 4px solid #0EA5E9; background: linear-gradient(135deg, #F0F9FF 0%, #FFF 100%); transition: all 0.25s ease; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 2px 4px rgba(14,165,233,0.04); position: relative; cursor: pointer;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 12px rgba(0,0,0,0.06)';" onmouseout="this.style.transform='none'; this.style.boxShadow='0 2px 4px rgba(14,165,233,0.04)';">
+          <span style="position: absolute; top: 6px; right: 8px; background: #0EA5E9; color: white; font-size: 8px; font-weight: 800; padding: 1px 5px; border-radius: 8px; text-transform: uppercase;">Activo</span>
+          <div>
+            <div style="color: #0369A1; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px;">Prevent XXI • Ambos</div>
+            <div id="limpActual" style="color: #0EA5E9; font-size: 24px; font-weight: 800;">---€</div>
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 8px;">
+            <span style="color: #0284C7; font-size: 11px; font-weight: 600;">mar'26 → actual • total</span>
+            <span style="font-size: 13px; color: #0EA5E9; text-transform: uppercase; font-weight: 800; display: inline-flex; align-items: center; gap: 5px; opacity: 1.0; padding: 3px 8px; background: rgba(14, 165, 233, 0.08); border-radius: 4px;">🔍 Auditar</span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- AUDITORÍA DE TRANSACCIONES (Expandible Dinámicamente) -->
+      <div id="limpiezaAuditSection" style="display: none; margin-top: 24px; padding: 20px; background: #FAFAFA; border: 1.5px dashed var(--border); border-radius: 12px; box-shadow: inset 0 2px 4px rgba(0,0,0,0.01);">
+      </div>
     </div>
+
+    <!-- COMUNICACIONES -->
+    <div class="card">
+      <div class="card-title">📡 Comunicaciones · Antena, Vídeo y Cámaras</div>
+      <p class="card-desc">
+        Cambio en 2026: <strong>Prisma → Lasser</strong> (Antenas Lasser + Seguridad Lasser).
+      </p>
+
+      <!-- KPIs totales por proveedor (Rediseño Premium para Comunicaciones) -->
+      <div style="font-size: 11px; font-weight: 700; color: var(--text-muted); margin: 20px 0 12px; text-transform: uppercase; letter-spacing: 0.5px;">💰 Total Pagado por Proveedor</div>
+      <div class="kpi-grid" style="margin-bottom: 24px;">
+        
+        <!-- Card 1: Prisma -->
+        <div class="kpi" id="comunicCard_PRISMA" onclick="showComunicAudit('PRISMA')" style="border: 1px solid rgba(239, 68, 68, 0.12); border-left: 4px solid #EF4444; background: linear-gradient(135deg, #FFF5F5 0%, #FFF 100%); transition: all 0.25s ease; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 1px 3px rgba(0,0,0,0.01); cursor: pointer;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 10px rgba(0,0,0,0.04)';" onmouseout="this.style.transform='none'; this.style.boxShadow='0 1px 3px rgba(0,0,0,0.01)';">
+          <div>
+            <div style="color: #9B2C2C; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px;">PRISMA • Histórico</div>
+            <div id="comunicTotPrisma" style="color: #EF4444; font-size: 24px; font-weight: 800;">---€</div>
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 8px;">
+            <span style="color: #E53E3E; font-size: 11px; font-weight: 600;">2020 – feb'26 • antena y cctv</span>
+            <span style="font-size: 13px; color: #EF4444; text-transform: uppercase; font-weight: 800; display: inline-flex; align-items: center; gap: 5px; opacity: 1.0; padding: 3px 8px; background: rgba(239, 68, 68, 0.08); border-radius: 4px;">🔍 Auditar</span>
+          </div>
+        </div>
+
+        <!-- Card 2: Lasser -->
+        <div class="kpi" id="comunicCard_LASSER" onclick="showComunicAudit('LASSER')" style="border: 1px solid rgba(16, 185, 129, 0.22); border-left: 4px solid #10B981; background: linear-gradient(135deg, #F0FDF4 0%, #FFF 100%); transition: all 0.25s ease; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 2px 4px rgba(16,185,129,0.04); position: relative; cursor: pointer;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 12px rgba(0,0,0,0.06)';" onmouseout="this.style.transform='none'; this.style.boxShadow='0 2px 4px rgba(16,185,129,0.04)';">
+          <span style="position: absolute; top: 6px; right: 8px; background: #10B981; color: white; font-size: 8px; font-weight: 800; padding: 1px 5px; border-radius: 8px; text-transform: uppercase;">Activo</span>
+          <div>
+            <div style="color: #047857; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px;">LASSER • Actual</div>
+            <div id="comunicTotLasser" style="color: #10B981; font-size: 24px; font-weight: 800;">---€</div>
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 8px;">
+            <span style="color: #059669; font-size: 11px; font-weight: 600;">mar'26 → actual • unificado</span>
+            <span style="font-size: 13px; color: #10B981; text-transform: uppercase; font-weight: 800; display: inline-flex; align-items: center; gap: 5px; opacity: 1.0; padding: 3px 8px; background: rgba(16, 185, 129, 0.08); border-radius: 4px;">🔍 Auditar</span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- AUDITORÍA DE COMUNICACIONES (Expandible Dinámicamente) -->
+      <div id="comunicAuditSection" style="display: none; margin-top: 24px; margin-bottom: 24px; padding: 20px; background: #FAFAFA; border: 1.5px dashed var(--border); border-radius: 12px; box-shadow: inset 0 2px 4px rgba(0,0,0,0.01);">
+      </div>
+
+      <div style="font-size: 11px; font-weight: 700; color: var(--text-muted); margin: 20px 0 12px; text-transform: uppercase; letter-spacing: 0.5px;">📅 Total por Año (Acumulado)</div>
+      <div class="kpi-grid" id="kpiComunicaciones" style="margin-bottom: 24px;">
+        <div class="kpi">
+          <div class="kpi-label">Cargando...</div>
+        </div>
+      </div>
+
+      <div class="chart-section">
+        <div class="chart-title">Comunicaciones por Año (Prisma vs Lasser)</div>
+        <div class="chart-container">
+          <div class="stacked-chart" id="comunicChart"></div>
+        </div>
+        <div class="legend">
+          <div class="legend-item">
+            <div class="legend-color" style="background: var(--c1)"></div>Prisma (anterior)
+          </div>
+          <div class="legend-item">
+            <div class="legend-color" style="background: var(--c2)"></div>Lasser (actual)
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ASCENSORES -->
+    <div class="card">
+      <div class="card-title">🦟 Desinsectación anual · Protesins</div>
+      <p class="card-desc">
+        Tratamiento anual de desinsectación del edificio. Proveedor: <strong>Protesins</strong>. Cargo único anual,
+        habitualmente en mayo–junio. Obligatorio para comunidades de propietarios.
+      </p>
+      <div class="kpi-grid" id="kpiProtesins">
+        <div class="kpi">
+          <div class="kpi-label">Cargando...</div>
+        </div>
+      </div>
+      <p id="footerProtesins"
+        style="font-size: 14px; color: var(--text-muted); margin-top: 10px; padding: 10px 14px; background: #EFF6FF; border-left: 3px solid #3B82F6; border-radius: 4px;">
+        🏦 <strong style="color:#1E3A8A">Auditoría:</strong> Datos dinámicos.
+      </p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">🧯 Extintores · Iberext S.A.</div>
+      <p class="card-desc">
+        Revisión anual obligatoria de extintores del edificio. Proveedor: <strong>Iberext S.A.</strong> (aparece en
+        banco como "ADEUDO RECIBO IBEREXT S.A."). Cargo irregular — varía según el año por incorporación de nuevos
+        elementos al sistema.
+      </p>
+      <div class="kpi-grid" id="kpiExtintores">
+        <div class="kpi">
+          <div class="kpi-label">Cargando...</div>
+        </div>
+      </div>
+      <p
+        style="font-size: 14px; color: var(--text-muted); margin-top: 6px; padding: 10px 14px; background: #EFF6FF; border-left: 3px solid #3B82F6; border-radius: 4px;">
+        🏦 <strong style="color:#1E3A8A">Cruce banco:</strong> 2022: 105,14€ (feb) + 109,35€ (nov) + 513,12€ (dic) ·
+        2023: 113,72€ (oct) · 2024: 279,61€ (may) + 166,17€ (nov) · 2025: 170,32€ (nov)
+      </p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">🛗 Ascensores · Mantenimiento + Móvil</div>
+      <p class="card-desc">
+        Empresa <strong>Duplex Elevación</strong> (mantenimiento) + línea Movistar 18,15€/mes (teléfono de emergencia
+        del ascensor, obligatorio por normativa).
+        Aumento 2025 por avería y cambio de máquina (8.000€ proyecto del año).
+      </p>
+      <div class="kpi-grid" id="kpiAscensores">
+        <div class="kpi">
+          <div class="kpi-label">Cargando...</div>
+        </div>
+      </div>
+      <div class="chart-section">
+        <div class="chart-title">Coste Ascensor por Año (Duplex + Móvil)</div>
+        <div class="chart-container">
+          <div class="stacked-chart" id="ascensorChart"></div>
+        </div>
+        <div class="legend">
+          <div class="legend-item">
+            <div class="legend-color" style="background: var(--c1)"></div>Duplex Elevación
+          </div>
+          <div class="legend-item">
+            <div class="legend-color" style="background: var(--c2)"></div>Móvil Telefónica
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SEGURO DEL EDIFICIO -->
+    <div class="card">
+      <div class="card-title">🛡️ Seguro del edificio · Póliza anual Ocaso</div>
+      <p class="card-desc">Histórico analítico de primas y coberturas multirriesgo (Ocaso / Caser).</p>
+      
+      <!-- Informational callout -->
+      <div style="background: var(--bg-light); border: 1px solid var(--border); border-radius: 12px; padding: 16px 20px; margin-bottom: 24px; display: flex; gap: 14px; align-items: flex-start; box-shadow: inset 0 1px 2px rgba(0,0,0,0.01);">
+        <div style="font-size: 20px; margin-top: 2px;">🛡️</div>
+        <div style="font-size: 13px; line-height: 1.5; color: var(--text-soft);">
+          <strong>Póliza Activa:</strong> Ocaso Multirriesgo Edificio (Póliza <code>A28016608334</code>). 
+          Históricamente, la comunidad contrató con <strong>Caser</strong> (pagos semestrales en mayo y noviembre) hasta junio de 2024, momento en el cual se migró a <strong>Ocaso</strong> bajo un único cobro anual que optimizó la cuota del edificio. En 2024 se calculó el coste neto descontando la devolución de Caser.
+        </div>
+      </div>
+
+      <div class="kpi-grid" id="kpiSeguroGrid">
+        <div class="kpi c1">
+          <div class="kpi-label">2021 · Caser</div>
+          <div class="kpi-value" id="seguro2021">---€</div>
+        </div>
+        <div class="kpi c2">
+          <div class="kpi-label">2022 · Caser</div>
+          <div class="kpi-value" id="seguro2022">---€</div>
+        </div>
+        <div class="kpi c3">
+          <div class="kpi-label">2023 · Caser</div>
+          <div class="kpi-value" id="seguro2023">---€</div>
+        </div>
+        <div class="kpi c4">
+          <div class="kpi-label">2024 · Ocaso (Neto)</div>
+          <div class="kpi-value" id="seguro2024">---€</div>
+        </div>
+        <div class="kpi c5">
+          <div class="kpi-label">2025 · Ocaso</div>
+          <div class="kpi-value" id="seguro2025">---€</div>
+        </div>
+        <div class="kpi c6">
+          <div class="kpi-label">2026 · Ocaso</div>
+          <div class="kpi-value" id="seguro2026">---€</div>
+        </div>
+      </div>
+      
+      <div class="chart-section">
+        <div class="chart-title">Evolución de la Prima del Seguro</div>
+        <div class="chart-container" id="seguroAnualChart"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ TAB GESTIÓN ============ -->
+  <div id="admin" class="tab-content">
+
+    <!-- COMISIONES BANCARIAS -->
+    <div class="card">
+      <div class="card-title">🏦 Comisiones bancarias · Banc Sabadell</div>
+      <p class="card-desc">
+        Cargos del banco: <strong>comisiones de mantenimiento</strong> (cuenta y remesas de cuotas),
+        <strong>intereses</strong>, <strong>gastos por gestión de devoluciones</strong> (recibos impagados) e
+        <strong>IVA sobre comisiones</strong>. Las comisiones se han <strong>triplicado</strong> entre 2021 y 2025 (220€
+        → 760€). En 2026 se proyectan ~1.360€ anuales.
+      </p>
+      <div class="kpi-grid">
+        <div class="kpi c1">
+          <div class="kpi-label">2021</div>
+          <div class="kpi-value">220€</div>
+        </div>
+        <div class="kpi c2">
+          <div class="kpi-label">2022</div>
+          <div class="kpi-value">345€</div>
+        </div>
+        <div class="kpi c3">
+          <div class="kpi-label">2023</div>
+          <div class="kpi-value">399€</div>
+        </div>
+        <div class="kpi c4">
+          <div class="kpi-label">2024</div>
+          <div class="kpi-value">569€</div>
+        </div>
+        <div class="kpi c5">
+          <div class="kpi-label">2025</div>
+          <div class="kpi-value">760€</div>
+        </div>
+        <div class="kpi c6">
+          <div class="kpi-label">2026 (ene-abr)</div>
+          <div class="kpi-value">454€</div>
+          <div class="kpi-sub">→ ~1.360€ proyección anual</div>
+        </div>
+      </div>
+      <div
+        style="margin: 14px 0; padding: 12px 16px; background: #FEF3C7; border-left: 3px solid #F59E0B; border-radius: 6px; font-size: 14px; color: #92400E;">
+        ⚠️ <strong>Alerta:</strong> Las comisiones crecen un 34% anual de media. Considerar negociar condiciones con
+        Banc Sabadell o evaluar otras entidades en 2026–2027.
+      </div>
+      <div class="chart-section">
+        <div class="chart-title">Evolución comisiones bancarias por año</div>
+        <div class="chart-container" id="comisionesBancoChart"></div>
+      </div>
+      <div class="legend">
+        <div class="legend-item">
+          <div class="legend-color" style="background:var(--chart-6)"></div>Comisiones mantenimiento y remesas
+        </div>
+        <div class="legend-item">
+          <div class="legend-color" style="background:var(--chart-2)"></div>Intereses cuenta
+        </div>
+        <div class="legend-item">
+          <div class="legend-color" style="background:var(--chart-1)"></div>Devoluciones / impagados
+        </div>
+        <div class="legend-item">
+          <div class="legend-color" style="background:var(--chart-4)"></div>IVA comisiones
+        </div>
+      </div>
+    </div>
+
+    <!-- IMPUESTOS Y OBLIGACIONES -->
+    <div class="card">
+      <div class="card-title">⚖️ Impuestos y obligaciones legales</div>
+      <p class="card-desc">
+        La CP tributa <strong>IRPF de retenciones trimestralmente</strong> (modelo 111, autoliquidación a Hacienda sobre
+        los pagos a administradora) y mantiene un servicio de <strong>cumplimiento LOPD/RGPD con Conversia</strong>
+        (protección de datos personales de los vecinos, obligatorio para comunidades de propietarios).
+      </p>
+      <div
+        style="font-size: 14px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px;">
+        IRPF · Retenciones trimestrales</div>
+      <div class="kpi-grid">
+        <div class="kpi c4">
+          <div class="kpi-label">2024 (T2–T4)</div>
+          <div class="kpi-value">218€</div>
+          <div class="kpi-sub">inicio con Susana</div>
+        </div>
+        <div class="kpi c5">
+          <div class="kpi-label">2025</div>
+          <div class="kpi-value">396€</div>
+          <div class="kpi-sub">99€ × 4 trimestres</div>
+        </div>
+        <div class="kpi c6">
+          <div class="kpi-label">2026 (T1+T2)</div>
+          <div class="kpi-value">217€</div>
+          <div class="kpi-sub">→ ~396€ proyección anual</div>
+        </div>
+      </div>
+      <div
+        style="font-size: 14px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin: 18px 0 10px;">
+        LOPD/RGPD · Conversia (cumplimiento protección de datos)</div>
+      <div class="kpi-grid">
+        <div class="kpi c4">
+          <div class="kpi-label">2024</div>
+          <div class="kpi-value">—</div>
+          <div class="kpi-sub">sin servicio</div>
+        </div>
+        <div class="kpi c5">
+          <div class="kpi-label">2025</div>
+          <div class="kpi-value">242€</div>
+          <div class="kpi-sub">anual</div>
+        </div>
+        <div class="kpi c6">
+          <div class="kpi-label">2026 (ene-abr)</div>
+          <div class="kpi-value">242€</div>
+          <div class="kpi-sub">cargo anual feb 2026</div>
+        </div>
+      </div>
+      <div
+        style="font-size: 14px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin: 18px 0 10px;">
+        Notificaciones electrónicas · DEH (Dirección Electrónica Habilitada)</div>
+      <div class="kpi-grid">
+        <div class="kpi c4">
+          <div class="kpi-label">2024</div>
+          <div class="kpi-value">73€</div>
+        </div>
+        <div class="kpi c5">
+          <div class="kpi-label">2025</div>
+          <div class="kpi-value">73€</div>
+        </div>
+        <div class="kpi c6">
+          <div class="kpi-label">2026 (ene-abr)</div>
+          <div class="kpi-value">—</div>
+          <div class="kpi-sub">pendiente de cargo</div>
+        </div>
+      </div>
+      <p
+        style="font-size: 14px; color: var(--text-muted); margin-top: 14px; padding: 10px 14px; background: #EFF6FF; border-left: 3px solid #3B82F6; border-radius: 4px;">
+        🏦 <strong style="color:#1E3A8A">Cruce banco:</strong> IRPF · cargos trimestrales 99€ (ene-20 y abr-19 de 2026)
+        · Conversia 242€ cargo 10/02/2026 · DEH Notificaciones cargo dic 2024 y dic 2025 (72,60€)
+      </p>
+    </div>
+
+    <!-- ADMINISTRACIÓN -->
+    <div class="card">
+      <div class="card-title">📋 Administración de la Comunidad</div>
+      <div class="kpi-grid" id="kpiAdmin">
+        <div class="kpi">
+          <div class="kpi-label">Cargando...</div>
+        </div>
+      </div>
+      <p class="card-desc">
+        Histórico: <strong>Alfredo Sánchez Aguirre / BMC</strong> (Cl. Sauce 9) → <strong>Vanessa Álvarez</strong> →
+        <strong>Susana Fernández Robleda</strong> (actual desde julio 2024). Cuota aprobada en junta con ligera subida
+        respecto al año anterior. Los cargos de Susana en banco corresponden a <strong>cuota de administración de la
+          comunidad</strong>, no a limpieza.
+      </p>
+      <div class="kpi-grid">
+        <div class="kpi c1">
+          <div class="kpi-label">2021 BMC/Alfredo</div>
+          <div class="kpi-value">5.026€</div>
+        </div>
+        <div class="kpi c2">
+          <div class="kpi-label">2022 BMC/Alfredo</div>
+          <div class="kpi-value">4.260€</div>
+        </div>
+        <div class="kpi c3">
+          <div class="kpi-label">2023 BMC/Alfredo</div>
+          <div class="kpi-value">19.281€</div>
+          <div class="kpi-sub">incluye atrasos</div>
+        </div>
+        <div class="kpi c4">
+          <div class="kpi-label">2024 transición</div>
+          <div class="kpi-value">11.037€</div>
+          <div class="kpi-sub">BMC + Vanessa + Susana</div>
+        </div>
+        <div class="kpi c5">
+          <div class="kpi-label">2025 Susana</div>
+          <div class="kpi-value">2.830€</div>
+          <div class="kpi-sub">~233€/mes</div>
+        </div>
+        <div class="kpi c6">
+          <div class="kpi-label">2026 (ene-abr)</div>
+          <div class="kpi-value">1.133€</div>
+        </div>
+      </div>
+      <div class="chart-section">
+        <div class="chart-title">Coste Administración por Año</div>
+        <div class="chart-container" id="adminChart"></div>
+      </div>
+      <div
+        style="font-size: 14px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin: 18px 0 10px;">
+        🖥️ Software de gestión · IESA / Aareon Proptech</div>
+      <p style="font-size: 14px; color: var(--text-soft); margin-bottom: 10px;">Portal de gestión de comunidades de
+        propietarios utilizado por Susana para la administración. Dos cargos anuales (suscripción + módulo adicional).
+      </p>
+      <div class="kpi-grid">
+        <div class="kpi">
+          <div class="kpi-label">2025 · Fac. NC8995</div>
+          <div class="kpi-value">78,65€</div>
+          <div class="kpi-sub">cargo 12/05/2025</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-label">2025 · Fac. NC9461</div>
+          <div class="kpi-value">24,20€</div>
+          <div class="kpi-sub">cargo 12/05/2025</div>
+        </div>
+        <div class="kpi info">
+          <div class="kpi-label">Total anual estimado</div>
+          <div class="kpi-value">~103€</div>
+        </div>
+      </div>
+      <p
+        style="font-size: 14px; color: var(--text-muted); margin-top: 10px; padding: 10px 14px; background: #EFF6FF; border-left: 3px solid #3B82F6; border-radius: 4px;">
+        🏦 <strong style="color:#1E3A8A">Cruce banco:</strong> IESA-CCPP-Aareon Proptech · 78,65€ + 24,20€ (12/05/2025)
+        · Comisión emisión certificado digital: 2,42€ (14/03/2025)
+      </p>
+    </div>
+
+  </div>
+
+  <!-- ============ TAB PLAN 2025-2031 ============ -->
+  <div id="plan" class="tab-content">
+    <div class="card">
+      <div class="card-title">📅 Gastos previstos · Resto de 2026</div>
+      <p class="card-desc">Solo quedan dos partidas significativas pendientes para cerrar el ejercicio 2026:</p>
+      <div class="kpi-grid">
+        <div class="kpi warning">
+          <div class="kpi-label">Sellado y limpieza ventanal · Navacon Vertical</div>
+          <div class="kpi-value">3.051€</div>
+          <div class="kpi-sub">Navacon Vertical · presupuesto nuevo (PTTO090A-2026) · subtotal sin IVA 3.051€ (3.356,10€ con 10% IVA)</div>
+        </div>
+        <div class="kpi warning">
+          <div class="kpi-label">Quitar maderas pared portal</div>
+          <div class="kpi-value">~2.700€</div>
+          <div class="kpi-sub">A. Pirtac · iniciado 25% · pladur tras quitar maderas</div>
+        </div>
+        <div class="kpi info">
+          <div class="kpi-label">Total restante 2026</div>
+          <div class="kpi-value">~5.751€</div>
+          <div class="kpi-sub">~7k previstos en total · base sin IVA</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" id="planEstadoCard">
+      <div class="card-title">🎯 Estado del Plan Plurianual</div>
+      <p class="card-desc">La reforma de la vivienda 8A solo se ejecutará cuando la comunidad acumule 30.000€ de ahorro
+        específico para la obra y mantenga además un colchón mínimo de seguridad de 20.000€. A partir de ahí, 8A se
+        plantea como una inversión para generar fondos adicionales sin comprometer la tesorería ordinaria. Una vez
+        reformada y alquilada la vivienda, junto con el ahorro estructural por no tener portero, la comunidad podrá
+        acometer con más rapidez el resto de proyectos del plan.</p>
+      <p
+        style="font-size: 14px; color: var(--text-muted); margin-top: 12px; padding: 10px 14px; background: #FFF7ED; border-left: 3px solid #F59E0B; border-radius: 4px;">
+        🛡️ <strong style="color:#9A3412">Versión conservadora:</strong> descontando primero el descuelgue y la retirada
+        de maderas del portal ya presupuestados, y asumiendo que siempre surgirán imprevistos, la referencia prudente
+        para alcanzar los 50.000€ de caja (30.000€ para la obra + 20.000€ de colchón) es verano de 2028. Esta estimación
+        no cuenta ingresos teóricos de la vivienda hasta que se conviertan en cobros reales.
+      </p>
+      <div class="kpi-grid" id="planKpis"></div>
+      <div class="chart-section">
+        <div class="chart-title">Gasto Presupuestado por Estado (€)</div>
+        <div class="chart-container" id="planProgressChart"></div>
+      </div>
+    </div>
+
+    <div class="card" id="planDesglosCard">
+      <div class="card-title">📊 Contabilización del Plan</div>
+      <div class="kpi-grid" id="planDesglose"></div>
+      <div class="chart-section">
+        <div class="chart-title">Cobertura del Marco del Plan</div>
+        <div class="chart-container" id="burndownChart"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ TAB ADMIN ============ -->
+  <div id="admin-panel" class="tab-content">
+
+    <div class="card">
+      <div class="card-title" style="display:flex;justify-content:space-between;align-items:center">
+        <span>➕ Acciones rápidas</span>
+      </div>
+      <div style="display:flex;gap:12px;flex-wrap:wrap">
+        <button onclick="openModal()"
+          style="background:var(--primary);color:white;border:none;padding:12px 20px;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;display:flex;align-items:center;gap:6px">+
+          Nuevo proyecto</button>
+        <button onclick="openBancoModal()"
+          style="background:var(--surface);color:var(--text);border:1.5px solid var(--border);padding:12px 20px;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;display:flex;align-items:center;gap:6px">📤
+          Subir extracto bancario</button>
+        <button onclick="forceCleanGas()"
+          style="background:#FEF2F2;color:#EF4444;border:1.5px solid #FCA5A5;padding:12px 20px;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit">🧨
+          Limpiar todo el Gas</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">👥 Gestión de usuarios</div>
+      <p class="card-desc">Usuarios con acceso al dashboard. Para invitar a un nuevo usuario, ve a <strong>Supabase →
+          Authentication → Users → Invite user</strong> y luego añade su rol aquí.</p>
+      <div id="usersList" style="margin-top:16px">
+        <div style="color:var(--text-muted);font-size:14px">Cargando usuarios...</div>
+      </div>
+      <div style="margin-top:16px;display:flex;gap:10px;flex-wrap:wrap">
+        <input type="email" id="newUserEmail" placeholder="nuevo@email.com"
+          style="padding:10px 14px;border:1.5px solid var(--border);border-radius:8px;font-size:14px;outline:none;flex:1;min-width:200px">
+        <select id="newUserRole"
+          style="padding:10px 14px;border:1.5px solid var(--border);border-radius:8px;font-size:14px;background:white">
+          <option value="viewer">👁️ Visualizador</option>
+          <option value="admin">⚙️ Admin</option>
+        </select>
+        <button onclick="addUserRole()"
+          style="padding:10px 20px;background:var(--primary);color:white;border:none;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit">Añadir</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">📤 Subida de documentos</div>
+      <p class="card-desc">Sube facturas y extractos para tenerlos registrados. También puedes procesar todo el
+        histórico de golpe seleccionando la carpeta con los PDFs.</p>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin-top:16px">
+        <label
+          style="border:2px dashed var(--border);border-radius:10px;padding:24px;text-align:center;cursor:pointer;transition:all 0.2s;display:block"
+          onmouseover="this.style.borderColor='var(--primary)'" onmouseout="this.style.borderColor='var(--border)'">
+          <div style="font-size:28px;margin-bottom:8px">🗂️</div>
+          <div style="font-weight:700;font-size:14px">Carpeta histórica</div>
+          <div style="font-size:12px;color:var(--text-muted);margin-top:4px">Procesa decenas de facturas de golpe</div>
+          <input type="file" id="batchFolderInput" webkitdirectory directory multiple style="display:none"
+            onchange="handleBatchFolder(event)">
+        </label>
+        <div onclick="openDocUpload('banco')"
+          style="border:2px dashed var(--border);border-radius:10px;padding:24px;text-align:center;cursor:pointer;transition:all 0.2s"
+          onmouseover="this.style.borderColor='var(--primary)'" onmouseout="this.style.borderColor='var(--border)'">
+          <div style="font-size:28px;margin-bottom:8px">🏦</div>
+          <div style="font-weight:700;font-size:14px">Extracto banco</div>
+          <div style="font-size:12px;color:var(--text-muted);margin-top:4px">XLS Sabadell mensual</div>
+        </div>
+        <div onclick="openDocUpload('naturgy')"
+          style="border:2px dashed var(--border);border-radius:10px;padding:24px;text-align:center;cursor:pointer;transition:all 0.2s"
+          onmouseover="this.style.borderColor='var(--primary)'" onmouseout="this.style.borderColor='var(--border)'">
+          <div style="font-size:28px;margin-bottom:8px">⚡</div>
+          <div style="font-weight:700;font-size:14px">Factura Naturgy</div>
+          <div style="font-size:12px;color:var(--text-muted);margin-top:4px">Electricidad zonas comunes</div>
+        </div>
+        <div onclick="openDocUpload('gas_power')"
+          style="border:2px dashed var(--border);border-radius:10px;padding:24px;text-align:center;cursor:pointer;transition:all 0.2s"
+          onmouseover="this.style.borderColor='var(--primary)'" onmouseout="this.style.borderColor='var(--border)'">
+          <div style="font-size:28px;margin-bottom:8px">🔥</div>
+          <div style="font-weight:700;font-size:14px">Factura Gas Power</div>
+          <div style="font-size:12px;color:var(--text-muted);margin-top:4px">Gas calefacción</div>
+        </div>
+        <div onclick="openDocUpload('factura')"
+          style="border:2px dashed var(--border);border-radius:10px;padding:24px;text-align:center;cursor:pointer;transition:all 0.2s"
+          onmouseover="this.style.borderColor='var(--primary)'" onmouseout="this.style.borderColor='var(--border)'">
+          <div style="font-size:28px;margin-bottom:8px">📄</div>
+          <div style="font-weight:700;font-size:14px">Factura proveedor</div>
+          <div style="font-size:12px;color:var(--text-muted);margin-top:4px">Pirtac, Perón, etc.</div>
+        </div>
+      </div>
+      <div id="docsList" style="margin-top:20px"></div>
+    </div>
+
+    <div class="card">
+      <details>
+        <summary style="list-style:none;display:flex;align-items:center;justify-content:space-between;cursor:pointer;padding:4px 0">
+          <div class="card-title" style="margin-bottom:0">🔗 Vincular facturas a movimientos</div>
+          <span style="font-size:13px;color:var(--text-muted)">▼ Abrir</span>
+        </summary>
+        <div style="margin-top:16px">
+          <p class="card-desc" style="margin-bottom:12px">Busca un movimiento bancario por concepto y añade la referencia de factura correspondiente.</p>
+          <div style="display:flex;gap:8px;margin-bottom:12px">
+            <input type="text" id="facturaSearchInput" placeholder="Buscar por concepto, ej: MJM"
+              style="flex:1;padding:10px 14px;border:1.5px solid var(--border);border-radius:8px;font-size:14px;outline:none;font-family:inherit"
+              oninput="buscarMovimientosFactura(this.value)">
+            <button onclick="buscarMovimientosFactura(document.getElementById('facturaSearchInput').value)"
+              style="padding:10px 18px;background:var(--primary);color:white;border:none;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit">Buscar</button>
+          </div>
+          <div id="facturaSearchResults"></div>
+        </div>
+      </details>
+    </div>
+
+    <div class="card">
+      <details>
+        <summary
+          style="list-style:none;display:flex;align-items:center;justify-content:space-between;cursor:pointer;padding:4px 0">
+          <div class="card-title" style="margin-bottom:0">📋 Log de sesiones</div>
+          <span style="font-size:13px;color:var(--text-muted)">▼ Ver registro</span>
+        </summary>
+        <div style="margin-top:16px">
+          <div style="display:flex;gap:8px;margin-bottom:12px;align-items:center">
+            <button onclick="loadSessionLog(0)"
+              style="background:var(--bg);border:1px solid var(--border);padding:6px 14px;border-radius:6px;font-size:13px;cursor:pointer;font-family:inherit">⟳
+              Actualizar</button>
+            <span id="sessionLogInfo" style="font-size:12px;color:var(--text-muted)"></span>
+          </div>
+          <div id="sessionLog">
+            <div style="color:var(--text-muted);font-size:14px">Haz clic en "Actualizar" para cargar el log</div>
+          </div>
+          <div id="sessionLogPager" style="display:flex;gap:8px;margin-top:12px;align-items:center"></div>
+        </div>
+      </details>
+    </div>
+
+  </div>
 
   </div>
 
@@ -2757,9 +2783,11 @@
           : 'border-left: 3px solid var(--border);';
 
       let meatball = '';
+      let dragAttr = '';
       if (typeof _isAdmin !== 'undefined' && _isAdmin) {
         const uid = (p._id || p.nombre).replace(/[^a-zA-Z0-9]/g, '_');
         const menuId = 'menu_' + uid;
+        dragAttr = `draggable="true" ondragstart="handleDragStart(event, '${p._id}')" ondragend="handleDragEnd(event)"`;
         meatball = `<button class="card-menu-btn" onclick="event.stopPropagation();toggleMenu('${menuId}')">⋮</button>
       <div class="card-menu-dropdown" id="${menuId}">
         <button class="card-menu-item" onclick="event.stopPropagation();closeMenus();openModal('${p._id || ''}')">✏️ Editar</button>
@@ -2767,7 +2795,7 @@
       </div>`;
       }
 
-      return `<div class="project-card" style="position:relative;${cardAccent}">
+      return `<div class="project-card" data-id="${p._id}" ${dragAttr} style="position:relative;${cardAccent} ${_isAdmin ? 'cursor: grab;' : ''}">
     ${meatball}
     <div class="project-card-header">
       <span class="project-icon">${icon}</span>
@@ -2782,14 +2810,140 @@
 
     function renderProjectsByState(year, elemId) {
       const projects = DATA[year] || [];
-      const progreso = projects.filter(p => p.cat === 'progreso').sort((a, b) => b.progreso - a.progreso);
-      const completados = projects.filter(p => p.cat === 'completado');
-      const pendientes = projects.filter(p => p.cat === 'pendiente');
+      const progreso = projects.filter(p => p.cat === 'progreso').sort((a, b) => a.orden !== b.orden ? a.orden - b.orden : b.progreso - a.progreso);
+      const completados = projects.filter(p => p.cat === 'completado').sort((a, b) => a.orden - b.orden);
+      const pendientes = projects.filter(p => p.cat === 'pendiente').sort((a, b) => a.orden - b.orden);
       let html = '';
-      if (progreso.length) html += `<details class="project-section"><summary>⏳ En progreso <span class="count">${progreso.length}</span></summary><div class="project-list">${progreso.map(_baseProjectHTML).join('')}</div></details>`;
-      if (pendientes.length) html += `<details class="project-section"><summary>📋 Pendientes <span class="count">${pendientes.length}</span></summary><div class="project-list">${pendientes.map(_baseProjectHTML).join('')}</div></details>`;
-      if (completados.length) html += `<details class="project-section"><summary>✓ Completados <span class="count">${completados.length}</span></summary><div class="project-list">${completados.map(_baseProjectHTML).join('')}</div></details>`;
+      if (progreso.length) html += `<details class="project-section"><summary>⏳ En curso <span class="count">${progreso.length}</span></summary><div class="project-list" data-cat="progreso" ondragover="allowDrop(event)" ondrop="handleDrop(event)">${progreso.map(_baseProjectHTML).join('')}</div></details>`;
+      if (pendientes.length) html += `<details class="project-section"><summary>📋 Pendientes <span class="count">${pendientes.length}</span></summary><div class="project-list" data-cat="pendiente" ondragover="allowDrop(event)" ondrop="handleDrop(event)">${pendientes.map(_baseProjectHTML).join('')}</div></details>`;
+      if (completados.length) html += `<details class="project-section"><summary>✓ Completados <span class="count">${completados.length}</span></summary><div class="project-list" data-cat="completado" ondragover="allowDrop(event)" ondrop="handleDrop(event)">${completados.map(_baseProjectHTML).join('')}</div></details>`;
       setInner(elemId, html);
+    }
+
+    let draggedProjectId = null;
+    let draggedItem = null;
+
+    function handleDragStart(e, id) {
+      if (!_isAdmin) return;
+      draggedProjectId = id;
+      draggedItem = e.target.closest('.project-card');
+      if (draggedItem) {
+        draggedItem.classList.add('dragging');
+      }
+      e.dataTransfer.effectAllowed = 'move';
+      e.dataTransfer.setData('text/plain', id);
+    }
+
+    function handleDragEnd(e) {
+      if (draggedItem) {
+        draggedItem.classList.remove('dragging');
+      }
+      draggedItem = null;
+      draggedProjectId = null;
+    }
+
+    let lastInsertTime = 0;
+    function allowDrop(e) {
+      if (!_isAdmin) return;
+      e.preventDefault();
+      const list = e.target.closest('.project-list');
+      if (!list || !draggedItem) return;
+      
+      const now = Date.now();
+      if (now - lastInsertTime < 60) return; // Throttle to prevent layout thrashing (flicker)
+      
+      const closest = getDragAfterElement(list, e.clientX, e.clientY);
+      if (closest.element) {
+        lastInsertTime = now;
+        if (closest.insertAfter) {
+          if (closest.element.nextSibling !== draggedItem) {
+            list.insertBefore(draggedItem, closest.element.nextSibling);
+          }
+        } else {
+          if (closest.element !== draggedItem) {
+            list.insertBefore(draggedItem, closest.element);
+          }
+        }
+      } else {
+        lastInsertTime = now;
+        list.appendChild(draggedItem);
+      }
+    }
+
+    function getDragAfterElement(container, x, y) {
+      const draggableElements = [...container.querySelectorAll('.project-card:not(.dragging)')];
+      let closest = { distance: Number.POSITIVE_INFINITY, element: null, insertAfter: false };
+      
+      draggableElements.forEach(child => {
+        const box = child.getBoundingClientRect();
+        const centerX = box.left + box.width / 2;
+        const centerY = box.top + box.height / 2;
+        const distance = Math.pow(x - centerX, 2) + Math.pow(y - centerY, 2);
+        
+        if (distance < closest.distance) {
+          const insertAfter = x > centerX;
+          closest = { distance, element: child, insertAfter };
+        }
+      });
+      
+      return closest;
+    }
+
+    async function handleDrop(e) {
+      if (!_isAdmin) return;
+      e.preventDefault();
+      const list = e.target.closest('.project-list');
+      if (!list) return;
+      
+      const newCat = list.getAttribute('data-cat');
+      const cards = Array.from(list.querySelectorAll('.project-card'));
+      const updates = cards.map((card, index) => {
+        return {
+          id: card.getAttribute('data-id'),
+          orden: index,
+          cat: newCat
+        };
+      });
+      
+      try {
+        // 1. Intentamos actualizar 'orden' y 'cat' en paralelo
+        const promises = updates.filter(item => item.id).map(item => 
+          db.from('proyectos').update({ orden: item.orden, cat: item.cat }).eq('id', item.id)
+        );
+        
+        const results = await Promise.all(promises);
+        const firstError = results.find(res => res.error);
+        if (firstError) throw firstError.error;
+        
+        toast('Prioridad y categoría actualizadas ✓', 'ok');
+        loadFromSupabase();
+      } catch (err) {
+        console.warn('Fallo al actualizar orden, intentando guardar solo la categoría...', err);
+        // Si el error es de tipo PGRST204 o menciona la columna 'orden', es que no existe en el esquema
+        const isColumnMissing = err.message && (err.message.includes('orden') || err.message.includes('column') || err.code === 'PGRST204');
+        
+        if (isColumnMissing) {
+          try {
+            // Reintento de emergencia: actualizamos SOLO la categoría ('cat')
+            const fallbackPromises = updates.filter(item => item.id).map(item => 
+              db.from('proyectos').update({ cat: item.cat }).eq('id', item.id)
+            );
+            
+            const fallbackResults = await Promise.all(fallbackPromises);
+            const fallbackError = fallbackResults.find(res => res.error);
+            if (fallbackError) throw fallbackError.error;
+            
+            toast('Categoría actualizada ✓ (Añade la columna "orden" en Supabase para orden exacto)', 'ok');
+            loadFromSupabase();
+            return;
+          } catch (fallbackErr) {
+            console.error('Error en fallback de guardado de categoría:', fallbackErr);
+          }
+        }
+        
+        console.error(err);
+        toast('Error al guardar el orden', 'err');
+      }
     }
 
     function renderProjects2026() {
@@ -2810,7 +2964,18 @@
       const html = data.map((v, i) => {
         const h = v > 0 ? (v / max) * 175 : 4;
         const bg = colorFn(v, i);
-        const style = bg ? `height:${h}px; background: linear-gradient(to top, ${bg}, ${bg}30);` : `height:${h}px`;
+        let style = `height:${h}px;`;
+        if (bg) {
+          let bgLight = bg + '30';
+          if (bg.startsWith('var(--chart-')) {
+            const num = bg.match(/\d+/)[0];
+            bgLight = `var(--c${num}-light)`;
+          } else if (bg.startsWith('var(--c')) {
+            const num = bg.match(/\d+/)[0];
+            bgLight = `var(--c${num}-light)`;
+          }
+          style += ` background: linear-gradient(to top, ${bg}, ${bgLight});`;
+        }
         const showVal = (v > 0 || showZero) ? fmt(v) : '';
         return `<div class="bar-wrapper"><div class="bar" style="${style}"><div class="bar-value">${showVal}</div></div><div class="bar-label">${labels[i]}</div></div>`;
       }).join('');
@@ -2922,7 +3087,7 @@
       makeBars('planProgressChart',
         [Math.round(completedCosts), Math.round(progressCosts), Math.round(pendingCosts), Math.round(totalGrossCosts)],
         ['Completados', 'En progreso', 'Pendientes', 'Gasto total'],
-        { fmt: v => Math.round(v / 1000) + 'k€', colorFn: (v, i) => ['var(--chart-3)', 'var(--chart-4)', '#94A3B8', 'var(--chart-1)'][i] });
+        { fmt: v => Math.round(v / 1000) + 'k€', colorFn: (v, i) => ['var(--chart-3)', 'var(--chart-2)', 'var(--chart-4)', 'var(--chart-1)'][i] });
 
       makeBars('burndownChart',
         [Math.round(totalNet), Math.round(unassignedFrame), PRESUPUESTO],
@@ -3029,7 +3194,8 @@
           pres: p.pres !== null ? parseFloat(p.pres) : null,
           obs: p.obs || '',
           banco_ref: p.banco_ref || '',
-          etiqueta: p.etiqueta || 'Normal'
+          etiqueta: p.etiqueta || 'Normal',
+          orden: p.orden || 0
         };
         if (DATA[p.año]) DATA[p.año].push(proj);
       });
@@ -3074,6 +3240,7 @@
         });
 
         console.log(`Movimientos únicos tras deduplicar: ${moves.length}`);
+        window.loadedMoves = moves;
         if (!moves || moves.length === 0) return;
 
         const years = ['2021', '2022', '2023', '2024', '2025', '2026'];
@@ -3084,9 +3251,11 @@
           comunic: { prisma: {}, lasser: {} },
           limpieza: { mjm: {}, pilar: {}, cubo: {} },
           banco: {},
+          banco_detalle: { comision: {}, intereses: {}, devolucion: {}, iva: {} },
           portero: { nomina: {}, tgss: {}, quiron: {}, elportero: {}, vivienda: {} },
           despido: { finiquito: 0, embargos: 0 },
-          calef: { gas: {}, mant: {}, techem: {} }
+          calef: { gas: {}, mant: {}, techem: {} },
+          seguro: {}
         };
 
         years.forEach(y => {
@@ -3095,11 +3264,16 @@
           stats.comunic.prisma[y] = 0; stats.comunic.lasser[y] = 0;
           stats.limpieza.mjm[y] = 0; stats.limpieza.pilar[y] = 0; stats.limpieza.cubo[y] = 0;
           stats.banco[y] = 0;
+          stats.banco_detalle.comision[y] = 0;
+          stats.banco_detalle.intereses[y] = 0;
+          stats.banco_detalle.devolucion[y] = 0;
+          stats.banco_detalle.iva[y] = 0;
           stats.extintores = stats.extintores || {}; stats.extintores[y] = 0;
           stats.protesins = stats.protesins || {}; stats.protesins[y] = 0;
           stats.portero.nomina[y] = 0; stats.portero.tgss[y] = 0; stats.portero.quiron[y] = 0;
           stats.portero.elportero[y] = 0; stats.portero.vivienda[y] = 12000;
           stats.calef.gas[y] = 0; stats.calef.mant[y] = 0; stats.calef.techem[y] = 0;
+          stats.seguro[y] = 0;
         });
         stats.portero.vivienda['2025'] = 1000;
         stats.portero.vivienda['2026'] = 0;
@@ -3159,7 +3333,18 @@
           else if (c.includes('EL PILAR')) stats.limpieza.pilar[y] += val;
           else if (c.includes('DON CUBO') || c.includes('PREVENT')) stats.limpieza.cubo[y] += val;
           // Banco
-          else if (c.includes('COMISION') || c.includes('INTERESES') || c.includes('IVA')) stats.banco[y] += val;
+          else if (c.includes('COMISION') || c.includes('INTERES') || c.includes('IVA')) {
+            stats.banco[y] += val;
+            if (c.includes('DEV') || c.includes('RECLAM')) {
+              stats.banco_detalle.devolucion[y] += val;
+            } else if (c.includes('INTERES')) {
+              stats.banco_detalle.intereses[y] += val;
+            } else if (c.includes('IVA')) {
+              stats.banco_detalle.iva[y] += val;
+            } else {
+              stats.banco_detalle.comision[y] += val;
+            }
+          }
           // Portero
           else if (c.includes('IBEREXT')) { stats.extintores[y] = (stats.extintores[y] || 0) + val; }
           else if (c.includes('PROTESINS')) { stats.protesins[y] = (stats.protesins[y] || 0) + val; }
@@ -3167,6 +3352,13 @@
           else if (c.includes('TGSS') || c.includes('SEGUROS SOCIALES')) stats.portero.tgss[y] += val;
           else if (c.includes('QUIRON')) stats.portero.quiron[y] += val;
           else if (c.includes('EL PORTERO')) stats.portero.elportero[y] += val;
+          else if (c.includes('OCASO') || c.includes('SEGUROS CAJA') || (c.includes('CASER') && !c.includes('SOCIALES') && !c.includes('TGSS'))) {
+            if (m.importe > 0) {
+              stats.seguro[y] -= val; // Extorno / Devolución positiva
+            } else {
+              stats.seguro[y] += val;
+            }
+          }
 
           // Despido (2025)
           if (isoFecha.startsWith('2025') && (c.includes('FINIQUITO') || c.includes('INDEMNIZACION') || (c.includes('PEDRO') && c.includes('GIRONES')))) {
@@ -3207,7 +3399,6 @@
           years.map(y => stats.comunic.lasser[y])
         ], yAxis, [pal[0], pal[1]]);
 
-
         makeStackedBars('gasDestinyChart', [
           years.map(y => stats.calef.gas[y]),
           years.map(y => stats.calef.mant[y]),
@@ -3220,14 +3411,21 @@
         });
 
         makeStackedBars('comisionesBancoChart', [
-          years.map(y => stats.banco[y] * 0.8),
-          years.map(y => stats.banco[y] * 0.2)
-        ], yAxis, [pal[0], pal[1]]);
+          years.map(y => stats.banco_detalle.comision[y] || 0),
+          years.map(y => stats.banco_detalle.intereses[y] || 0),
+          years.map(y => stats.banco_detalle.devolucion[y] || 0),
+          years.map(y => stats.banco_detalle.iva[y] || 0)
+        ], yAxis, [pal[5], pal[1], pal[0], pal[3]]);
 
         makeStackedBars('ascensorChart', [
           years.map(y => stats.ascensor[y] * 0.95),
           years.map(y => stats.ascensor[y] * 0.05)
         ], yAxis, [pal[0], pal[1]]);
+
+        makeBars('seguroAnualChart', years.map(y => stats.seguro[y] || 0), yAxis, {
+          fmt: v => Math.round(v).toLocaleString('es-ES') + '€',
+          colorFn: (v, i) => pal[i % pal.length] // Secuencia secuencial del 1 al 6
+        });
 
         // 4. Tesorería 2026
         const moves2026 = moves.filter(m => m._iso && m._iso.startsWith('2026'));
@@ -3272,7 +3470,7 @@
     <div style="font-size:11px;color:#065F46;margin-top:4px;opacity:0.8">Pagado real vs ${fmtNum(presupuestoMejoras2026)}€ ppto</div>
   `);
 
-        // Guardar propiedades globalmente para poder filtrar reactivamente en el cliente
+// Guardar propiedades globalmente para poder filtrar reactivamente en el cliente
         window._allPropiedades = propsData || [];
 
         // Definir la función de filtrado y renderizado reactivo
@@ -3369,7 +3567,7 @@
         // Renderizado inicial
         window.filterCoeficientes();
 
-        // 5. Tesorería 2025
+                // 5. Tesorería 2025
         const moves2025 = moves.filter(m => m._iso && m._iso.startsWith('2025'));
         const ing2025 = moves2025.filter(m => m.importe > 0).reduce((s, m) => s + m.importe, 0);
         const gas2025 = moves2025.filter(m => m.importe < 0).reduce((s, m) => s + Math.abs(m.importe), 0);
@@ -3436,45 +3634,39 @@
         setInner('calef2425', fmtNum(heatingSeasons['2425']) + '€');
         setInner('calef2526', fmtNum(heatingSeasons['2526']) + '€');
 
-        // 9. KPIs Limpieza
+        // 9. KPIs Limpieza — separados por proveedor y servicio
         const totMJM = Object.values(stats.limpieza.mjm).reduce((a, b) => a + b, 0);
         const totPilar = Object.values(stats.limpieza.pilar).reduce((a, b) => a + b, 0);
-        const totCubo = Object.values(stats.limpieza.cubo).reduce((a, b) => a + b, 0);
         setInner('limpAnterior', fmtNum(totMJM) + '€');
         setInner('limpIntermedio', fmtNum(totPilar) + '€');
-        setInner('limpActual', fmtNum(totCubo) + '€');
 
-        // Medias mensuales limpieza (100% dinámico)
+        // Prevent XXI: distinguir periodo solo-limpieza (<300€) vs periodo completo (>400€)
+        const recibosPrevent = moves
+          .filter(m => m.importe < 0 && (m.concepto || '').toUpperCase().includes('PREVENT'))
+          .sort((a, b) => a._iso.localeCompare(b._iso));
+        const recibosPreventSolo  = recibosPrevent.filter(m => Math.abs(m.importe) < 300); // solo limpieza
+        const recibosPreventAmbos = recibosPrevent.filter(m => Math.abs(m.importe) >= 400); // cubos + limpieza
+
+        const totPreventSolo  = recibosPreventSolo.reduce((s, m) => s + Math.abs(m.importe), 0);
+        const totPreventAmbos = recibosPreventAmbos.reduce((s, m) => s + Math.abs(m.importe), 0);
+        setInner('limpPreventSolo', fmtNum(totPreventSolo) + '€');
+        setInner('limpActual', fmtNum(totPreventAmbos) + '€');
+
+        // Cuotas mensuales por periodo
         const recibosMJM = moves.filter(m => m.importe < 0 && (m.concepto || '').toUpperCase().includes('MJM'));
         const avgMJM = recibosMJM.length ? (recibosMJM.reduce((s, m) => s + Math.abs(m.importe), 0) / recibosMJM.length) : 0;
 
-        const recibosPilar = moves.filter(m => m.importe < 0 && (m.concepto || '').toUpperCase().includes('EL PILAR'));
+        const recibosPilar = moves.filter(m => m.importe < 0 && (m.concepto || '').toUpperCase().includes('EL PILAR')
+          && !m._iso.startsWith('2025-05')); // excluir primer mes (gastos de alta dobles)
         const avgPilar = recibosPilar.length ? (recibosPilar.reduce((s, m) => s + Math.abs(m.importe), 0) / recibosPilar.length) : 0;
+        const avgPreventSolo = recibosPreventSolo.length ? (totPreventSolo / recibosPreventSolo.length) : 0;
+        const cuotaActual = recibosPreventAmbos.length > 0 ? Math.abs(recibosPreventAmbos[recibosPreventAmbos.length - 1].importe) : 0;
 
-        const recibosCuboTodos = moves.filter(m => m.importe < 0 && ((m.concepto || '').toUpperCase().includes('DON CUBO') || (m.concepto || '').toUpperCase().includes('PREVENT'))).sort((a, b) => b._iso.localeCompare(a._iso));
-        const cuotaActualCubo = recibosCuboTodos.length > 0 ? Math.abs(recibosCuboTodos[0].importe) : 0;
-
-        // Cuota antigua de cubos (cuando Prevent/Don Cubo solo hacía cubos y cobraba menos de 300€)
-        const recibosCuboAntiguos = recibosCuboTodos.filter(m => Math.abs(m.importe) < 300);
-        const avgCuboAntiguo = recibosCuboAntiguos.length ? (recibosCuboAntiguos.reduce((s, m) => s + Math.abs(m.importe), 0) / recibosCuboAntiguos.length) : 0;
-
-        // Costes mensuales reales comparables (Limpieza + Cubos)
-        const realMJM = avgMJM; // MJM no coincidió con Prevent/Don Cubo; realizaba ambos servicios (Limpieza + Cubos) en una sola cuota
-        const realPilar = avgPilar + avgCuboAntiguo; // El Pilar solo hacía limpieza; cubos aparte contratados en paralelo
-        const realCubo = cuotaActualCubo; // Don Cubo ya tiene tarifa plana unificada de cubos + limpieza
-
-        setInner('limpMesAnterior', fmtNum(realMJM) + '€');
-        setInner('limpMesIntermedio', fmtNum(realPilar) + '€');
-        setInner('limpMesActual', fmtNum(realCubo) + '€');
-
-        // Ahorro dinámico = Coste real modelo anterior (Pilar + Cubos Antiguo) - Cuota unificada Don Cubo
-        const ahorroAnual = (realPilar - realCubo) * 12;
-        setInner('limpAhorro', fmtNum(ahorroAnual) + '€/año');
-
-        // Rellenar desgloses explicativos dinámicos
-        setInner('desgloseMJM', `🧹+🪣 <strong style="color: var(--danger); font-family: monospace; font-size: 14px;">${fmtNum(realMJM)}€/mes</strong> (MJM realizaba ambos servicios conjuntamente)`);
-        setInner('desglosePilar', `🧹 ${fmtNum(avgPilar)}€ (Limpieza Pilar) + 🪣 ${fmtNum(avgCuboAntiguo)}€ (Cubos Prevent de la época) = <strong style="color: var(--accent); font-family: monospace; font-size: 14px;">${fmtNum(realPilar)}€/mes</strong>`);
-        setInner('desgloseCubo', `🧹+🪣 <strong style="color: var(--secondary); font-family: monospace; font-size: 14px;">${fmtNum(realCubo)}€/mes</strong> (Tarifa plana unificada de Don Cubo / Prevent XXI)`);
+        const costeModeloDual = avgPreventSolo + avgPilar; // cubos (Prevent) + limpieza (El Pilar)
+        const ahorroMensual = costeModeloDual - cuotaActual;
+        setInner('limpMesMJM',   fmtNum(avgMJM) + '€/mes (todo incluido)');
+        setInner('limpMesDual',  fmtNum(avgPreventSolo) + '€ cubos (Prevent) + ' + fmtNum(avgPilar) + '€ limpieza (El Pilar) = ' + fmtNum(costeModeloDual) + '€/mes');
+        setInner('limpMesActual', fmtNum(cuotaActual) + '€/mes · ahorro ' + fmtNum(ahorroMensual) + '€/mes vs modelo anterior');
 
         // 10. Auditoría Footer (Solo log en consola si es necesario)
         console.log(`Cifras dinámicas: ${moves.length} movimientos hasta el ${ultimaFechaOriginal}. Saldo: ${fmtNum(ultimoSaldo)}€.`);
@@ -3483,10 +3675,24 @@
         // 11. Grids de KPIs restantes
         setInner('kpiLuzGrid', years.map((y, i) => `<div class="kpi c${i + 1}"><div class="kpi-label">${y}</div><div class="kpi-value">${fmtNum(stats.luz[y])}€</div></div>`).join(''));
         setInner('kpiComunicaciones', years.map((y, i) => `<div class="kpi c${i + 1}"><div class="kpi-label">${y}</div><div class="kpi-value">${fmtNum(stats.comunic.prisma[y] + stats.comunic.lasser[y])}€</div></div>`).join(''));
+        
+        let totPrisma = 0;
+        let totLasser = 0;
+        years.forEach(y => {
+          totPrisma += stats.comunic.prisma[y] || 0;
+          totLasser += stats.comunic.lasser[y] || 0;
+        });
+        setInner('comunicTotPrisma', fmtNum(totPrisma) + '€');
+        setInner('comunicTotLasser', fmtNum(totLasser) + '€');
+
         setInner('kpiProtesins', years.map((y, i) => `<div class="kpi c${i + 1}"><div class="kpi-label">${y}</div><div class="kpi-value">${fmtNum(stats.protesins[y])}€</div></div>`).join(''));
         setInner('kpiExtintores', years.map((y, i) => `<div class="kpi c${i + 1}"><div class="kpi-label">${y}</div><div class="kpi-value">${fmtNum(stats.extintores[y])}€</div></div>`).join(''));
         setInner('kpiAscensores', years.map((y, i) => `<div class="kpi c${i + 1}"><div class="kpi-label">${y}</div><div class="kpi-value">${fmtNum(stats.ascensor[y])}€</div></div>`).join(''));
         setInner('kpiAdmin', years.map((y, i) => `<div class="kpi c${i + 1}"><div class="kpi-label">${y}</div><div class="kpi-value">${fmtNum(stats.admin[y])}€</div></div>`).join(''));
+        setInner('kpiSeguroGrid', years.map((y, i) => {
+          const comp = y <= '2023' ? ' · Caser' : y === '2024' ? ' · Ocaso (Neto)' : ' · Ocaso';
+          return `<div class="kpi c${i + 1}"><div class="kpi-label">${y}${comp}</div><div class="kpi-value">${fmtNum(stats.seguro[y])}€</div></div>`;
+        }).join(''));
 
         // 12. Gráficos de Gas
         await loadGasChartData();
@@ -3808,17 +4014,43 @@
 
         if (!data.length) { document.getElementById('uploadResult').innerHTML = '<div style="color:#EF4444">❌ No se encontraron movimientos</div>'; return; }
 
-        const { error } = await db.from('movimientos').insert(data);
+        const { data: insertedData, error } = await db
+          .from('movimientos')
+          .upsert(data, { onConflict: 'fecha,concepto,importe,saldo', ignoreDuplicates: true })
+          .select();
+
         if (error) { document.getElementById('uploadResult').innerHTML = `<div style="color:#EF4444">❌ Error: ${error.message}</div>`; return; }
 
-        // Mostrar resumen
-        const ingresos = data.filter(m => m.importe > 0).reduce((s, m) => s + m.importe, 0);
-        const gastos = data.filter(m => m.importe < 0).reduce((s, m) => s + Math.abs(m.importe), 0);
-        document.getElementById('uploadResult').innerHTML = `
-      <div style="background:#D1FAE5;border-left:3px solid #10B981;padding:16px;border-radius:8px">
-        <div style="font-weight:700;color:#065F46;margin-bottom:8px">✅ ${data.length} movimientos importados correctamente</div>
-        <div style="font-size:13px;color:#065F46">Ingresos: +${Math.round(ingresos).toLocaleString('es-ES')}€ · Gastos: -${Math.round(gastos).toLocaleString('es-ES')}€</div>
-      </div>`;
+        const importedCount = insertedData ? insertedData.length : 0;
+        const skippedCount = data.length - importedCount;
+
+        // Mostrar resumen premium
+        const targetData = importedCount > 0 ? insertedData : [];
+        const ingresos = targetData.filter(m => m.importe > 0).reduce((s, m) => s + m.importe, 0);
+        const gastos = targetData.filter(m => m.importe < 0).reduce((s, m) => s + Math.abs(m.importe), 0);
+
+        let summaryHtml = '';
+        if (importedCount > 0) {
+          summaryHtml = `
+            <div style="background:#D1FAE5;border-left:3px solid #10B981;padding:16px;border-radius:8px">
+              <div style="font-weight:700;color:#065F46;margin-bottom:8px">✅ ${importedCount} nuevos movimientos importados correctamente</div>
+              <div style="font-size:13px;color:#065F46">Ingresos: +${Math.round(ingresos).toLocaleString('es-ES')}€ · Gastos: -${Math.round(gastos).toLocaleString('es-ES')}€</div>
+              ${skippedCount > 0 ? `<div style="font-size:11px;color:#047857;margin-top:6px;opacity:0.85">Omitidos ${skippedCount} movimientos duplicados que ya existían.</div>` : ''}
+            </div>`;
+        } else {
+          summaryHtml = `
+            <div style="background:#EFF6FF;border-left:3px solid #3B82F6;padding:16px;border-radius:8px">
+              <div style="font-weight:700;color:#1E3A8A;margin-bottom:4px">ℹ️ Sin movimientos nuevos</div>
+              <div style="font-size:13px;color:#1E3A8A">Todos los ${data.length} movimientos de este extracto ya estaban registrados previamente.</div>
+            </div>`;
+        }
+
+        document.getElementById('uploadResult').innerHTML = summaryHtml;
+
+        // Recargar dashboard dinámicamente si se importaron registros nuevos
+        if (importedCount > 0) {
+          if (typeof loadDashboardData === 'function') loadDashboardData();
+        }
       } catch (e) {
         document.getElementById('uploadResult').innerHTML = `<div style="color:#EF4444">❌ Error: ${e.message}</div>`;
       }
@@ -4230,6 +4462,7 @@
     }
 
     async function loadGasChartData() {
+      const pal = ['#EF4444', '#F59E0B', '#10B981', '#0EA5E9', '#8B5CF6', '#6366F1', '#14B8A6'];
       // Cargar de DB
 
       // Base data histórica
@@ -4331,10 +4564,10 @@
           data: {
             labels: ['Oct', 'Nov', 'Dic', 'Ene', 'Feb', 'Mar', 'Abr', 'May'],
             datasets: [
-              { label: 'Temp. 22/23', data: s2223, backgroundColor: '#EF4444', borderRadius: 2 }, // Rojo
-              { label: 'Temp. 23/24', data: s2324, backgroundColor: '#F59E0B', borderRadius: 2 }, // Naranja
-              { label: 'Temp. 24/25', data: s2425, backgroundColor: '#10B981', borderRadius: 2 }, // Verde
-              { label: 'Temp. 25/26 (Actual)', data: s2526, backgroundColor: '#0EA5E9', borderRadius: 2 } // Azul
+              { label: 'Temp. 22/23', data: s2223, backgroundColor: pal[0], borderRadius: 2 }, // Rojo (Color 1)
+              { label: 'Temp. 23/24', data: s2324, backgroundColor: pal[1], borderRadius: 2 }, // Naranja (Color 2)
+              { label: 'Temp. 24/25', data: s2425, backgroundColor: pal[2], borderRadius: 2 }, // Verde (Color 3)
+              { label: 'Temp. 25/26 (Actual)', data: s2526, backgroundColor: pal[3], borderRadius: 2 } // Azul (Color 4)
             ]
           },
           options: {
@@ -4443,6 +4676,361 @@
           if (conciliacionEl) conciliacionEl.style.display = 'none';
         }
       }
+    }
+
+    // Dynamic Cleaning Bank Audit Widget
+    window.showLimpiezaAudit = function(provider) {
+      const container = document.getElementById('limpiezaAuditSection');
+      if (!container) return;
+
+      // If clicking same card, toggle collapse
+      if (container.style.display === 'block' && container.dataset.currentProvider === provider) {
+        container.style.display = 'none';
+        resetLimpCards();
+        return;
+      }
+
+      container.dataset.currentProvider = provider;
+      container.style.display = 'block';
+      container.style.animation = 'fadeIn 0.25s ease';
+
+      // Highlight active card
+      ['MJM', 'PREVENT_SOLO', 'EL_PILAR', 'PREVENT_AMBOS'].forEach(p => {
+        const card = document.getElementById(`limpCard_${p}`);
+        if (card) {
+          if (p === provider) {
+            card.style.transform = 'translateY(-4px)';
+            card.style.boxShadow = '0 8px 16px rgba(0,0,0,0.08)';
+            card.style.borderColor = 'rgba(0,0,0,0.15)';
+          } else {
+            card.style.transform = 'none';
+            card.style.boxShadow = '0 1px 3px rgba(0,0,0,0.01)';
+            card.style.borderColor = '';
+          }
+        }
+      });
+
+      const moves = window.loadedMoves || [];
+      let filtered = [];
+      let providerName = '';
+      let period = '';
+      let color = '';
+      let explanation = '';
+      let monthlyRate = '';
+
+      if (provider === 'MJM') {
+        filtered = moves.filter(m => m.importe < 0 && (m.concepto || '').toUpperCase().includes('MJM'));
+        providerName = 'MJM Limpiezas S.L.';
+        period = "octubre 2024 – abril 2025";
+        color = '#EF4444';
+        monthlyRate = '199,65€ cubos + cuota variable limpieza';
+        explanation = `
+          <div style="font-size: 13.5px; line-height: 1.6; color: var(--text-soft); margin-bottom: 20px; background: #FFF5F5; padding: 16px; border-radius: 10px; border: 1px solid rgba(239, 68, 68, 0.15);">
+            <p style="margin: 0 0 8px; font-weight: 700; color: #9B2C2C; display: flex; align-items: center; gap: 6px;">
+              <span>ℹ️ Estructura del Servicio Histórico MJM</span>
+            </p>
+            <p style="margin: 0 0 8px;">
+              MJM prestó un servicio completo (limpieza y cubos) hasta abril de 2025. En sus movimientos destaca un pago extraordinario de <strong>1.230,57 €</strong> en marzo de 2025 correspondiente a una limpieza a fondo integral del edificio tras finalizar las obras de impermeabilización del patio y reforma de cubiertas/terrazas.
+            </p>
+          </div>
+        `;
+      } else if (provider === 'EL_PILAR') {
+        filtered = moves.filter(m => m.importe < 0 && (m.concepto || '').toUpperCase().includes('EL PILAR'));
+        providerName = 'Cubos El Pilar S.L.';
+        period = "mayo 2025 – febrero 2026";
+        color = '#F59E0B';
+        monthlyRate = '418,42€/mes cuota base (subió a 430,55€ en 2026)';
+        explanation = `
+          <div style="font-size: 13.5px; line-height: 1.6; color: var(--text-soft); margin-bottom: 20px; background: #FFFDF5; padding: 18px; border-radius: 10px; border: 1.5px solid #FDE68A;">
+            <p style="margin: 0 0 10px; font-weight: 700; color: #92400E; display: flex; align-items: center; gap: 6px; font-size: 14px;">
+              <span>🔍 Explicación Detallada del Total de 5.367 €</span>
+            </p>
+            <p style="margin: 0 0 10px;">
+              Este total representa la <strong>suma exacta de las 14 transacciones bancarias</strong> procesadas por el Sabadell para "Cubos El Pilar" durante la vigencia de su contrato de limpieza general (sin cubos):
+            </p>
+            <ul style="margin: 0 0 10px; padding-left: 20px; display: flex; flex-direction: column; gap: 6px;">
+              <li><strong>Cuota mensual regular:</strong> 8 pagos de <strong>418,42 €</strong> (de junio de 2025 a enero de 2026) y 2 pagos de <strong>430,55 €</strong> (en febrero y marzo de 2026, tras una pequeña actualización del coste de convenio).</li>
+              <li><strong>Cargos extraordinarios de alta (07/05/2025):</strong> Dos recibos simultáneos cargados en la misma fecha por importes de <strong>561,20 €</strong> y <strong>551,98 €</strong> correspondientes a los servicios iniciales de puesta a punto, alta de servicio y pre-pago en el periodo de transición tras la finalización del contrato de MJM.</li>
+              <li><strong>Gastos menores de mantenimiento:</strong> Un cargo de <strong>6,05 €</strong> (gastos administrativos) y un cargo de <strong>39,20 €</strong> (adquisición de productos de limpieza homologados para la finca en julio de 2025).</li>
+            </ul>
+            <p style="margin: 0; font-size: 12px; color: #B45309; font-weight: 600; background: rgba(245, 158, 11, 0.05); padding: 8px 12px; border-radius: 6px; border-left: 3px solid #F59E0B;">
+              💡 <strong>Dato oficial:</strong> Estos movimientos cuadran exactamente con la partida de <strong>4.042,12 €</strong> de limpieza aprobada en el balance oficial de 2025, sumando los recibos restantes cargados en el ejercicio 2026.
+            </p>
+          </div>
+        `;
+      } else if (provider === 'PREVENT_SOLO') {
+        filtered = moves.filter(m => m.importe < 0 && (m.concepto || '').toUpperCase().includes('PREVENT') && Math.abs(m.importe) < 300);
+        providerName = 'Prevent XXI (Solo Cubos)';
+        period = "mayo 2025 – febrero 2026";
+        color = '#0EA5E9';
+        monthlyRate = '165,77€/mes cuota fija';
+        explanation = `
+          <div style="font-size: 13.5px; line-height: 1.6; color: var(--text-soft); margin-bottom: 20px; background: #F0F9FF; padding: 16px; border-radius: 10px; border: 1px solid rgba(14, 165, 233, 0.15);">
+            <p style="margin: 0 0 8px; font-weight: 700; color: #0369A1; display: flex; align-items: center; gap: 6px;">
+              <span>🗑️ Servicio Dual: Gestión de Residuos</span>
+            </p>
+            <p style="margin: 0 0 8px;">
+              Durante los 10 meses de transición (modelo dual), Prevent XXI se encargó únicamente del servicio de retirada de cubos de basura a la calle y su posterior recogida, facturando una cuota fija de <strong>165,77 €</strong> mensuales sin costes extraordinarios asociados.
+            </p>
+          </div>
+        `;
+      } else if (provider === 'PREVENT_AMBOS') {
+        filtered = moves.filter(m => m.importe < 0 && (m.concepto || '').toUpperCase().includes('PREVENT') && Math.abs(m.importe) >= 400);
+        providerName = 'Prevent XXI (Unificado)';
+        period = "marzo 2026 – actual";
+        color = '#10B981';
+        monthlyRate = '441,65€/mes (Limpieza + Cubos)';
+        explanation = `
+          <div style="font-size: 13.5px; line-height: 1.6; color: var(--text-soft); margin-bottom: 20px; background: #F0FDF4; padding: 16px; border-radius: 10px; border: 1px solid rgba(16, 185, 129, 0.15);">
+            <p style="margin: 0 0 8px; font-weight: 700; color: #047857; display: flex; align-items: center; gap: 6px;">
+              <span>✅ Servicio Unificado Optimizado</span>
+            </p>
+            <p style="margin: 0 0 8px;">
+              En marzo de 2026, la comunidad consolidó ambos servicios con un único proveedor. Al unificar limpieza y cubos con Prevent XXI bajo una cuota fija de <strong>441,65 €/mes</strong>, la comunidad eliminó costes duplicados y logró un <strong>ahorro directo de 142,54 € al mes</strong> (1.710 €/año) respecto a la suma del modelo dual anterior.
+            </p>
+          </div>
+        `;
+      }
+
+      filtered.sort((a, b) => b._iso.localeCompare(a._iso));
+      const totalCalculado = filtered.reduce((s, m) => s + Math.abs(m.importe), 0);
+
+      const rowsHtml = filtered.map(m => {
+        const val = Math.abs(m.importe);
+        // Resaltar cargos mayores o inusuales para fácil inspección visual
+        const isHighlight = val > 500 || val < 100;
+        const typeBadge = isHighlight 
+          ? `<span style="background:#FEF3C7;color:#D97706;padding:3px 8px;border-radius:6px;font-size:10.5px;font-weight:700;border:1px solid rgba(217,119,6,0.15)">Extra / Ajuste</span>`
+          : `<span style="background:#F0FDF4;color:#16A34A;padding:3px 8px;border-radius:6px;font-size:10.5px;font-weight:700;border:1px solid rgba(22,163,74,0.15)">Cuota Regular</span>`;
+
+        return `
+          <tr style="border-bottom: 1px solid var(--border); transition: background 0.15s;" onmouseover="this.style.background='#F9FAFB'" onmouseout="this.style.background='transparent'">
+            <td style="padding: 12px 16px; font-size: 13px; font-weight: 600; color: var(--text);">${m.fecha}</td>
+            <td style="padding: 12px 16px; font-size: 12px; font-family: monospace; color: var(--text-soft); max-width: 320px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="${m.concepto}">${m.concepto}</td>
+            <td style="padding: 12px 16px; font-size: 13.5px; font-weight: 800; color: #111827; text-align: right;">${val.toLocaleString('es-ES', { minimumFractionDigits: 2 })} €</td>
+            <td style="padding: 12px 16px; text-align: center;">${typeBadge}</td>
+            <td style="padding: 12px 16px; text-align: center;">
+              <span style="background:#D1FAE5;color:#065F46;padding:3px 10px;border-radius:20px;font-size:10.5px;font-weight:700;display:inline-flex;align-items:center;gap:4px;border:1px solid rgba(6,95,70,0.15)">
+                <span style="width:6px;height:6px;border-radius:50%;background:#10B981;"></span> Verificado
+              </span>
+            </td>
+          </tr>
+        `;
+      }).join('');
+
+      container.innerHTML = `
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 18px; border-bottom: 1px solid var(--border); padding-bottom: 14px;">
+          <div>
+            <div style="font-size: 11px; font-weight: 700; color: ${color}; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 4px;">Auditoría de Asientos Bancarios</div>
+            <h4 style="margin: 0; font-size: 20px; font-weight: 800; color: var(--text); display: flex; align-items: center; gap: 8px;">
+              <span>${providerName}</span>
+              <span style="font-size: 12px; font-weight: 600; color: var(--text-muted); background: #E5E7EB; padding: 2px 8px; border-radius: 12px;">${filtered.length} transacciones</span>
+            </h4>
+          </div>
+          <button onclick="document.getElementById('limpiezaAuditSection').style.display='none'; resetLimpCards();" 
+            style="background: #E5E7EB; border: none; padding: 8px 16px; border-radius: 8px; font-size: 12px; font-weight: 700; color: #374151; cursor: pointer; transition: all 0.2s;"
+            onmouseover="this.style.background='#D1D5DB'" onmouseout="this.style.background='#E5E7EB'">
+            ✕ Cerrar Auditoría
+          </button>
+        </div>
+
+        ${explanation}
+
+        <div style="font-size: 12px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin: 20px 0 10px; display: flex; justify-content: space-between; align-items: center;">
+          <span>📋 Movimientos en Cuenta Corriente Sabadell</span>
+          <span style="color: ${color}; font-size: 15px; font-weight: 800; background: white; padding: 4px 10px; border-radius: 8px; border: 1px solid var(--border);">Suma: ${totalCalculado.toLocaleString('es-ES', { minimumFractionDigits: 2 })} €</span>
+        </div>
+
+        <div style="overflow-x: auto; border: 1px solid var(--border); border-radius: 10px; background: white; box-shadow: 0 1px 3px rgba(0,0,0,0.01);">
+          <table style="width: 100%; border-collapse: collapse; text-align: left;">
+            <thead>
+              <tr style="background: #FAFAFA; border-bottom: 1px solid var(--border);">
+                <th style="padding: 12px 16px; font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">Fecha Valor</th>
+                <th style="padding: 12px 16px; font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">Concepto Liquidación</th>
+                <th style="padding: 12px 16px; font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; text-align: right;">Importe Cargado</th>
+                <th style="padding: 12px 16px; font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; text-align: center;">Clase Asiento</th>
+                <th style="padding: 12px 16px; font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; text-align: center;">Conciliación</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${rowsHtml}
+            </tbody>
+          </table>
+        </div>
+      `;
+    }
+
+    window.resetLimpCards = function() {
+      ['MJM', 'PREVENT_SOLO', 'EL_PILAR', 'PREVENT_AMBOS'].forEach(p => {
+        const card = document.getElementById(`limpCard_${p}`);
+        if (card) {
+          card.style.transform = 'none';
+          card.style.boxShadow = '0 1px 3px rgba(0,0,0,0.01)';
+          card.style.borderColor = '';
+        }
+      });
+    }
+
+    window.showComunicAudit = function(provider) {
+      const container = document.getElementById('comunicAuditSection');
+      if (!container) return;
+
+      // If clicking same card, toggle collapse
+      if (container.style.display === 'block' && container.dataset.currentProvider === provider) {
+        container.style.display = 'none';
+        resetComunicCards();
+        return;
+      }
+
+      container.dataset.currentProvider = provider;
+      container.style.display = 'block';
+      container.style.animation = 'fadeIn 0.25s ease';
+
+      // Highlight active card
+      ['PRISMA', 'LASSER'].forEach(p => {
+        const card = document.getElementById(`comunicCard_${p}`);
+        if (card) {
+          if (p === provider) {
+            card.style.transform = 'translateY(-4px)';
+            card.style.boxShadow = '0 8px 16px rgba(0,0,0,0.08)';
+            card.style.borderColor = 'rgba(0,0,0,0.15)';
+          } else {
+            card.style.transform = 'none';
+            card.style.boxShadow = '0 1px 3px rgba(0,0,0,0.01)';
+            card.style.borderColor = '';
+          }
+        }
+      });
+
+      const moves = window.loadedMoves || [];
+      let filtered = [];
+      let providerName = '';
+      let period = '';
+      let color = '';
+      let explanation = '';
+
+      if (provider === 'PRISMA') {
+        filtered = moves.filter(m => m.importe < 0 && (m.concepto || '').toUpperCase().includes('PRISMA'));
+        providerName = 'Prisma Comunicaciones';
+        period = "2020 – febrero 2026";
+        color = '#EF4444';
+        explanation = `
+          <div style="font-size: 13.5px; line-height: 1.6; color: var(--text-soft); margin-bottom: 20px; background: #FFF5F5; padding: 18px; border-radius: 10px; border: 1.5px solid #FCA5A5;">
+            <p style="margin: 0 0 10px; font-weight: 700; color: #9B2C2C; display: flex; align-items: center; gap: 6px; font-size: 14px;">
+              <span>📡 Histórico de Servicios de Prisma</span>
+            </p>
+            <p style="margin: 0 0 10px;">
+              Prisma prestó los servicios regulares de mantenimiento de telecomunicaciones hasta la transición unificada con Lasser a inicios de 2026. Cubría:
+            </p>
+            <ul style="margin: 0 0 10px; padding-left: 20px; display: flex; flex-direction: column; gap: 6px;">
+              <li>Mantenimiento preventivo de la antena colectiva de televisión.</li>
+              <li>Soporte técnico y reparación del sistema de portero electrónico anterior.</li>
+            </ul>
+          </div>
+        `;
+      } else if (provider === 'LASSER') {
+        filtered = moves.filter(m => m.importe < 0 && (m.concepto || '').toUpperCase().includes('LASSER'));
+        providerName = 'Grupo Lasser';
+        period = "marzo 2026 – actual";
+        color = '#10B981';
+        explanation = `
+          <div style="font-size: 13.5px; line-height: 1.6; color: var(--text-soft); margin-bottom: 20px; background: #F0FDF4; padding: 18px; border-radius: 10px; border: 1.5px solid #A7F3D0;">
+            <p style="margin: 0 0 10px; font-weight: 700; color: #047857; display: flex; align-items: center; gap: 6px; font-size: 14px;">
+              <span>📡 Estructura de Contrato Unificado con Lasser</span>
+            </p>
+            <p style="margin: 0 0 10px;">
+              Las cuotas de <strong>Grupo Lasser</strong> y <strong>Seguridad Lasser</strong> corresponden a las facturaciones de su contrato unificado para la finca, cubriendo de manera regular tres servicios críticos de mantenimiento y servicio:
+            </p>
+            <ul style="margin: 0 0 10px; padding-left: 20px; display: flex; flex-direction: column; gap: 6px;">
+              <li><strong>Antena Colectiva:</strong> Recepción y distribución de la señal de TV del edificio.</li>
+              <li><strong>Videoportero:</strong> Sistema de intercomunicación y apertura de portal.</li>
+              <li><strong>Cámaras y Seguridad:</strong> Mantenimiento y grabación activa del sistema de cámaras.</li>
+            </ul>
+            <p style="margin: 0; font-size: 12px; color: #047857; font-weight: 600; background: rgba(16, 185, 129, 0.05); padding: 8px 12px; border-radius: 6px; border-left: 3px solid #10B981;">
+              💡 <strong>Nota del Contrato:</strong> Las facturas reflejan el desglose periódico de cuotas contratadas para cada uno de los tres servicios activos en la comunidad.
+            </p>
+          </div>
+        `;
+      }
+
+      filtered.sort((a, b) => b._iso.localeCompare(a._iso));
+      const totalCalculado = filtered.reduce((s, m) => s + Math.abs(m.importe), 0);
+
+      const rowsHtml = filtered.map(m => {
+        const val = Math.abs(m.importe);
+        // Prisma y Lasser consisten en cuotas de contrato regular para los 3 servicios (antena, videoportero y cámaras de seguridad).
+        // Solo marcamos como Extra/Ajuste si excede un límite de instalación muy alto (ej. > 800€).
+        const isExtra = val > 800;
+        const typeBadge = isExtra 
+          ? `<span style="background:#FEF3C7;color:#D97706;padding:3px 8px;border-radius:6px;font-size:10.5px;font-weight:700;border:1px solid rgba(217,119,6,0.15)">Extra / Instalación</span>`
+          : `<span style="background:#F0FDF4;color:#16A34A;padding:3px 8px;border-radius:6px;font-size:10.5px;font-weight:700;border:1px solid rgba(22,163,74,0.15)">Cuota Contrato</span>`;
+
+        return `
+          <tr style="border-bottom: 1px solid var(--border); transition: background 0.15s;" onmouseover="this.style.background='#F9FAFB'" onmouseout="this.style.background='transparent'">
+            <td style="padding: 12px 16px; font-size: 13px; font-weight: 600; color: var(--text);">${m.fecha}</td>
+            <td style="padding: 12px 16px; font-size: 12px; font-family: monospace; color: var(--text-soft); max-width: 320px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="${m.concepto}">${m.concepto}</td>
+            <td style="padding: 12px 16px; font-size: 13.5px; font-weight: 800; color: #111827; text-align: right;">${val.toLocaleString('es-ES', { minimumFractionDigits: 2 })} €</td>
+            <td style="padding: 12px 16px; text-align: center;">${typeBadge}</td>
+            <td style="padding: 12px 16px; text-align: center;">
+              <span style="background:#D1FAE5;color:#065F46;padding:3px 10px;border-radius:20px;font-size:10.5px;font-weight:700;display:inline-flex;align-items:center;gap:4px;border:1px solid rgba(6,95,70,0.15)">
+                <span style="width:6px;height:6px;border-radius:50%;background:#10B981;"></span> Verificado
+              </span>
+            </td>
+          </tr>
+        `;
+      }).join('');
+
+      container.innerHTML = `
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 18px; border-bottom: 1px solid var(--border); padding-bottom: 14px;">
+          <div>
+            <div style="font-size: 11px; font-weight: 700; color: ${color}; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 4px;">Auditoría de Asientos Bancarios</div>
+            <h4 style="margin: 0; font-size: 20px; font-weight: 800; color: var(--text); display: flex; align-items: center; gap: 8px;">
+              <span>${providerName}</span>
+              <span style="font-size: 12px; font-weight: 600; color: var(--text-muted); background: #E5E7EB; padding: 2px 8px; border-radius: 12px;">${filtered.length} transacciones</span>
+            </h4>
+          </div>
+          <button onclick="document.getElementById('comunicAuditSection').style.display='none'; resetComunicCards();" 
+            style="background: #E5E7EB; border: none; padding: 8px 16px; border-radius: 8px; font-size: 12px; font-weight: 700; color: #374151; cursor: pointer; transition: all 0.2s;"
+            onmouseover="this.style.background='#D1D5DB'" onmouseout="this.style.background='#E5E7EB'">
+            ✕ Cerrar Auditoría
+          </button>
+        </div>
+
+        ${explanation}
+
+        <div style="font-size: 12px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin: 20px 0 10px; display: flex; justify-content: space-between; align-items: center;">
+          <span>📋 Movimientos en Cuenta Corriente Sabadell</span>
+          <span style="color: ${color}; font-size: 15px; font-weight: 800; background: white; padding: 4px 10px; border-radius: 8px; border: 1px solid var(--border);">Suma: ${totalCalculado.toLocaleString('es-ES', { minimumFractionDigits: 2 })} €</span>
+        </div>
+
+        <div style="overflow-x: auto; border: 1px solid var(--border); border-radius: 10px; background: white; box-shadow: 0 1px 3px rgba(0,0,0,0.01);">
+          <table style="width: 100%; border-collapse: collapse; text-align: left;">
+            <thead>
+              <tr style="background: #FAFAFA; border-bottom: 1px solid var(--border);">
+                <th style="padding: 12px 16px; font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">Fecha Valor</th>
+                <th style="padding: 12px 16px; font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">Concepto Liquidación</th>
+                <th style="padding: 12px 16px; font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; text-align: right;">Importe Cargado</th>
+                <th style="padding: 12px 16px; font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; text-align: center;">Clase Asiento</th>
+                <th style="padding: 12px 16px; font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; text-align: center;">Conciliación</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${rowsHtml}
+            </tbody>
+          </table>
+        </div>
+      `;
+    }
+
+    window.resetComunicCards = function() {
+      ['PRISMA', 'LASSER'].forEach(p => {
+        const card = document.getElementById(`comunicCard_${p}`);
+        if (card) {
+          card.style.transform = 'none';
+          card.style.boxShadow = '0 1px 3px rgba(0,0,0,0.01)';
+          card.style.borderColor = '';
+        }
+      });
     }
 
     // Init
