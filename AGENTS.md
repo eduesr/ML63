@@ -31,11 +31,19 @@ ML63/
     ├── Actas/
     ├── Alexandru Pirtac/
     ├── Banco/
+    │   └── audit_bancario.md      # Informe histórico (administradores, conserje, seguros)
     ├── Coeficientes/
+    ├── Despido portero/
     ├── GPT/
     ├── Gas Power/
+    ├── Informe reforma Impernova/
     ├── Ista/
-    └── Naturgy/
+    ├── Lasser/
+    ├── MJM/
+    ├── Mundo Reformas y Obras/
+    ├── Naturgy/
+    ├── Navacon Vertical/
+    └── varios../
 ```
 
 > El objetivo a medio plazo es **refactorizar ML63.html** en múltiples ficheros (`index.html` + `css/` + `js/`) sin romper funcionalidad.
