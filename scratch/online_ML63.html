@@ -409,11 +409,6 @@
       }
     }
 
-    @keyframes warningPulse {
-      0%, 100% { box-shadow: 0 2px 12px rgba(239, 68, 68, 0.10); }
-      50% { box-shadow: 0 4px 20px rgba(239, 68, 68, 0.22); }
-    }
-
     .tab-content.active {
       display: block;
     }
@@ -1705,7 +1700,7 @@
   <div class="page-wrapper">
     <header class="site-header" id="siteHeader">
       <div class="site-header-inner" style="justify-content:space-between;display:flex;align-items:center;height:60px;">
-        <div class="site-header-title">Gestión CP ML63 <span style="font-size:11px; font-weight:600; background:rgba(255,255,255,0.18); padding:2px 8px; border-radius:6px; margin-left:6px; letter-spacing:0.5px; vertical-align:middle;">v24</span></div>
+        <div class="site-header-title">Gestión CP ML63 (v21)</div>
         <div style="display:flex;align-items:center;gap:10px">
           <button class="avatar-btn" id="avatarBtn" onclick="toggleAvatarMenu()" style="display:none">?</button>
         </div>
@@ -1750,7 +1745,34 @@
             <div class="kpi-sub">proyectos de la hoja de ruta</div>
           </div>
         </div>
+        <!-- Coeficientes de Participación -->
+        <div style="margin-top: 24px; border-top: 1px solid var(--border); padding-top: 20px; width: 100%;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 10px; width: 100%;">
+            <div style="font-size: 14px; font-weight: 700; color: var(--text-soft); text-transform: uppercase; letter-spacing: 0.5px; display: flex; align-items: center; gap: 6px;">
+              <span>🏠 Reparto de Coeficientes</span>
+            </div>
+            <!-- Buscador y Controles -->
+            <div style="display: flex; gap: 8px; align-items: center;">
+              <input type="text" id="coefSearch" placeholder="Buscar propiedad..." style="padding: 6px 12px; font-size: 12px; border: 1px solid var(--border); border-radius: 6px; outline: none; width: 140px; transition: border-color 0.2s;" oninput="filterCoeficientes()">
+              <select id="coefSort" style="padding: 6px 10px; font-size: 12px; border: 1px solid var(--border); border-radius: 6px; outline: none; cursor: pointer; background: white;" onchange="filterCoeficientes()">
+                <option value="planta">Por Planta</option>
+                <option value="coef-desc">Mayor Coef.</option>
+                <option value="coef-asc">Menor Coef.</option>
+              </select>
+            </div>
+          </div>
+          
+          <!-- Flex Wrap Grid Container (100% width) -->
+          <div id="coefFlexContainer" style="display: flex; flex-wrap: wrap; gap: 10px; width: 100%;">
+            <div style="text-align: center; color: var(--text-muted); font-size: 13px; padding: 20px; width: 100%;">Cargando coeficientes...</div>
+          </div>
 
+          <!-- Resumen de totales al pie -->
+          <div style="margin-top: 16px; display: flex; justify-content: space-between; font-size: 12px; font-weight: 700; color: var(--text-muted); border-top: 1px solid var(--border); padding-top: 10px; width: 100%;">
+            <span id="coefCountLabel">0 propiedades</span>
+            <span id="coefSumLabel">Total: 0.00%</span>
+          </div>
+        </div>
       </div>
       <div class="card">
         <div class="card-title">Proyectos 2026</div>
@@ -1956,37 +1978,8 @@
 
       </div>
     </div>
-    <!-- Coeficientes de Participación -->
-    <div class="card" style="margin-top: 24px; margin-bottom: 40px;">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 10px; width: 100%;">
-        <div style="font-size: 14px; font-weight: 700; color: var(--text-soft); text-transform: uppercase; letter-spacing: 0.5px; display: flex; align-items: center; gap: 6px;">
-          <span>🏠 Reparto de Coeficientes</span>
-        </div>
-        <!-- Buscador y Controles -->
-        <div style="display: flex; gap: 8px; align-items: center;">
-          <input type="text" id="coefSearch" placeholder="Buscar propiedad..." style="padding: 6px 12px; font-size: 12px; border: 1px solid var(--border); border-radius: 6px; outline: none; width: 140px; transition: border-color 0.2s;" oninput="filterCoeficientes()">
-          <select id="coefSort" style="padding: 6px 10px; font-size: 12px; border: 1px solid var(--border); border-radius: 6px; outline: none; cursor: pointer; background: white;" onchange="filterCoeficientes()">
-            <option value="planta">Por Planta</option>
-            <option value="coef-desc">Mayor Coef.</option>
-            <option value="coef-asc">Menor Coef.</option>
-          </select>
-        </div>
-      </div>
-      
-      <!-- Flex Wrap Grid Container (100% width) -->
-      <div id="coefFlexContainer" style="display: flex; flex-wrap: wrap; gap: 10px; width: 100%;">
-        <div style="text-align: center; color: var(--text-muted); font-size: 13px; padding: 20px; width: 100%;">Cargando coeficientes...</div>
-      </div>
-
-      <!-- Resumen de totales al pie -->
-      <div style="margin-top: 16px; display: flex; justify-content: space-between; font-size: 12px; font-weight: 700; color: var(--text-muted); border-top: 1px solid var(--border); padding-top: 10px; width: 100%;">
-        <span id="coefCountLabel">0 propiedades</span>
-        <span id="coefSumLabel">Total: 0.00%</span>
-      </div>
-    </div>
 
   </div>
-  
   <!-- ============ TAB GASTOS & SERVICIOS (sin portero) ============ -->
   <div id="gastos" class="tab-content">
 
@@ -2013,8 +2006,8 @@
           <div style="flex: 0 0 25%; min-width: 150px; display: flex; align-items: center; gap: 12px;">
             <div style="background: rgba(239, 68, 68, 0.08); color: #EF4444; width: 34px; height: 34px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: bold;">📅</div>
             <div>
-              <div style="font-size: 10px; font-weight: 700; color: #9B2C2C; text-transform: uppercase; letter-spacing: 0.5px;">Suplencia & Transición</div>
-              <div style="font-size: 14px; font-weight: 700; color: #9B2C2C;">oct'24 y mar–abr'25</div>
+              <div style="font-size: 10px; font-weight: 700; color: #9B2C2C; text-transform: uppercase; letter-spacing: 0.5px;">Histórico</div>
+              <div style="font-size: 14px; font-weight: 700; color: #9B2C2C;">oct'24 – abr'25</div>
             </div>
           </div>
           <div style="flex: 0 0 20%; min-width: 120px; display: flex; flex-direction: column; gap: 3px;">
@@ -2365,20 +2358,19 @@
       <div class="chart-section">
         <div class="chart-title">Evolución comisiones bancarias por año</div>
         <div class="chart-container" id="comisionesBancoChart"></div>
-
       </div>
       <div class="legend">
         <div class="legend-item">
-          <div class="legend-color" style="background:var(--c1)"></div>Mantenimiento cuenta
+          <div class="legend-color" style="background:var(--chart-6)"></div>Comisiones mantenimiento y remesas
         </div>
         <div class="legend-item">
-          <div class="legend-color" style="background:var(--c2)"></div>Comisiones de remesas
+          <div class="legend-color" style="background:var(--chart-2)"></div>Intereses cuenta
         </div>
         <div class="legend-item">
-          <div class="legend-color" style="background:var(--c3)"></div>Devoluciones
+          <div class="legend-color" style="background:var(--chart-1)"></div>Devoluciones / impagados
         </div>
         <div class="legend-item">
-          <div class="legend-color" style="background:var(--c4)"></div>IVA impuestos
+          <div class="legend-color" style="background:var(--chart-4)"></div>IVA comisiones
         </div>
       </div>
     </div>
@@ -2395,17 +2387,17 @@
         style="font-size: 14px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px;">
         IRPF · Retenciones trimestrales</div>
       <div class="kpi-grid">
-        <div class="kpi c1">
+        <div class="kpi c4">
           <div class="kpi-label">2024 (T2–T4)</div>
           <div class="kpi-value">218€</div>
           <div class="kpi-sub">inicio con Susana</div>
         </div>
-        <div class="kpi c2">
+        <div class="kpi c5">
           <div class="kpi-label">2025</div>
           <div class="kpi-value">396€</div>
           <div class="kpi-sub">99€ × 4 trimestres</div>
         </div>
-        <div class="kpi c3">
+        <div class="kpi c6">
           <div class="kpi-label">2026 (T1+T2)</div>
           <div class="kpi-value">217€</div>
           <div class="kpi-sub">→ ~396€ proyección anual</div>
@@ -2415,17 +2407,17 @@
         style="font-size: 14px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin: 18px 0 10px;">
         LOPD/RGPD · Conversia (cumplimiento protección de datos)</div>
       <div class="kpi-grid">
-        <div class="kpi c1">
+        <div class="kpi c4">
           <div class="kpi-label">2024</div>
           <div class="kpi-value">—</div>
           <div class="kpi-sub">sin servicio</div>
         </div>
-        <div class="kpi c2">
+        <div class="kpi c5">
           <div class="kpi-label">2025</div>
           <div class="kpi-value">242€</div>
           <div class="kpi-sub">anual</div>
         </div>
-        <div class="kpi c3">
+        <div class="kpi c6">
           <div class="kpi-label">2026 (ene-abr)</div>
           <div class="kpi-value">242€</div>
           <div class="kpi-sub">cargo anual feb 2026</div>
@@ -2435,15 +2427,15 @@
         style="font-size: 14px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin: 18px 0 10px;">
         Notificaciones electrónicas · DEH (Dirección Electrónica Habilitada)</div>
       <div class="kpi-grid">
-        <div class="kpi c1">
+        <div class="kpi c4">
           <div class="kpi-label">2024</div>
           <div class="kpi-value">73€</div>
         </div>
-        <div class="kpi c2">
+        <div class="kpi c5">
           <div class="kpi-label">2025</div>
           <div class="kpi-value">73€</div>
         </div>
-        <div class="kpi c3">
+        <div class="kpi c6">
           <div class="kpi-label">2026 (ene-abr)</div>
           <div class="kpi-value">—</div>
           <div class="kpi-sub">pendiente de cargo</div>
@@ -2510,17 +2502,17 @@
         propietarios utilizado por Susana para la administración. Dos cargos anuales (suscripción + módulo adicional).
       </p>
       <div class="kpi-grid">
-        <div class="kpi c1">
+        <div class="kpi">
           <div class="kpi-label">2025 · Fac. NC8995</div>
           <div class="kpi-value">78,65€</div>
           <div class="kpi-sub">cargo 12/05/2025</div>
         </div>
-        <div class="kpi c2">
+        <div class="kpi">
           <div class="kpi-label">2025 · Fac. NC9461</div>
           <div class="kpi-value">24,20€</div>
           <div class="kpi-sub">cargo 12/05/2025</div>
         </div>
-        <div class="kpi c3">
+        <div class="kpi info">
           <div class="kpi-label">Total anual estimado</div>
           <div class="kpi-value">~103€</div>
         </div>
@@ -2536,23 +2528,26 @@
 
   <!-- ============ TAB PLAN 2025-2031 ============ -->
   <div id="plan" class="tab-content">
-    <div class="card" id="planAnualCard">
-      <div class="card-title" id="planAnualTitle">📅 Plan anual previsto 2026</div>
-      <p class="card-desc" id="planAnualDesc">Seguimiento de la ejecución de proyectos comprometidos de mejoras en el año en curso dentro del presupuesto del plan plurianual:</p>
-      <div class="kpi-grid" id="planAnualKpis">
-        <!-- Renderizado dinámico de KPIs -->
+    <div class="card">
+      <div class="card-title">📅 Gastos previstos · Resto de 2026</div>
+      <p class="card-desc">Solo quedan dos partidas significativas pendientes para cerrar el ejercicio 2026:</p>
+      <div class="kpi-grid">
+        <div class="kpi warning">
+          <div class="kpi-label">Sellado y limpieza ventanal · Navacon Vertical</div>
+          <div class="kpi-value">3.051€</div>
+          <div class="kpi-sub">Navacon Vertical · presupuesto nuevo (PTTO090A-2026) · subtotal sin IVA 3.051€ (3.356,10€ con 10% IVA)</div>
+        </div>
+        <div class="kpi warning">
+          <div class="kpi-label">Quitar maderas pared portal</div>
+          <div class="kpi-value">~2.700€</div>
+          <div class="kpi-sub">A. Pirtac · iniciado 25% · pladur tras quitar maderas</div>
+        </div>
+        <div class="kpi info">
+          <div class="kpi-label">Total restante 2026</div>
+          <div class="kpi-value">~5.751€</div>
+          <div class="kpi-sub">~7k previstos en total · base sin IVA</div>
+        </div>
       </div>
-      <div class="chart-section" style="margin-top:24px">
-        <div class="chart-title">Consumo de Presupuesto de Proyectos del Año</div>
-        <div class="chart-container" id="planAnualChart"></div>
-      </div>
-      <div style="font-size:14px; font-weight:700; color:var(--text); margin:24px 0 10px; display:flex; align-items:center; gap:6px;">
-        📌 Desglose de partidas y proyectos comprometidos
-      </div>
-      <div class="kpi-grid" id="planAnualDesgloseGrid">
-        <!-- Renderizado dinámico del listado de proyectos -->
-      </div>
-      <div id="planAnualWarning" style="margin-top: 18px;"></div>
     </div>
 
     <div class="card" id="planEstadoCard">
@@ -2562,6 +2557,13 @@
         plantea como una inversión para generar fondos adicionales sin comprometer la tesorería ordinaria. Una vez
         reformada y alquilada la vivienda, junto con el ahorro estructural por no tener portero, la comunidad podrá
         acometer con más rapidez el resto de proyectos del plan.</p>
+      <p
+        style="font-size: 14px; color: var(--text-muted); margin-top: 12px; padding: 10px 14px; background: #FFF7ED; border-left: 3px solid #F59E0B; border-radius: 4px;">
+        🛡️ <strong style="color:#9A3412">Versión conservadora:</strong> descontando primero el descuelgue y la retirada
+        de maderas del portal ya presupuestados, y asumiendo que siempre surgirán imprevistos, la referencia prudente
+        para alcanzar los 50.000€ de caja (30.000€ para la obra + 20.000€ de colchón) es verano de 2028. Esta estimación
+        no cuenta ingresos teóricos de la vivienda hasta que se conviertan en cobros reales.
+      </p>
       <div class="kpi-grid" id="planKpis"></div>
       <div class="chart-section">
         <div class="chart-title">Gasto Presupuestado por Estado (€)</div>
@@ -2806,97 +2808,15 @@
   </div>`;
     }
 
-    window.filterProjectsInSection = function(input) {
-      const q = (input.value || '').toLowerCase().trim();
-      const parent = input.parentElement.parentElement; // El <details> o el contenedor del año
-      if (!parent) return;
-
-      const cards = parent.querySelectorAll('.project-card');
-      let visibleCount = 0;
-
-      // Normalizar texto para ignorar acentos / diacríticos en la búsqueda (ej: "camaras" coincide con "Cámaras")
-      const normalizedQ = q.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-
-      cards.forEach(card => {
-        const nameEl = card.querySelector('.project-name');
-        if (!nameEl) return;
-        const name = nameEl.textContent.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-        const matches = name.includes(normalizedQ);
-
-        if (matches) {
-          card.style.display = '';
-          visibleCount++;
-        } else {
-          card.style.display = 'none';
-        }
-      });
-
-      // Actualizar el contador del summary dinámicamente si estamos dentro de un details
-      if (parent.tagName === 'DETAILS') {
-        const badge = parent.querySelector('summary .count');
-        if (badge) {
-          const total = cards.length;
-          if (q) {
-            badge.textContent = `${visibleCount}/${total}`;
-            badge.style.background = visibleCount === 0 ? 'var(--danger)' : 'var(--primary)';
-            badge.style.color = 'white';
-            badge.style.boxShadow = '0 2px 4px rgba(0,0,0,0.1)';
-          } else {
-            badge.textContent = total;
-            badge.style.background = '';
-            badge.style.color = '';
-            badge.style.boxShadow = 'none';
-          }
-        }
-      }
-    };
-
     function renderProjectsByState(year, elemId) {
       const projects = DATA[year] || [];
       const progreso = projects.filter(p => p.cat === 'progreso').sort((a, b) => a.orden !== b.orden ? a.orden - b.orden : b.progreso - a.progreso);
       const completados = projects.filter(p => p.cat === 'completado').sort((a, b) => a.orden - b.orden);
       const pendientes = projects.filter(p => p.cat === 'pendiente').sort((a, b) => a.orden - b.orden);
-      
-      const searchBox = `
-        <div class="project-search-container" style="margin: 8px 12px 10px; position: relative; display: flex; align-items: center;">
-          <span style="position: absolute; left: 10px; color: var(--text-muted); font-size: 13px; pointer-events: none;">🔍</span>
-          <input type="text" placeholder="Buscar proyecto..." oninput="filterProjectsInSection(this)" 
-            style="width: 100%; padding: 6px 10px 6px 28px; border: 1px solid var(--border); border-radius: 6px; font-size: 12px; outline: none; transition: all 0.2s; font-family: inherit; background: var(--bg); color: var(--text);"
-            onfocus="this.style.borderColor='var(--primary)'; this.style.boxShadow='0 0 0 2px rgba(79, 70, 229, 0.15)';"
-            onblur="this.style.borderColor='var(--border)'; this.style.boxShadow='none';">
-        </div>`;
-
       let html = '';
-      if (progreso.length) {
-        html += `
-          <details class="project-section">
-            <summary>⏳ En curso <span class="count">${progreso.length}</span></summary>
-            ${searchBox}
-            <div class="project-list" data-cat="progreso" ondragover="allowDrop(event)" ondrop="handleDrop(event)">
-              ${progreso.map(_baseProjectHTML).join('')}
-            </div>
-          </details>`;
-      }
-      if (pendientes.length) {
-        html += `
-          <details class="project-section">
-            <summary>📋 Pendientes <span class="count">${pendientes.length}</span></summary>
-            ${searchBox}
-            <div class="project-list" data-cat="pendiente" ondragover="allowDrop(event)" ondrop="handleDrop(event)">
-              ${pendientes.map(_baseProjectHTML).join('')}
-            </div>
-          </details>`;
-      }
-      if (completados.length) {
-        html += `
-          <details class="project-section">
-            <summary>✓ Completados <span class="count">${completados.length}</span></summary>
-            ${searchBox}
-            <div class="project-list" data-cat="completado" ondragover="allowDrop(event)" ondrop="handleDrop(event)">
-              ${completados.map(_baseProjectHTML).join('')}
-            </div>
-          </details>`;
-      }
+      if (progreso.length) html += `<details class="project-section"><summary>⏳ En curso <span class="count">${progreso.length}</span></summary><div class="project-list" data-cat="progreso" ondragover="allowDrop(event)" ondrop="handleDrop(event)">${progreso.map(_baseProjectHTML).join('')}</div></details>`;
+      if (pendientes.length) html += `<details class="project-section"><summary>📋 Pendientes <span class="count">${pendientes.length}</span></summary><div class="project-list" data-cat="pendiente" ondragover="allowDrop(event)" ondrop="handleDrop(event)">${pendientes.map(_baseProjectHTML).join('')}</div></details>`;
+      if (completados.length) html += `<details class="project-section"><summary>✓ Completados <span class="count">${completados.length}</span></summary><div class="project-list" data-cat="completado" ondragover="allowDrop(event)" ondrop="handleDrop(event)">${completados.map(_baseProjectHTML).join('')}</div></details>`;
       setInner(elemId, html);
     }
 
@@ -3032,16 +2952,7 @@
 
     function renderProjects2025() {
       const projects = (DATA['2025'] || []).filter(p => p.cat === 'completado');
-      setInner('projects2025', `
-        <div class="project-search-container" style="margin: 0 0 16px; position: relative; display: flex; align-items: center;">
-          <span style="position: absolute; left: 12px; color: var(--text-muted); font-size: 14px; pointer-events: none;">🔍</span>
-          <input type="text" placeholder="Buscar proyecto en 2025..." oninput="filterProjectsInSection(this)" 
-            style="width: 100%; padding: 8px 12px 8px 34px; border: 1.5px solid var(--border); border-radius: 8px; font-size: 13px; outline: none; transition: all 0.2s; font-family: inherit; background: var(--bg); color: var(--text);"
-            onfocus="this.style.borderColor='var(--primary)'; this.style.boxShadow='0 0 0 2px rgba(79, 70, 229, 0.15)';"
-            onblur="this.style.borderColor='var(--border)'; this.style.boxShadow='none';">
-        </div>
-        <div class="project-list">${projects.map(_baseProjectHTML).join('')}</div>
-      `);
+      setInner('projects2025', `<div class="project-list">${projects.map(_baseProjectHTML).join('')}</div>`);
     }
 
     function makeBars(elemId, data, labels, opts) {
@@ -3160,148 +3071,28 @@
       const coveragePct = ((totalNet / PRESUPUESTO) * 100).toFixed(1);
 
       document.getElementById('planKpis').innerHTML = `
-    <div class="kpi c1"><div class="kpi-label">Marco del Plan</div><div class="kpi-value">${fmtNum(PRESUPUESTO)}€</div><div class="kpi-sub">aprobado en junta 2025</div></div>
-    <div class="kpi c2"><div class="kpi-label">Proyectos Registrados</div><div class="kpi-value">${totalProjects}</div><div class="kpi-sub">${budgetedProjects} con presupuesto · ${unbudgetedProjects} sin cifra</div></div>
-    <div class="kpi c3"><div class="kpi-label">Gasto Presupuestado</div><div class="kpi-value">${fmtNum(totalGrossCosts)}€</div><div class="kpi-sub">2025 cerrado + 2026-2031 en cualquier estado</div></div>
-    <div class="kpi c4"><div class="kpi-label">Ingresos Registrados</div><div class="kpi-value">+${fmtNum(totalIncome)}€</div><div class="kpi-sub">trasteros + alquiler temporal 8A</div></div>
-    <div class="kpi c5"><div class="kpi-label">Neto con Cifra</div><div class="kpi-value">${fmtNum(totalNet)}€</div><div class="kpi-sub">${coveragePct}% del marco ya cuantificado</div></div>
-    <div class="kpi c6"><div class="kpi-label">Marco sin Asignar</div><div class="kpi-value">${fmtNum(unassignedFrame)}€</div><div class="kpi-sub">resto aún sin presupuesto concreto</div></div>`;
+    <div class="kpi"><div class="kpi-label">Marco del Plan</div><div class="kpi-value">${fmtNum(PRESUPUESTO)}€</div><div class="kpi-sub">aprobado en junta 2025</div></div>
+    <div class="kpi info"><div class="kpi-label">Proyectos Registrados</div><div class="kpi-value">${totalProjects}</div><div class="kpi-sub">${budgetedProjects} con presupuesto · ${unbudgetedProjects} sin cifra</div></div>
+    <div class="kpi danger"><div class="kpi-label">Gasto Presupuestado</div><div class="kpi-value">${fmtNum(totalGrossCosts)}€</div><div class="kpi-sub">2025 cerrado + 2026-2031 en cualquier estado</div></div>
+    <div class="kpi success"><div class="kpi-label">Ingresos Registrados</div><div class="kpi-value">+${fmtNum(totalIncome)}€</div><div class="kpi-sub">trasteros + alquiler temporal 8A</div></div>
+    <div class="kpi warning"><div class="kpi-label">Neto con Cifra</div><div class="kpi-value">${fmtNum(totalNet)}€</div><div class="kpi-sub">${coveragePct}% del marco ya cuantificado</div></div>
+    <div class="kpi"><div class="kpi-label">Marco sin Asignar</div><div class="kpi-value">${fmtNum(unassignedFrame)}€</div><div class="kpi-sub">resto aún sin presupuesto concreto</div></div>`;
 
       document.getElementById('planDesglose').innerHTML = `
-    <div class="kpi c1"><div class="kpi-label">Completados</div><div class="kpi-value">${completados.length}</div><div class="kpi-sub">${countBudgeted(completados)} con presupuesto · ${fmtNum(completedCosts)}€ de gasto</div></div>
-    <div class="kpi c2"><div class="kpi-label">En progreso</div><div class="kpi-value">${progreso.length}</div><div class="kpi-sub">${countBudgeted(progreso)} con presupuesto · ${fmtNum(progressCosts)}€ gasto · +${fmtNum(progressIncome)}€ ingreso</div></div>
-    <div class="kpi c3"><div class="kpi-label">Pendientes</div><div class="kpi-value">${pendientes.length}</div><div class="kpi-sub">${countBudgeted(pendientes)} con presupuesto · ${pendientes.length - countBudgeted(pendientes)} sin cifra</div></div>
-    <div class="kpi c4"><div class="kpi-label">Pendiente con Cifra</div><div class="kpi-value">${fmtNum(pendingCosts - pendingIncome)}€</div><div class="kpi-sub">importe neto aún no ejecutado, concentrado en 2026+</div></div>`;
+    <div class="kpi success"><div class="kpi-label">Completados</div><div class="kpi-value">${completados.length}</div><div class="kpi-sub">${countBudgeted(completados)} con presupuesto · ${fmtNum(completedCosts)}€ de gasto</div></div>
+    <div class="kpi warning"><div class="kpi-label">En progreso</div><div class="kpi-value">${progreso.length}</div><div class="kpi-sub">${countBudgeted(progreso)} con presupuesto · ${fmtNum(progressCosts)}€ gasto · +${fmtNum(progressIncome)}€ ingreso</div></div>
+    <div class="kpi"><div class="kpi-label">Pendientes</div><div class="kpi-value">${pendientes.length}</div><div class="kpi-sub">${countBudgeted(pendientes)} con presupuesto · ${pendientes.length - countBudgeted(pendientes)} sin cifra</div></div>
+    <div class="kpi info"><div class="kpi-label">Pendiente con Cifra</div><div class="kpi-value">${fmtNum(pendingCosts - pendingIncome)}€</div><div class="kpi-sub">importe neto aún no ejecutado, concentrado en 2026+</div></div>`;
 
       makeBars('planProgressChart',
         [Math.round(completedCosts), Math.round(progressCosts), Math.round(pendingCosts), Math.round(totalGrossCosts)],
         ['Completados', 'En progreso', 'Pendientes', 'Gasto total'],
-        { fmt: v => Math.round(v / 1000) + 'k€', colorFn: (v, i) => ['var(--c1)', 'var(--c2)', 'var(--c3)', 'var(--c4)'][i] });
+        { fmt: v => Math.round(v / 1000) + 'k€', colorFn: (v, i) => ['var(--chart-3)', 'var(--chart-2)', 'var(--chart-4)', 'var(--chart-1)'][i] });
 
       makeBars('burndownChart',
         [Math.round(totalNet), Math.round(unassignedFrame), PRESUPUESTO],
         ['Con cifra', 'Sin cifra', 'Marco total'],
-        { fmt: v => Math.round(v / 1000) + 'k€', colorFn: (v, i) => ['var(--c1)', 'var(--c2)', 'var(--c3)'][i] });
-
-      // ==========================================
-      // CÁLCULO DINÁMICO DEL PLAN ANUAL PREVISTO (2026)
-      // ==========================================
-      const currentYear = '2026';
-      // Solo proyectos presupuestados (costes < 0) y en curso (comprometidos)
-      const yearProjects = (DATA[currentYear] || []).filter(p => p.pres < 0 && p.cat === 'progreso');
-      const yearCostsOnly = yearProjects;
-      // Proyectos completados en 2026 (ya ejecutados al 100%)
-      const yearCompleted = (DATA[currentYear] || []).filter(p => p.pres < 0 && p.cat === 'completado');
-      const completadoAnual = yearCompleted.reduce((s, p) => s + Math.abs(p.pres), 0);
-
-      const ejecutadoAnual = completadoAnual + yearCostsOnly.reduce((s, p) => s + Math.abs(p.pres) * p.progreso, 0);
-      const pendienteAnual = yearCostsOnly.reduce((s, p) => s + Math.abs(p.pres) * (1 - p.progreso), 0);
-      const totalAnual = completadoAnual + yearCostsOnly.reduce((s, p) => s + Math.abs(p.pres), 0);
-      
-      // Actualizar títulos e info
-      setInner('planAnualTitle', `📅 Plan anual previsto ${currentYear}`);
-      setInner('planAnualDesc', `Seguimiento de la ejecución de proyectos comprometidos de mejoras en el año ${currentYear} dentro del presupuesto del plan plurianual de ${fmtNum(PRESUPUESTO)}€:`);
-      
-      // Renderizar KPIs anuales
-      setInner('planAnualKpis', `
-        <div class="kpi c1">
-          <div class="kpi-label">Ejecutado Real</div>
-          <div class="kpi-value">${fmtNum(ejecutadoAnual)}€</div>
-          <div class="kpi-sub">Trabajos ya ejecutados/certificados</div>
-        </div>
-        <div class="kpi c2">
-          <div class="kpi-label">Previsión Resto Año</div>
-          <div class="kpi-value">${fmtNum(pendienteAnual)}€</div>
-          <div class="kpi-sub">Por ejecutar en el resto del año</div>
-        </div>
-        <div class="kpi c3">
-          <div class="kpi-label">Total Planificado ${currentYear}</div>
-          <div class="kpi-value">${fmtNum(totalAnual)}€</div>
-          <div class="kpi-sub">Suma total presupuestos comprometidos</div>
-        </div>
-      `);
-      
-      // Renderizar gráfico de barras del plan anual
-      makeBars('planAnualChart',
-        [Math.round(ejecutadoAnual), Math.round(pendienteAnual), Math.round(totalAnual)],
-        ['Ejecutado Real', 'Previsión Resto Año', `Total Planificado ${currentYear}`],
-        {
-          fmt: v => fmtNum(v) + '€',
-          colorFn: (v, i) => ['var(--c1)', 'var(--c2)', 'var(--c3)'][i]
-        }
-      );
-      
-      // Renderizar el desglose dinámico de los proyectos comprometidos de 2026
-      let desgloseHtml = '';
-      yearProjects.forEach(p => {
-        const val = Math.abs(p.pres || 0);
-        const colorClass = p.cat === 'completado' ? 'c1' : (p.cat === 'progreso' ? 'c2' : 'c3');
-        const badgeState = p.cat === 'completado' ? '✓ Completado' : (p.cat === 'progreso' ? '⚡ En progreso' : '⏳ Pendiente');
-        const badgeStyle = `padding: 2px 6px; border-radius: 4px; font-size: 10px; font-weight: 800; display: inline-block; margin-top: 4px; ` +
-          (p.cat === 'completado' ? 'background:var(--c1-light); color:var(--c1);' : (p.cat === 'progreso' ? 'background:var(--c2-light); color:var(--c2);' : 'background:var(--c3-light); color:var(--c3);'));
-          
-        desgloseHtml += `
-          <div class="kpi ${colorClass}">
-            <div class="kpi-label" style="font-weight: 800; color: var(--text);">${p.nombre}</div>
-            <div class="kpi-value">${fmtNum(val)}€</div>
-            <div style="${badgeStyle}">${badgeState} (${Math.round(p.progreso * 100)}%)</div>
-          </div>
-        `;
-      });
-      if (yearProjects.length === 0) {
-        desgloseHtml = `<div style="text-align: center; padding: 24px; color: var(--text-muted); font-style: italic; width: 100%;">No hay proyectos registrados para el año ${currentYear}.</div>`;
-      }
-      setInner('planAnualDesgloseGrid', desgloseHtml);
-
-      // ==========================================
-      // ALERTA DE TESORERÍA PROYECTADA
-      // ==========================================
-      const COLCHON_SEGURIDAD = 20000;
-      const warningEl = document.getElementById('planAnualWarning');
-      if (warningEl) {
-        // Obtener saldo actual de la cuenta desde los movimientos cargados
-        const allMoves = window.loadedMoves || [];
-        const sorted = [...allMoves].filter(m => m._iso).sort((a, b) => b._iso.localeCompare(a._iso));
-        const saldoActual = sorted[0]?.saldo || 0;
-
-        // Calcular coste pendiente de ejecutar (parte no ejecutada de cada proyecto)
-        const costePendienteEjecucion = yearCostsOnly.reduce((s, p) => s + Math.abs(p.pres) * (1 - p.progreso), 0);
-
-        // Tesorería proyectada = saldo actual - lo que falta por pagar
-        const tesoreriaProyectada = saldoActual - costePendienteEjecucion;
-
-        if (tesoreriaProyectada < COLCHON_SEGURIDAD) {
-          const deficit = COLCHON_SEGURIDAD - tesoreriaProyectada;
-          warningEl.innerHTML = `
-            <div style="
-              background: linear-gradient(135deg, #FFF5F5 0%, #FED7D7 100%);
-              border: 1.5px solid #FEB2B2;
-              border-left: 5px solid var(--danger);
-              border-radius: 12px;
-              padding: 20px 24px;
-              display: flex;
-              align-items: flex-start;
-              gap: 14px;
-              box-shadow: 0 2px 12px rgba(239, 68, 68, 0.10);
-              animation: warningPulse 2s ease-in-out infinite;
-            ">
-              <div style="font-size: 28px; line-height: 1; flex-shrink: 0; margin-top: 2px;">⚠️</div>
-              <div style="flex: 1;">
-                <div style="font-weight: 800; font-size: 15px; color: #9B1C1C; margin-bottom: 6px;">
-                  ⚠️ Alerta de tesorería — Colchón de seguridad comprometido
-                </div>
-                <div style="font-size: 13.5px; color: #742A2A; line-height: 1.6;">
-                  Solo con las obras <strong>en curso</strong>, el <strong>saldo estimado a 31/12/${currentYear}</strong> será de
-                  <strong style="font-size: 18px; color: var(--danger);">${fmtSaldo(tesoreriaProyectada)}€</strong>,
-                  lo que supone <strong>${fmtNum(Math.round(deficit))}€ por debajo</strong> del colchón mínimo de ${fmtNum(COLCHON_SEGURIDAD)}€.
-                </div>
-              </div>
-            </div>
-          `;
-        } else {
-          warningEl.innerHTML = '';
-        }
-      }
+        { fmt: v => Math.round(v / 1000) + 'k€', colorFn: (v, i) => ['var(--chart-1)', '#CBD5E1', '#94A3B8'][i] });
     }
 
     // Las llamadas a makeBars se gestionan ahora dinámicamente desde loadDashboardData()
@@ -3422,12 +3213,6 @@
         if (propsError) console.error('Error fetching propiedades:', propsError);
 
         console.log('Iniciando carga recursiva de movimientos...');
-        
-        // AUTO-CLEANUP: Borrar movimientos falsos generados por el bug de separador de miles
-        try {
-          await db.from('movimientos').delete().gt('saldo', 35000);
-          console.log("Limpiados movimientos erróneos con saldo > 35k");
-        } catch(e) {}
         let allMoves = [];
         let from = 0;
         let finished = false;
@@ -3466,7 +3251,7 @@
           comunic: { prisma: {}, lasser: {} },
           limpieza: { mjm: {}, pilar: {}, cubo: {} },
           banco: {},
-          banco_detalle: { mantenimiento: {}, remesas: {}, devolucion: {}, iva: {} },
+          banco_detalle: { comision: {}, intereses: {}, devolucion: {}, iva: {} },
           portero: { nomina: {}, tgss: {}, quiron: {}, elportero: {}, vivienda: {} },
           despido: { finiquito: 0, embargos: 0 },
           calef: { gas: {}, mant: {}, techem: {} },
@@ -3479,8 +3264,8 @@
           stats.comunic.prisma[y] = 0; stats.comunic.lasser[y] = 0;
           stats.limpieza.mjm[y] = 0; stats.limpieza.pilar[y] = 0; stats.limpieza.cubo[y] = 0;
           stats.banco[y] = 0;
-          stats.banco_detalle.mantenimiento[y] = 0;
-          stats.banco_detalle.remesas[y] = 0;
+          stats.banco_detalle.comision[y] = 0;
+          stats.banco_detalle.intereses[y] = 0;
           stats.banco_detalle.devolucion[y] = 0;
           stats.banco_detalle.iva[y] = 0;
           stats.extintores = stats.extintores || {}; stats.extintores[y] = 0;
@@ -3548,23 +3333,23 @@
           else if (c.includes('EL PILAR')) stats.limpieza.pilar[y] += val;
           else if (c.includes('DON CUBO') || c.includes('PREVENT')) stats.limpieza.cubo[y] += val;
           // Banco
-          else if (c.includes('COMISION') || c.includes('INTERES') || c.includes('IMPUESTO SOBRE COMISION')) {
+          else if (c.includes('COMISION') || c.includes('INTERES') || c.includes('IVA')) {
             stats.banco[y] += val;
-            if (c.includes('IMPUESTO SOBRE COMISION')) {
-              stats.banco_detalle.iva[y] += val;
-            } else if (c.includes('DEV') || c.includes('RECLAM') || c.includes('IMPAGADO')) {
+            if (c.includes('DEV') || c.includes('RECLAM')) {
               stats.banco_detalle.devolucion[y] += val;
-            } else if (c === 'COMISIONES .' || c.includes('REMESA')) {
-              stats.banco_detalle.remesas[y] += val;
+            } else if (c.includes('INTERES')) {
+              stats.banco_detalle.intereses[y] += val;
+            } else if (c.includes('IVA')) {
+              stats.banco_detalle.iva[y] += val;
             } else {
-              stats.banco_detalle.mantenimiento[y] += val;
+              stats.banco_detalle.comision[y] += val;
             }
           }
           // Portero
           else if (c.includes('IBEREXT')) { stats.extintores[y] = (stats.extintores[y] || 0) + val; }
           else if (c.includes('PROTESINS')) { stats.protesins[y] = (stats.protesins[y] || 0) + val; }
           else if (c.includes('NOMINA')) stats.portero.nomina[y] += val;
-          else if (c.includes('TGSS') || c.includes('SEGUROS SOCIALES') || c.includes('SEGURIDAD SOCIAL')) stats.portero.tgss[y] += val;
+          else if (c.includes('TGSS') || c.includes('SEGUROS SOCIALES')) stats.portero.tgss[y] += val;
           else if (c.includes('QUIRON')) stats.portero.quiron[y] += val;
           else if (c.includes('EL PORTERO')) stats.portero.elportero[y] += val;
           else if (c.includes('OCASO') || c.includes('SEGUROS CAJA') || (c.includes('CASER') && !c.includes('SOCIALES') && !c.includes('TGSS'))) {
@@ -3626,11 +3411,11 @@
         });
 
         makeStackedBars('comisionesBancoChart', [
-          years.map(y => stats.banco_detalle.mantenimiento[y] || 0),
-          years.map(y => stats.banco_detalle.remesas[y] || 0),
+          years.map(y => stats.banco_detalle.comision[y] || 0),
+          years.map(y => stats.banco_detalle.intereses[y] || 0),
           years.map(y => stats.banco_detalle.devolucion[y] || 0),
           years.map(y => stats.banco_detalle.iva[y] || 0)
-        ], yAxis, [pal[0], pal[1], pal[2], pal[3]]);
+        ], yAxis, [pal[5], pal[1], pal[0], pal[3]]);
 
         makeStackedBars('ascensorChart', [
           years.map(y => stats.ascensor[y] * 0.95),
@@ -3879,7 +3664,7 @@
 
         const costeModeloDual = avgPreventSolo + avgPilar; // cubos (Prevent) + limpieza (El Pilar)
         const ahorroMensual = costeModeloDual - cuotaActual;
-        setInner('limpMesMJM',   '<div style="font-size:13px; font-weight:700">Puntual (suplencias)</div><div style="font-size:11px; color:#9B2C2C; margin-top:4px; opacity:0.9">Si fijos: ~867€/mes (IVA inc)</div>');
+        setInner('limpMesMJM',   fmtNum(avgMJM) + '€/mes (todo incluido)');
         setInner('limpMesDual',  fmtNum(avgPreventSolo) + '€ cubos (Prevent) + ' + fmtNum(avgPilar) + '€ limpieza (El Pilar) = ' + fmtNum(costeModeloDual) + '€/mes');
         setInner('limpMesActual', fmtNum(cuotaActual) + '€/mes · ahorro ' + fmtNum(ahorroMensual) + '€/mes vs modelo anterior');
 
@@ -3919,9 +3704,6 @@
           fmt: v => fmtNum(v) + '€',
           colorFn: (v, i) => pal[i % pal.length]
         });
-
-        // Recalcular plan con los movimientos ya cargados para no dar balance cero en tesorería
-        calcPlan();
       } catch (err) {
         console.error('Error crítico en loadDashboardData:', err);
         setInner('kpiTesoria2026', `<div class="kpi danger"><div class="kpi-label">ERROR CRÍTICO</div><div class="kpi-value">${err.message || 'Error desconocido'}</div></div>`);
@@ -4210,25 +3992,11 @@
         const iIdx = headers.findIndex(h => h.includes('Importe'));
         const sIdx = headers.findIndex(h => h.includes('Saldo'));
 
-        let data = [];
-        const parsedRows = [];
-
-        const parseSabadellNum = (raw) => {
-          let str = String(raw || '').trim();
-          if (!str) return null;
-          if (str.includes(',')) {
-            str = str.replace(/\./g, '').replace(',', '.');
-          }
-          const val = parseFloat(str);
-          return isNaN(val) ? null : val;
-        };
-
-        // Iteramos de abajo arriba (del más antiguo al más nuevo) para calcular saldos faltantes
-        for (let i = rows.length - 1; i > headerRow; i--) {
+        const data = [];
+        for (let i = headerRow + 1; i < rows.length; i++) {
           const row = rows[i];
-          const importe = parseSabadellNum(row[iIdx]);
-          if (importe === null || !row[fIdx]) continue;
-
+          const importe = parseFloat(String(row[iIdx] || '').replace(',', '.'));
+          if (isNaN(importe) || !row[fIdx]) continue;
           let fecha = row[fIdx];
           if (fecha instanceof Date) fecha = fecha.toISOString().split('T')[0];
           else {
@@ -4241,23 +4009,8 @@
               fecha = String(fecha);
             }
           }
-          
-          let saldo = parseSabadellNum(row[sIdx]);
-          parsedRows.push({ fecha, concepto: String(row[cIdx] || '').trim(), importe, saldo });
+          data.push({ fecha, concepto: String(row[cIdx] || '').trim(), importe, saldo: parseFloat(String(row[sIdx] || '0').replace(',', '.')) || null });
         }
-
-        let currentSaldo = null;
-        for (let i = 0; i < parsedRows.length; i++) {
-          if (parsedRows[i].saldo !== null) {
-            currentSaldo = parsedRows[i].saldo;
-          } else if (currentSaldo !== null) {
-            currentSaldo += parsedRows[i].importe;
-            parsedRows[i].saldo = parseFloat(currentSaldo.toFixed(2));
-          }
-        }
-        
-        // Volvemos a invertir para insertar más nuevos primero y filtramos los que no tengan saldo
-        data = parsedRows.reverse().filter(r => r.saldo !== null);
 
         if (!data.length) { document.getElementById('uploadResult').innerHTML = '<div style="color:#EF4444">❌ No se encontraron movimientos</div>'; return; }
 
@@ -4968,32 +4721,16 @@
       if (provider === 'MJM') {
         filtered = moves.filter(m => m.importe < 0 && (m.concepto || '').toUpperCase().includes('MJM'));
         providerName = 'MJM Limpiezas S.L.';
-        period = "oct'24 (vacaciones) y mar-abr'25 (transición)";
+        period = "octubre 2024 – abril 2025";
         color = '#EF4444';
-        monthlyRate = 'Facturación puntual / sin cuota mensual continua';
+        monthlyRate = '199,65€ cubos + cuota variable limpieza';
         explanation = `
-          <div style="font-size: 13.5px; line-height: 1.6; color: var(--text-soft); margin-bottom: 20px; background: #FFF5F5; padding: 18px; border-radius: 10px; border: 1.5px solid #FCA5A5;">
-            <p style="margin: 0 0 10px; font-weight: 700; color: #9B2C2C; display: flex; align-items: center; gap: 6px; font-size: 14.5px;">
-              <span>🔍 Clarificación del Servicio: Suplencia y Transición</span>
+          <div style="font-size: 13.5px; line-height: 1.6; color: var(--text-soft); margin-bottom: 20px; background: #FFF5F5; padding: 16px; border-radius: 10px; border: 1px solid rgba(239, 68, 68, 0.15);">
+            <p style="margin: 0 0 8px; font-weight: 700; color: #9B2C2C; display: flex; align-items: center; gap: 6px;">
+              <span>ℹ️ Estructura del Servicio Histórico MJM</span>
             </p>
-            <p style="margin: 0 0 12px;">
-              Los registros contables reales del banco demuestran que <strong>no existió un coste duplicado continuo</strong> de 5 meses entre el portero y la empresa de limpieza. El servicio de MJM se limitó estrictamente a dos fases diferenciadas:
-            </p>
-            <ul style="margin: 0 0 12px; padding-left: 20px; display: flex; flex-direction: column; gap: 8px;">
-              <li>
-                <strong>Agosto–Octubre 2024 (Suplencia por Vacaciones):</strong> MJM cubrió las tareas de limpieza y cubos únicamente durante las vacaciones del portero (Pedro). Estas vacaciones acumuladas estaban justificadas tras su reincorporación de una baja médica previa. Según factura, el servicio se prestó del 19 al 30 de agosto, pero se cobró por el banco el 07/10/2024 (dos cobros de 388,41 € y 55,06 €), sumando <strong>443,47 €</strong>. Durante noviembre, diciembre, enero y febrero <strong>no hay ninguna factura de MJM</strong>, ya que el portero prestaba sus funciones normalmente y cobraba su nómina ordinaria.
-              </li>
-              <li>
-                <strong>Marzo – Abril 2025 (Transición Post-Despido):</strong> Tras ejecutarse el despido objetivo del portero el 28 de febrero de 2025, la comunidad contrató temporalmente a MJM mientras organizaba la externalización definitiva. En este periodo destacan:
-                <ul style="margin: 4px 0 0 16px; list-style-type: circle;">
-                  <li>Un cobro menor de <strong>90,75 €</strong> el 05/03/2025.</li>
-                  <li>Un cobro extraordinario de <strong>1.230,57 €</strong> el 05/03/2025 correspondiente a una limpieza a fondo integral del edificio tras finalizar las obras de impermeabilización del patio y reforma de cubiertas/terrazas (Impernova).</li>
-                  <li>Una última factura de liquidación de <strong>199,65 €</strong> el 07/04/2025.</li>
-                </ul>
-              </li>
-            </ul>
-            <p style="margin: 0; font-size: 12.5px; color: #7F1D1D; font-weight: 600; background: rgba(239, 68, 68, 0.05); padding: 10px 14px; border-radius: 8px; border-left: 4px solid #EF4444;">
-              💡 <strong>Dato Oficial del Despido:</strong> El finiquito oficial de Pedro (28/02/2025) liquida <strong>únicamente 5 days de vacaciones proporcionales de 2025</strong> (del 24 al 28 de febrero), lo que confirma legalmente que todas las vacaciones del ejercicio 2024 habían sido ya totalmente disfrutadas (agotadas) en el periodo de octubre de 2024.
+            <p style="margin: 0 0 8px;">
+              MJM prestó un servicio completo (limpieza y cubos) hasta abril de 2025. En sus movimientos destaca un pago extraordinario de <strong>1.230,57 €</strong> en marzo de 2025 correspondiente a una limpieza a fondo integral del edificio tras finalizar las obras de impermeabilización del patio y reforma de cubiertas/terrazas.
             </p>
           </div>
         `;
