@@ -81,22 +81,56 @@ ML63/
 | `renderProjects2026()` / `renderProjects2025()` | Renderiza tarjetas de proyecto por año |
 | `makeBars()` / `makeStackedBars()` / `makeGroupedBars()` | Renderiza gráficas con Chart.js |
 
-## Variables CSS
+## Estrategia de Diseño y UI (Design System)
+
+El dashboard sigue una estética moderna, limpia y "premium", inspirada en interfaces financieras SaaS. 
+
+**Principios:**
+- **Sin frameworks de terceros:** Todo se implementa en CSS vanilla (evitar Tailwind o Bootstrap).
+- **Tipografía:** Montserrat (Google Fonts) para un aspecto geométrico, limpio y legible.
+- **Micro-interacciones:** Elementos como tarjetas (cards), botones y pestañas deben tener `transition: all 0.2s ease` con efectos `hover` sutiles (ligero levantamiento `transform: translateY(-2px)` y sombra).
+- **Glassmorphism / Sombras:** Se usan sombras suaves (`box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05)`) y bordes muy sutiles (`1px solid var(--border)`) para delimitar contenedores sobre el fondo gris muy claro (`--bg`).
+- **Gráficos (Chart.js):** Deben usar paletas de colores semánticas y neutras (por ejemplo, progresiones de azules para datos históricos que no son "buenos ni malos", y paletas corporativas para categorías). 
+
+**Variables CSS (Paleta base):**
 
 ```css
---primary: #4F46E5
---secondary: #10B981
---accent: #F59E0B
---danger: #EF4444
---info: #0EA5E9
---purple: #8B5CF6
---bg: #FAFBFC
---surface: #FFFFFF
---text: #0F172A
---text-soft: #475569
---text-muted: #64748B
---border: #E2E8F0
+--primary: #4F46E5     /* Azul índigo (acciones principales, botones) */
+--secondary: #10B981   /* Verde esmeralda (éxito, ingresos, progreso completado) */
+--accent: #F59E0B      /* Ámbar (avisos, estados en curso) */
+--danger: #EF4444      /* Rojo (gastos, errores, peligro) */
+--info: #0EA5E9        /* Azul cielo (información neutra, gráficos secuenciales) */
+--purple: #8B5CF6      /* Púrpura (categorías especiales, admin) */
+--bg: #FAFBFC          /* Gris muy claro (fondo general de la app) */
+--surface: #FFFFFF     /* Blanco puro (fondo de las tarjetas y modales) */
+--text: #0F172A        /* Pizarra oscuro (texto principal) */
+--text-soft: #475569   /* Pizarra medio (texto secundario) */
+--text-muted: #64748B  /* Pizarra claro (leyendas, placeholders, fechas) */
+--border: #E2E8F0      /* Gris claro (bordes y separadores) */
+
+/* Colores para Gráficos (Secuencia) */
+--chart-1: #EF4444; /* Rojo */
+--chart-2: #F59E0B; /* Ámbar */
+--chart-3: #10B981; /* Esmeralda */
+--chart-4: #0EA5E9; /* Azul Cielo */
+--chart-5: #8B5CF6; /* Violeta */
+--chart-6: #6366F1; /* Índigo */
+--chart-7: #14B8A6; /* Teal */
+
+/* Alias de gráficos y fondos claros para Tooltips/Leyendas */
+--c1: var(--chart-1); --c1-light: #FEE2E2;
+--c2: var(--chart-2); --c2-light: #FEF3C7;
+--c3: var(--chart-3); --c3-light: #D1FAE5;
+--c4: var(--chart-4); --c4-light: #E0F2FE;
+--c5: var(--chart-5); --c5-light: #F5F3FF;
+--c6: var(--chart-6); --c6-light: #EEF2FF;
+--c7: var(--chart-7); --c7-light: #F0FDFA;
 ```
+
+## Lógica de Negocio y Reglas Contables
+
+Toda la lógica profunda (cómo se emparejan facturas con banco, el censo del edificio, historial de conserjería, cuotas, proveedores y reglas de Supabase) está documentada exhaustivamente en el archivo **`ML63_INSTRUCCIONES.md`**. 
+Ese archivo de 2000 líneas es la **Fuente de Verdad** absoluta para entender de dónde sale cada cálculo contable. Cualquier IA que trabaje en cálculos financieros debe leer `ML63_INSTRUCCIONES.md` antes de modificar el código.
 
 ## Roles de usuario
 
