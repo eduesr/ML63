@@ -245,16 +245,16 @@
 
     @media (max-width: 768px) {
       body {
-        padding: 16px !important;
+        padding: 0 !important;
         overflow-x: hidden;
       }
 
       .page-wrapper {
-        padding: 16px 16px 0;
+        padding: 0;
       }
 
       .site-header {
-        margin: -16px -16px 20px -16px;
+        margin: 0 0 20px 0;
         padding: 0 16px;
       }
 
@@ -271,12 +271,12 @@
       }
 
       .kpi-grid {
-        grid-template-columns: 1fr 1fr !important;
+        grid-template-columns: 1fr !important;
       }
 
       .project-list {
         grid-template-columns: 1fr !important;
-        padding: 10px !important;
+        padding: 0 !important;
       }
 
       .project-card {
@@ -303,6 +303,7 @@
 
       .tabs-container {
         gap: 2px;
+        padding: 0 16px;
       }
 
       .tab-btn {
@@ -312,8 +313,8 @@
       }
 
       footer {
-        margin-left: -16px !important;
-        margin-right: -16px !important;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
         padding: 16px !important;
       }
 
@@ -344,6 +345,25 @@
 
       .kpi-value {
         font-size: 20px !important;
+      }
+
+      .cleaning-timeline-row {
+        display: grid !important;
+        grid-template-columns: 1fr 1fr !important;
+        gap: 16px !important;
+      }
+      .cleaning-timeline-row > div:nth-of-type(1) {
+        grid-column: 1 / -1;
+      }
+      .cleaning-timeline-row > div:nth-of-type(2),
+      .cleaning-timeline-row > div:nth-of-type(3) {
+        min-width: 0 !important;
+      }
+      .cleaning-timeline-row > div:nth-of-type(4) {
+        grid-column: 1 / -1;
+        text-align: left !important;
+        border-top: 1px dashed rgba(0,0,0,0.1);
+        padding-top: 12px;
       }
     }
 
