@@ -4,7 +4,18 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Gestión CP ML63 (v19)</title>
+  <title id="appTitle">Gestión CP ML63</title>
+  <script>
+    const APP_VERSION = "v25";
+    document.addEventListener("DOMContentLoaded", () => {
+      if (document.getElementById("appTitle")) {
+        document.getElementById("appTitle").innerText = `Gestión CP ML63 (${APP_VERSION})`;
+      }
+      if (document.getElementById("appVersionBadge")) {
+        document.getElementById("appVersionBadge").innerText = APP_VERSION;
+      }
+    });
+  </script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -1705,7 +1716,7 @@
   <div class="page-wrapper">
     <header class="site-header" id="siteHeader">
       <div class="site-header-inner" style="justify-content:space-between;display:flex;align-items:center;height:60px;">
-        <div class="site-header-title">Gestión CP ML63 <span style="font-size:11px; font-weight:600; background:rgba(255,255,255,0.18); padding:2px 8px; border-radius:6px; margin-left:6px; letter-spacing:0.5px; vertical-align:middle;">v24</span></div>
+        <div class="site-header-title">Gestión CP ML63 <span id="appVersionBadge" style="font-size:11px; font-weight:600; background:rgba(255,255,255,0.18); padding:2px 8px; border-radius:6px; margin-left:6px; letter-spacing:0.5px; vertical-align:middle;">v24</span></div>
         <div style="display:flex;align-items:center;gap:10px">
           <button class="avatar-btn" id="avatarBtn" onclick="toggleAvatarMenu()" style="display:none">?</button>
         </div>
