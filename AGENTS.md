@@ -87,7 +87,11 @@ ML63/
 | `loadAdminPanel()` | Carga panel admin (solo admins) |
 | `calcPlan()` | Calcula KPIs y agregados del plan plurianual |
 | `renderProjects2026()` / `renderProjects2025()` | Renderiza tarjetas de proyecto por año |
-| `makeBars()` / `makeStackedBars()` / `makeGroupedBars()` | Renderiza gráficas con Chart.js |
+| `makeBars()` / `makeStackedBars()` / `makeGroupedBars()` | Funciones de renderizado base de Chart.js |
+| `loadGasChartData()` | Fetchea y agrega costes reales del Gas (Naturgy vs Gas Power) |
+| `calcPlan()` | Agrega facturas y calcula el Plan Plurianual 2025-2029 |
+| `calcOperativo(y)` | (Interna en `switchTab`) Suma los gastos operativos recurrentes de un año (luz, gas, agua, mantenimientos) para separarlos de las obras/mejoras. |
+| Funciones anónimas en `switchTab` | El grueso de los cálculos de Gastos/Energía se hace al cambiar de pestaña mediante filtros `allMoves.filter(...)` |
 
 ## Estrategia de Diseño y UI (Design System)
 
