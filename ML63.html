@@ -2693,10 +2693,12 @@
           <span style="font-size:13px;color:var(--text-muted)">▼ Ver registro</span>
         </summary>
         <div style="margin-top:16px">
-          <div style="display:flex;gap:8px;margin-bottom:12px;align-items:center">
+          <div style="display:flex;gap:8px;margin-bottom:12px;align-items:center;flex-wrap:wrap">
             <button onclick="loadSessionLog(0)"
               style="background:var(--bg);border:1px solid var(--border);padding:6px 14px;border-radius:6px;font-size:13px;cursor:pointer;font-family:inherit">⟳
               Actualizar</button>
+            <input type="text" id="logSearchInput" placeholder="Buscar por email..." onkeydown="if(event.key==='Enter') loadSessionLog(0)" style="padding:6px 12px;border-radius:6px;border:1px solid var(--border);font-size:13px;font-family:inherit;width:200px">
+            <button onclick="loadSessionLog(0)" style="background:var(--bg);border:1px solid var(--border);padding:6px 14px;border-radius:6px;font-size:13px;cursor:pointer;font-family:inherit">🔍 Buscar</button>
             <span id="sessionLogInfo" style="font-size:12px;color:var(--text-muted)"></span>
           </div>
           <div id="sessionLog">
@@ -4454,7 +4456,12 @@
     async function loadSessionLog(page = 0) {
       const from = page * LOG_PAGE_SIZE;
       const to = from + LOG_PAGE_SIZE - 1;
-      const { data, count } = await db.from('session_log').select('*', { count: 'exact' }).order('created_at', { ascending: false }).range(from, to);
+      const search = document.getElementById('logSearchInput') ? document.getElementById('logSearchInput').value.trim() : '';
+
+      let query = db.from('session_log').select('*', { count: 'exact' });
+      if (search) query = query.ilike('email', `%${search}%`);
+
+      const { data, count } = await query.order('created_at', { ascending: false }).range(from, to);
 
       if (!data || !data.length) {
         document.getElementById('sessionLog').innerHTML = '<div style="color:var(--text-muted);font-size:14px">Sin sesiones registradas aún</div>';
