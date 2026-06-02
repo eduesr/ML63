@@ -56,3 +56,14 @@ DO UPDATE SET
   pres = EXCLUDED.pres,
   obs = EXCLUDED.obs,
   banco_ref = NULL; -- Keep bank references unlinked
+
+
+-- 3. UPDATE: "Quitar resto de maderas pared portal"
+-- Gastos sumados: Amazon (213,00 €) + A. Pirtac Factura 0001-000289 (3.080,00 €) = 3.293,00 €
+-- Incluye múltiples partidas/proveedores.
+UPDATE public.proyectos
+SET 
+  pres = -3293.00,
+  banco_ref = 'Eduardo Sánchez Ruiz',
+  obs = 'En espera de concretar con los técnicos para eliminar, por higiene se van a eliminar las que se mojaron en la rotura de la bajante. | Coste total actualizado: 3.293,00€. Incluye: 1) Pasamanos Amazon (213,00€). 2) A. Pirtac (3.080,00€ Fra. 0001-000289).'
+WHERE nombre = 'Quitar resto de maderas pared portal' AND año = '2026';
