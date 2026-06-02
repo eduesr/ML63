@@ -163,4 +163,5 @@ Ese archivo de 2000 líneas es la **Fuente de Verdad** absoluta para entender de
 - **No exponer secretos** — la anon key de Supabase es pública por diseño; nunca añadir la service key al frontend.
 - **Sin frameworks** — mantener vanilla JS; no introducir React, Vue, etc.
 - **Sin build system** — los ficheros se sirven directamente, no hay npm run build.
+- **Textos en tipo oración** — los textos de la interfaz (botones, menús, etiquetas) deben usar mayúscula solo en la primera letra y en nombres propios (ej. "Descargar acta", no "Descargar Acta").
 - La app se despliega abriendo `ML63.html` directamente en el navegador (o via servidor estático).

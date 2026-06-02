@@ -1592,11 +1592,33 @@
       </div>
       <button class="btn-login" onclick="doLogin()">Entrar con contraseña</button>
       <div style="text-align:center;margin-top:16px;">
-        <button onclick="doMagicLink()"
-          style="background:none;border:none;color:var(--primary);font-size:13px;font-weight:600;cursor:pointer;text-decoration:underline;">Recibir
-          enlace mágico por email</button>
+        <button onclick="document.getElementById('resetPassOverlay').style.display='flex';"
+          style="background:none;border:none;color:var(--primary);font-size:13px;font-weight:600;cursor:pointer;text-decoration:underline;">He olvidado mi contraseña</button>
       </div>
       <div class="login-err" id="lErr"></div>
+    </div>
+  </div>
+
+  <!-- RESET PASSWORD MODAL -->
+  <div id="resetPassOverlay" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);align-items:center;justify-content:center;z-index:9999;">
+    <div class="login-box" style="position:relative;">
+      <button onclick="document.getElementById('resetPassOverlay').style.display='none';" style="position:absolute;top:16px;right:16px;background:none;border:none;font-size:20px;cursor:pointer;color:var(--text-muted);">&times;</button>
+      <h2>Recuperar contraseña</h2>
+      <p>Introduce tu email y te enviaremos un enlace para cambiarla.</p>
+      <div class="login-field"><label>Email</label><input type="email" id="resetEmail" autocomplete="email"></div>
+      <button class="btn-login" onclick="doRequestPasswordReset()">Enviar enlace</button>
+      <div class="login-err" id="resetErr" style="margin-top:12px;"></div>
+    </div>
+  </div>
+
+  <!-- UPDATE PASSWORD MODAL -->
+  <div id="updatePassOverlay" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);align-items:center;justify-content:center;z-index:9999;">
+    <div class="login-box">
+      <h2>Nueva contraseña</h2>
+      <p>Introduce tu nueva contraseña.</p>
+      <div class="login-field"><label>Nueva contraseña</label><input type="password" id="newPass"></div>
+      <button class="btn-login" onclick="doUpdatePassword()">Actualizar contraseña</button>
+      <div class="login-err" id="updateErr" style="margin-top:12px;"></div>
     </div>
   </div>
 
@@ -2354,6 +2376,43 @@
 
   <!-- ============ TAB GESTIÓN ============ -->
   <div id="admin" class="tab-content">
+
+    <!-- ACTAS Y DOCUMENTOS -->
+    <div class="card">
+      <div class="card-title">📄 Actas de Juntas</div>
+      <p class="card-desc">
+        Consulta y descarga las actas de las juntas celebradas por la comunidad.
+      </p>
+      <div style="margin-top: 15px; display: flex; gap: 10px; align-items: center;">
+        <select id="actaSelect" style="appearance: none; -webkit-appearance: none; background-color: var(--surface); background-image: url('data:image/svg+xml;charset=UTF-8,%3csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'%2364748B\' stroke-width=\'2\' stroke-linecap=\'round\' stroke-linejoin=\'round\'%3e%3cpolyline points=\'6 9 12 15 18 9\'%3e%3c/polyline%3e%3c/svg%3e'); background-repeat: no-repeat; background-position: right 12px center; background-size: 14px; padding: 9px 36px 9px 12px; border-radius: 8px; border: 1px solid var(--border); font-family: inherit; font-size: 14px; min-width: 250px; cursor: pointer; outline: none; color: var(--text);">
+          <option value="">Selecciona un año...</option>
+          <option value="Recursos/Actas/Junta 2015/ModestoLafuente62.ctas2015.pdf">Junta 2015</option>
+          <option value="Recursos/Actas/Junta 2016/Modesto lafuente140316 2016.pdf">Junta 2016</option>
+          <option value="Recursos/Actas/Junta 2017/ModestoLafuente63.ctas2016-17_20180405121944.pdf">Junta 2017</option>
+          <option value="Recursos/Actas/Junta 2018/M. Lafuente acta 24 abril 18_20180508113709.pdf">Junta 2018</option>
+          <option value="Recursos/Actas/Junta 2019_2020/ModestoLafuente63.ctasVII19-VI20_20200924112352.pdf">Junta 2019/2020</option>
+          <option value="Recursos/Actas/Junta 2020/MODESTOLAFUENTE63.ACTA151020-virtual.pdf">Junta 2020 (Virtual)</option>
+          <option value="Recursos/Actas/Junta 2021/ModestoLafuente63.07-1221.pdf">Junta 2021</option>
+          <option value="Recursos/Actas/Junta 2022/ModestoLafuente63.acta280322.pdf">Junta 2022</option>
+          <option value="Recursos/Actas/Junta 2024/Acta - 2024 - BMC.pdf">Junta 2024</option>
+          <option value="Recursos/Actas/Junta 2025/MODESTO LAFUENTE 63 ACTA JGO 04 02 2025 FIRMADA Y SELLADA.pdf">Junta 2025</option>
+          <option value="Recursos/Actas/Junta 2026/MODESTO LAFUENTE 63 ACTA JGE 27 01 2026.pdf">Junta 2026 (Extraordinaria)</option>
+        </select>
+        <button onclick="descargarActa()" style="padding: 9px 16px; background: var(--primary); color: white; border: none; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; font-family: inherit; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); transition: all 0.2s ease;">Descargar acta</button>
+      </div>
+    </div>
+
+    <script>
+      function descargarActa() {
+        const select = document.getElementById('actaSelect');
+        const url = select.value;
+        if (url) {
+          window.open(url, '_blank');
+        } else {
+          alert('Por favor, selecciona un acta para descargar.');
+        }
+      }
+    </script>
 
     <!-- COMISIONES BANCARIAS -->
     <div class="card">
@@ -3358,8 +3417,15 @@
     let _currentUserData = { email: null, role: null, name: null, avatarBase64: null };
 
     async function initAuth() {
+      db.auth.onAuthStateChange((event, session) => {
+        if (event === 'PASSWORD_RECOVERY') {
+          document.getElementById('loginOverlay').style.display = 'none';
+          document.getElementById('updatePassOverlay').style.display = 'flex';
+        }
+      });
+
       const { data: { session } } = await db.auth.getSession();
-      if (session) {
+      if (session && !window.location.hash.includes('type=recovery')) {
         showApp(session.user.email);
       }
     }
@@ -3373,21 +3439,29 @@
       showApp(data.user.email);
     }
 
-    async function doMagicLink() {
-      if (window.location.protocol === 'file:') {
-        alert('⚠️ El Magic Link no funciona abriendo el archivo directamente (file://).\n\nPara que funcione, debes subir el archivo a tu servidor web o usar un servidor local (http://localhost).');
-        return;
-      }
-      const email = document.getElementById('lEmail').value.trim();
-      if (!email) { document.getElementById('lErr').textContent = 'Introduce tu email primero'; return; }
-      document.getElementById('lErr').textContent = 'Enviando...';
-      const { error } = await db.auth.signInWithOtp({
-        email,
-        options: { emailRedirectTo: window.location.href }
+    async function doRequestPasswordReset() {
+      const email = document.getElementById('resetEmail').value.trim();
+      if (!email) { document.getElementById('resetErr').textContent = 'Introduce tu email'; return; }
+      document.getElementById('resetErr').style.color = 'var(--danger)';
+      document.getElementById('resetErr').textContent = 'Enviando...';
+      const { error } = await db.auth.resetPasswordForEmail(email, {
+        redirectTo: window.location.href
       });
-      if (error) { document.getElementById('lErr').textContent = 'Error: ' + error.message; return; }
-      document.getElementById('lErr').style.color = 'var(--secondary)';
-      document.getElementById('lErr').textContent = '¡Enlace enviado! Revisa tu bandeja de entrada.';
+      if (error) { document.getElementById('resetErr').textContent = 'Error: ' + error.message; return; }
+      document.getElementById('resetErr').style.color = 'var(--secondary)';
+      document.getElementById('resetErr').textContent = '¡Enlace enviado! Revisa tu bandeja de entrada.';
+    }
+
+    async function doUpdatePassword() {
+      const newPass = document.getElementById('newPass').value;
+      if (!newPass) { document.getElementById('updateErr').textContent = 'Introduce una contraseña'; return; }
+      document.getElementById('updateErr').style.color = 'var(--danger)';
+      document.getElementById('updateErr').textContent = 'Actualizando...';
+      const { error } = await db.auth.updateUser({ password: newPass });
+      if (error) { document.getElementById('updateErr').textContent = 'Error: ' + error.message; return; }
+      document.getElementById('updatePassOverlay').style.display = 'none';
+      alert('Contraseña actualizada con éxito');
+      location.reload();
     }
 
     async function showApp(email) {
