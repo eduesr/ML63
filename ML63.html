@@ -2386,30 +2386,42 @@
       <div style="margin-top: 15px; display: flex; gap: 10px; align-items: center;">
         <select id="actaSelect" style="appearance: none; -webkit-appearance: none; background-color: var(--surface); background-image: url('data:image/svg+xml;charset=UTF-8,%3csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'%2364748B\' stroke-width=\'2\' stroke-linecap=\'round\' stroke-linejoin=\'round\'%3e%3cpolyline points=\'6 9 12 15 18 9\'%3e%3c/polyline%3e%3c/svg%3e'); background-repeat: no-repeat; background-position: right 12px center; background-size: 14px; padding: 9px 36px 9px 12px; border-radius: 8px; border: 1px solid var(--border); font-family: inherit; font-size: 14px; min-width: 250px; cursor: pointer; outline: none; color: var(--text);">
           <option value="">Selecciona un año...</option>
-          <option value="Recursos/Actas/Junta 2015/ModestoLafuente62.ctas2015.pdf">Junta 2015</option>
-          <option value="Recursos/Actas/Junta 2016/Modesto lafuente140316 2016.pdf">Junta 2016</option>
-          <option value="Recursos/Actas/Junta 2017/ModestoLafuente63.ctas2016-17_20180405121944.pdf">Junta 2017</option>
-          <option value="Recursos/Actas/Junta 2018/M. Lafuente acta 24 abril 18_20180508113709.pdf">Junta 2018</option>
-          <option value="Recursos/Actas/Junta 2019_2020/ModestoLafuente63.ctasVII19-VI20_20200924112352.pdf">Junta 2019/2020</option>
-          <option value="Recursos/Actas/Junta 2020/MODESTOLAFUENTE63.ACTA151020-virtual.pdf">Junta 2020 (Virtual)</option>
-          <option value="Recursos/Actas/Junta 2021/ModestoLafuente63.07-1221.pdf">Junta 2021</option>
-          <option value="Recursos/Actas/Junta 2022/ModestoLafuente63.acta280322.pdf">Junta 2022</option>
-          <option value="Recursos/Actas/Junta 2024/Acta - 2024 - BMC.pdf">Junta 2024</option>
-          <option value="Recursos/Actas/Junta 2025/MODESTO LAFUENTE 63 ACTA JGO 04 02 2025 FIRMADA Y SELLADA.pdf">Junta 2025</option>
-          <option value="Recursos/Actas/Junta 2026/MODESTO LAFUENTE 63 ACTA JGE 27 01 2026.pdf">Junta 2026 (Extraordinaria)</option>
+          <option value="acta_2015.pdf">Junta 2015</option>
+          <option value="acta_2016.pdf">Junta 2016</option>
+          <option value="acta_2017.pdf">Junta 2017</option>
+          <option value="acta_2018.pdf">Junta 2018</option>
+          <option value="acta_2019_2020.pdf">Junta 2019/2020</option>
+          <option value="acta_2020_virtual.pdf">Junta 2020 (Virtual)</option>
+          <option value="acta_2021.pdf">Junta 2021</option>
+          <option value="acta_2022.pdf">Junta 2022</option>
+          <option value="acta_2024.pdf">Junta 2024</option>
+          <option value="acta_2025.pdf">Junta 2025</option>
+          <option value="acta_2026_extraordinaria.pdf">Junta 2026 (Extraordinaria)</option>
         </select>
         <button onclick="descargarActa()" style="padding: 9px 16px; background: var(--primary); color: white; border: none; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; font-family: inherit; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); transition: all 0.2s ease;">Descargar acta</button>
       </div>
     </div>
 
     <script>
-      function descargarActa() {
+      async function descargarActa() {
         const select = document.getElementById('actaSelect');
-        const url = select.value;
-        if (url) {
-          window.open(url, '_blank');
-        } else {
+        const filename = select.value;
+        if (!filename) {
           alert('Por favor, selecciona un acta para descargar.');
+          return;
+        }
+
+        try {
+          // Genera una URL temporal segura (válida por 60 segundos) desde el bucket privado
+          const { data, error } = await db.storage.from('actas').createSignedUrl(filename, 60);
+          if (error) throw error;
+          
+          if (data && data.signedUrl) {
+            window.open(data.signedUrl, '_blank');
+          }
+        } catch (err) {
+          console.error(err);
+          alert('Error al descargar el acta. Asegúrate de que el archivo exista en el bucket privado. Detalle: ' + err.message);
         }
       }
     </script>
