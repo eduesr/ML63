@@ -337,26 +337,30 @@ bank_movements   (cargos del extracto Sabadell)
 > Caso especial de factura/recibo: además de registrar la factura
 > contable, se extraen las métricas necesarias para gráficas,
 > comparativas y proyecciones energéticas.
+> **Mejora técnica v1.1:** El OCR extrae el número de factura de forma robusta ignorando fórmulas de cortesía como "factura de gas". 
 
 1. Identifico proveedor y suministro: Naturgy/luz, Gas Power/gas,
    Canal/agua, ISTA/contadores, u otro.
 2. Extraigo campos normalizados:
    - período facturado (`fecha_desde`, `fecha_hasta`)
-   - fecha emisión y número de factura
+   - fecha emisión y número de factura (usando regex ultra-robusto)
    - importe total, base imponible, IVA/impuestos
    - consumo (`kWh`, `m3`, litros o unidad equivalente)
    - potencia/término fijo, energía/término variable, alquileres,
      peajes/cargos y regularizaciones cuando existan
    - CUPS/contador/punto de suministro si aparece
-3. Inserto la factura en `invoices` y las métricas en una tabla
-   específica de consumos (`utility_readings` / `energy_invoices`,
-   nombre final pendiente de SQL real).
-4. Enlazo con `bank_movements` si el cargo bancario ya existe o queda
-   candidato claro por proveedor + importe + fecha.
-5. Registro `sha256` y ruta local en `documentos` para trazabilidad.
+3. Compruebo **duplicados robustos** en Supabase usando `.limit(1)` sobre el `numero_factura` exacto (previniendo inserciones repetidas por fallo de OCR). Si existe, el usuario es notificado en la UI y puede decidir forzar el reemplazo de datos ("update") o cancelar.
+4. Inserto la factura en `invoices` y las métricas en una tabla
+   específica de consumos (`consumos_suministros`).
+5. **Auto-cruce con el banco**: Busco automáticamente en `movimientos` un cargo exacto (importe exacto negativo). Si existe y su `factura_ref` está vacío, lo vinculo insertando el `numero_factura`.
+6. Registro `sha256` y ruta local en `documentos` para trazabilidad.
    El PDF queda en local; Supabase guarda los datos extraídos.
-6. Recalculo vistas de Energía: coste mensual, consumo mensual, precio
+7. Recalculo vistas de Energía: coste mensual, consumo mensual, precio
    unitario, comparativa anual y anomalías.
+
+#### Procesamiento Masivo (Carpeta Histórica)
+- La aplicación permite arrastrar múltiples PDFs a la vez o seleccionar todos los archivos PDF de una carpeta histórica local.
+- El sistema itera secuencialmente, procesando, verificando duplicados y auto-cruzando con el banco automáticamente factura por factura. Al finalizar muestra un informe de "Importación Completada" con el recuento de éxito.
 
 #### Extracto bancario (`finance.xls`)
 
