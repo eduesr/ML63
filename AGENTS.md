@@ -29,6 +29,7 @@ ML63/
 ├── AGENTS.md
 └── Recursos/                      # Documentos de la comunidad
     ├── Actas/
+    ├── Arquitectura/              # Diagramas y flujos de datos (vinculados en el footer de la app)
     ├── Alexandru Pirtac/
     ├── Banco/
     │   └── audit_bancario.md      # Informe histórico (administradores, conserje, seguros)
