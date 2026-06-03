@@ -319,18 +319,15 @@ bank_movements   (cargos del extracto Sabadell)
 4. Si hay otros presupuestos del mismo proyecto, los muestro juntos
    para que la presidencia decida cuál aceptar.
 
-#### Factura / recibo (PDF)
+#### Factura de Proveedor de Obra / Servicios (PDF)
 
-1. Extraigo: proveedor, fecha, número factura, importe, IVA,
-   conceptos.
-2. Compruebo duplicado por (fecha + importe) contra `invoices` y
-   `bank_movements`.
-3. Busco en `budgets` algún presupuesto del mismo proveedor con
-   importe similar y estado `aceptado`. Si lo encuentro, **propongo
-   enlazar** (no enlazo automáticamente, espero confirmación).
-4. Inserto en `invoices`.
-5. Registro metadatos/ruta local si aporta trazabilidad. El PDF queda
-   en archivo local, no en Storage.
+1. Extraigo: proveedor, fecha, número factura, importe, IVA, conceptos.
+2. La interfaz ofrece un **Asistente de Vinculación a Movimientos**:
+   - Permite al presidente asignar manualmente el número de factura y el documento a un movimiento bancario concreto.
+   - El sistema busca movimientos bancarios que coincidan parcialmente con el nombre del proveedor.
+   - Al seleccionar un movimiento, la base de datos se actualiza haciendo un UPDATE en `movimientos` inyectando el `numero_factura` (referencia).
+3. Inserto opcionalmente la factura en `invoices` (flujo pendiente de habilitar completamente en Supabase, actualmente prima el UPDATE en el movimiento).
+4. Registro metadatos/ruta local en `documentos` para trazabilidad si se solicita.
 
 #### Factura de suministro (PDF: luz, gas, agua, ISTA)
 
