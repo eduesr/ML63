@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Arquitectura de Información - ML63</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      padding: 60px;
+      font-family: 'Inter', sans-serif;
+      background-color: #F8FAFC;
+      color: #0F172A;
+    }
+
+    .canvas-wrapper {
+      min-width: max-content;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .header-container {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 20px;
+      margin-bottom: 20px;
+      box-sizing: border-box;
+      position: absolute;
+      top: 20px;
+      left: 0;
+    }
+    
+    .canvas-title {
+      font-size: 20px;
+      font-weight: 700;
+      color: #475569;
+      margin-left: 10px;
+    }
+
+    .flow-select-wrapper {
+      position: relative;
+      margin-right: 10px;
+    }
+    .flow-select {
+      appearance: none;
+      background: white;
+      border: 1px solid #CBD5E1;
+      padding: 10px 40px 10px 16px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      color: #1E293B;
+      cursor: pointer;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+      transition: all 0.2s;
+      outline: none;
+    }
+    .flow-select:hover, .flow-select:focus {
+      border-color: #4F46E5;
+      box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+    }
+    .flow-select-wrapper::after {
+      content: "▼";
+      font-size: 10px;
+      color: #64748B;
+      position: absolute;
+      right: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      pointer-events: none;
+    }
+
+    /* 
+     * CSS Org Chart / Hierarchy Tree
+     * Basado en listas no ordenadas ul/li
+     */
+    .tree {
+      margin-top: 40px;
+    }
+
+    .tree ul {
+      padding-top: 30px; 
+      position: relative;
+      transition: all 0.5s;
+      -webkit-transition: all 0.5s;
+      -moz-transition: all 0.5s;
+      display: flex;
+      justify-content: center;
+      padding-left: 0;
+    }
+
+    .tree li {
+      float: left; text-align: center;
+      list-style-type: none;
+      position: relative;
+      padding: 30px 10px 0 10px;
+      transition: all 0.5s;
+      -webkit-transition: all 0.5s;
+      -moz-transition: all 0.5s;
+    }
+
+    /* Trazar líneas horizontales y verticales */
+    .tree li::before, .tree li::after {
+      content: '';
+      position: absolute; top: 0; right: 50%;
+      border-top: 2px solid #CBD5E1;
+      width: 50%; height: 30px;
+      z-index: -1;
+    }
+    .tree li::after {
+      right: auto; left: 50%;
+      border-left: 2px solid #CBD5E1;
+    }
+
+    /* Eliminar líneas izquierda/derecha de primer y último hijo */
+    .tree li:only-child::after, .tree li:only-child::before {
+      display: none;
+    }
+    .tree li:only-child { padding-top: 0; }
+    .tree li:first-child::before, .tree li:last-child::after {
+      border: 0 none;
+    }
+    .tree li:last-child::before {
+      border-right: 2px solid #CBD5E1;
+      border-radius: 0 6px 0 0;
+    }
+    .tree li:first-child::after {
+      border-radius: 6px 0 0 0;
+    }
+
+    /* Línea bajando desde el padre hacia los hijos */
+    .tree ul ul::before {
+      content: '';
+      position: absolute; top: 0; left: 50%;
+      border-left: 2px solid #CBD5E1;
+      width: 0; height: 30px;
+      margin-left: -1px;
+    }
+
+    /* Colores por niveles (opcional para guiarse mejor) */
+    .tree li .node.root {
+      background: #1E293B;
+      color: white;
+      border-color: #0F172A;
+      font-size: 24px;
+      font-weight: 700;
+      padding: 24px 36px;
+      min-width: 240px;
+      letter-spacing: 0.5px;
+    }
+    .tree li .node.root:hover {
+      background: #334155;
+      border-color: #1E293B;
+      color: white;
+    }
+
+    .tree li .node.tab {
+      background: #4F46E5;
+      color: white;
+      border-color: #3730A3;
+      font-size: 20px;
+      font-weight: 400; /* Sin negrita */
+      padding: 18px 24px;
+    }
+    .tree li .node.tab:hover {
+      background: #6366F1;
+      border-color: #4F46E5;
+      color: white;
+    }
+
+    /* Estilo de los Nodos (Cajas) */
+    .tree li .node {
+      background: white;
+      border: 2px solid #E2E8F0;
+      color: #1E293B;
+      padding: 16px 20px;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 600;
+      display: inline-block;
+      border-radius: 10px;
+      transition: all 0.3s;
+      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+      min-width: 130px;
+      max-width: 160px;
+      white-space: normal;
+    }
+
+    .tree li .node:hover {
+      background: #EEF2FF;
+      border-color: #4F46E5;
+      transform: translateY(-2px);
+      box-shadow: 0 10px 15px -3px rgba(79, 70, 229, 0.2);
+    }
+
+    /* Colores por Ramas (Inspirado en el Figma) */
+    
+    /* Rama 1: 2026 (Verde) */
+    .tree li:nth-child(1) .node.tab { background: #22C55E; border-color: #22C55E; }
+    .tree li:nth-child(1) .vertical-node { background: #DCFCE7; color: #166534; border-color: rgba(22, 163, 74, 0.15); }
+    
+    /* Rama 2: 2025 (Verde apagado / Azul verdoso) */
+    .tree li:nth-child(2) .node.tab { background: #14B8A6; border-color: #14B8A6; }
+    .tree li:nth-child(2) .vertical-node { background: #CCFBF1; color: #115E59; border-color: rgba(13, 148, 136, 0.15); }
+    
+    /* Rama 3: Energía (Amarillo / Naranja) */
+    .tree li:nth-child(3) .node.tab { background: #F59E0B; border-color: #F59E0B; }
+    .tree li:nth-child(3) .vertical-node { background: #FEF3C7; color: #92400E; border-color: rgba(217, 119, 6, 0.15); }
+    
+    /* Rama 4: Gastos (Azul) */
+    .tree li:nth-child(4) .node.tab { background: #3B82F6; border-color: #3B82F6; }
+    .tree li:nth-child(4) .vertical-node { background: #DBEAFE; color: #1E40AF; border-color: rgba(37, 99, 235, 0.15); }
+    
+    /* Rama 5: Plan (Rojo) */
+    .tree li:nth-child(5) .node.tab { background: #EF4444; border-color: #EF4444; }
+    .tree li:nth-child(5) .vertical-node { background: #FEE2E2; color: #991B1B; border-color: rgba(220, 38, 38, 0.15); }
+    
+    /* Rama 6: Gestión (Morado oscuro) */
+    .tree li:nth-child(6) .node.tab { background: #8B5CF6; border-color: #8B5CF6; }
+    .tree li:nth-child(6) .vertical-node { background: #F3E8FF; color: #581C87; border-color: rgba(124, 58, 237, 0.15); }
+
+    /* Rama 7: Admin Panel (Gris/Azul oscuro) */
+    .tree li:nth-child(7) .node.tab { background: #475569; border-color: #475569; }
+    .tree li:nth-child(7) .vertical-node { background: #F1F5F9; color: #0F172A; border-color: rgba(71, 85, 105, 0.15); }
+
+    /* Hover sobre los nodos hijos para que se oscurezcan sutilmente */
+    .tree li:nth-child(1) .vertical-node:hover { background: #BBF7D0; }
+    .tree li:nth-child(2) .vertical-node:hover { background: #99F6E4; }
+    .tree li:nth-child(3) .vertical-node:hover { background: #FDE68A; }
+    .tree li:nth-child(4) .vertical-node:hover { background: #BFDBFE; }
+    .tree li:nth-child(5) .vertical-node:hover { background: #FECACA; }
+    .tree li:nth-child(6) .vertical-node:hover { background: #E9D5FF; }
+    .tree li:nth-child(7) .vertical-node:hover { background: #E2E8F0; }
+
+    /* Para que las hojas finales queden verticales (ahorra espacio horizontal) */
+    .vertical-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      padding-top: 20px;
+      position: relative;
+      align-items: center;
+    }
+    
+    .vertical-list::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 50%;
+      width: 2px;
+      height: 10px;
+      background: #CBD5E1;
+      margin-left: -1px;
+    }
+
+    .vertical-node {
+      padding: 12px 16px;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 600;
+      width: 160px; /* Aumentar un poco el ancho para el texto más grande */
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+      position: relative;
+      transition: all 0.2s ease;
+      cursor: default;
+      border: 1.5px solid transparent;
+    }
+
+    /* Pequeña línea conectora para la lista vertical */
+    .vertical-node:not(:first-child)::before {
+      content: '';
+      position: absolute;
+      top: -11.5px;
+      left: 50%;
+      width: 2px;
+      height: 10px;
+      background: #CBD5E1;
+      margin-left: -1px;
+    }
+
+    /* === RESPONSIVE MOBILE === */
+    @media (max-width: 768px) {
+      body {
+        padding: 80px 10px 20px 10px; /* Espacio para el header absoluto y aprovechar bordes */
+      }
+      .canvas-title {
+        position: static;
+        text-align: center;
+        margin-bottom: 20px;
+        font-size: 18px;
+      }
+      .canvas-wrapper {
+        min-width: 100%;
+        align-items: center;
+        padding: 0;
+        width: 100%;
+      }
+      .tree {
+        width: 100%;
+      }
+      .tree ul {
+        flex-direction: column;
+        padding-top: 0;
+        align-items: center;
+        width: 100%;
+      }
+      .tree li {
+        padding: 0 0 24px 0;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      /* Ocultar líneas horizontales en móvil */
+      .tree li::before, .tree li::after, .tree ul ul::before {
+        display: none !important;
+      }
+      /* Anchos relativos y textos igualados en móvil */
+      .tree li .node.root {
+        width: 100%;
+        max-width: none;
+        min-width: 0;
+        box-sizing: border-box;
+        font-size: 18px;
+        padding: 16px 12px;
+      }
+      .tree li .node.tab {
+        width: 100%;
+        max-width: none;
+        min-width: 0;
+        box-sizing: border-box;
+        font-size: 16px;
+        padding: 14px 12px;
+      }
+      .vertical-node {
+        width: 100%;
+        max-width: none;
+        min-width: 0;
+        box-sizing: border-box;
+        font-size: 15px;
+        padding: 12px 12px;
+      }
+      /* Ajuste de las ramas verticales (hijos) */
+      .vertical-list {
+        width: 100%;
+        align-items: center;
+      }
+      .vertical-list::before {
+        display: none; /* Quitamos la linea central */
+      }
+      .vertical-node:not(:first-child)::before {
+        display: none; /* Quitamos las uniones */
+      }
+    }
+    
+    /* Stripe clarito para las secciones del organigrama */
+    .tree > ul > li > ul > li:nth-child(even) {
+      background-color: #F1F5F9; /* Gris muy clarito */
+    }
+    .tree > ul > li > ul > li {
+      padding-top: 20px;
+      padding-bottom: 40px;
+    }
+    @media (max-width: 768px) {
+      .tree > ul > li > ul > li {
+        padding: 40px 0;
+      }
+      .tree > ul > li > ul > li:nth-child(even) {
+        background-color: #F1F5F9;
+      }
+    }
+
+    /* Footer Responsive */
+    .app-footer {
+      margin-top: 60px;
+      padding: 28px 50px;
+      border-top: 1px solid #2D3448;
+      width: 100%;
+      box-sizing: border-box;
+      background: #1E2330;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .app-footer .links {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+      font-size: 16px;
+    }
+    @media (max-width: 768px) {
+      .app-footer {
+        flex-direction: column;
+        padding: 20px;
+        gap: 20px;
+      }
+      .app-footer .links {
+        flex-direction: column;
+        gap: 12px;
+      }
+      .app-footer .links span { display: none; } /* Ocultar el separador | en móvil */
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header-container">
+    <div class="canvas-title">Arquitectura de Información</div>
+    <div class="flow-select-wrapper">
+      <select class="flow-select" onchange="if(this.value) { window.location.href = this.value; }">
+        <option value="" disabled selected>☰ Seleccionar flujo...</option>
+        <option value="arquitectura.html">🗺️ Arquitectura de la App</option>
+        <option value="diagramas.html">🔀 Conciliación Bancaria</option>
+      </select>
+    </div>
+  </div>
+  
+  <div class="canvas-wrapper">
+
+  <div class="tree">
+    <ul>
+      <li>
+        <div class="node root">🏠 ML63 Dashboard</div>
+        <ul id="tree-root">
+          <div style="padding: 40px; color: var(--text-muted)">Cargando arquitectura...</div>
+        </ul>
+      </li>
+    </ul>
+  </div>
+
+  <script>
+    function loadArchitecture() {
+      const treeRoot = document.getElementById('tree-root');
+      
+      try {
+        const urlParams = new URLSearchParams(window.location.search);
+        let dataParam = urlParams.get('data');
+        
+        // Si viene por URL (desde ML63.html), lo guardamos en esta pestaña
+        if (dataParam) {
+          sessionStorage.setItem('ml63_arch_data', dataParam);
+        } else {
+          // Si no viene por URL (ej. volver desde diagramas.html), lo recuperamos
+          dataParam = sessionStorage.getItem('ml63_arch_data');
+        }
+        
+        if (!dataParam) throw new Error("No hay datos en la URL ni en caché de la pestaña");
+        
+        // Decodificación directa del JSON (sin Base64)
+        const jsonStr = decodeURIComponent(dataParam);
+        const tabsData = JSON.parse(jsonStr);
+        treeRoot.innerHTML = '';
+        
+        tabsData.forEach(tab => {
+          let childrenHTML = '';
+          tab.sections.forEach(sec => {
+            childrenHTML += `<div class="vertical-node">${sec}</div>`;
+          });
+          
+          const li = document.createElement('li');
+          li.innerHTML = `
+            <div class="node tab">${tab.tabName}</div>
+            <div class="vertical-list">
+              ${childrenHTML}
+            </div>
+          `;
+          treeRoot.appendChild(li);
+        });
+        
+      } catch (e) {
+        console.error(e);
+        treeRoot.innerHTML = `
+          <li style="color:#EF4444; font-weight:600; padding:20px; max-width:400px; text-align:center; background:white; border-radius:12px; border:2px solid #FECACA; box-shadow:0 4px 6px rgba(0,0,0,0.05);">
+            <div style="font-size:24px; margin-bottom:10px;">⚠️ Error de Conexión Local</div>
+            Por seguridad, los navegadores bloquean la lectura de archivos locales (file://).<br><br>
+            <strong>Para ver el diagrama dinámico:</strong><br>
+            Cierra esta pestaña, ve a la app principal (ML63.html) y pulsa el enlace del diagrama en el pie de página.
+          </li>
+        `;
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', loadArchitecture);
+  </script>
+
+  <footer class="app-footer">
+    <div style="font-weight: 300; color: #FFFFFF; font-size: 22px; letter-spacing: 1px;">ml63</div>
+    <div class="links">
+      <a href="../../ML63.html" style="color:rgba(255,255,255,0.6); text-decoration:none;" onmouseover="this.style.color='#FFFFFF'" onmouseout="this.style.color='rgba(255,255,255,0.6)'">🏠 Volver a ML63 App</a>
+      <span style="color:#2D3448">|</span>
+      <a href="diagramas.html" style="color:rgba(255,255,255,0.6); text-decoration:none;" onmouseover="this.style.color='#FFFFFF'" onmouseout="this.style.color='rgba(255,255,255,0.6)'">📊 Diagramas</a>
+    </div>
+  </footer>
+
+  <script>
+    window.addEventListener('pageshow', function() {
+      document.querySelectorAll('.flow-select').forEach(sel => sel.value = "");
+    });
+  </script>
+  </div>
+
+</body>
+</html>
