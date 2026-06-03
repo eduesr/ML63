@@ -864,7 +864,40 @@
     }
 
     details.project-section[open]>summary {
-      border-bottom: 1px solid var(--border);
+      border-bottom: 1.5px solid var(--border);
+      background: var(--bg);
+    }
+
+    /* Admin details summary */
+    details.admin-details {
+      padding: 0; /* Remove default card padding */
+    }
+    details.admin-details > summary {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      list-style: none;
+      padding: 24px 50px;
+      margin-bottom: 0;
+    }
+    details.admin-details > summary::-webkit-details-marker {
+      display: none;
+    }
+    details.admin-details > summary::after {
+      content: "▼";
+      font-size: 14px;
+      color: var(--text-muted);
+      transition: transform 0.2s ease;
+    }
+    details.admin-details[open] > summary::after {
+      transform: rotate(180deg);
+    }
+    details.admin-details .admin-content {
+      padding: 0 50px 32px 50px;
+      border-top: 1px solid var(--border);
+      margin-top: 0;
+      padding-top: 24px;
+      cursor: default;
     }
 
     .section-header .count {
@@ -1079,10 +1112,28 @@
       margin-top: 0;
       padding: 28px 50px;
       border-top: 1px solid #2D3448;
-      text-align: center;
-      color: rgba(255, 255, 255, 0.6);
-      font-size: 14px;
       background: #1E2330;
+      display: flex; 
+      justify-content: space-between; 
+      align-items: center;
+    }
+    footer .footer-links {
+      font-size: 16px; 
+      display: flex; 
+      gap: 16px; 
+      align-items: center;
+    }
+    @media (max-width: 768px) {
+      footer {
+        flex-direction: column;
+        padding: 20px;
+        gap: 20px;
+      }
+      footer .footer-links {
+        flex-direction: column;
+        gap: 12px;
+      }
+      footer .footer-links span { display: none; }
     }
 
     @media (max-width: 768px) {
@@ -1649,6 +1700,9 @@
         </div>
       </div>
       <div class="mf"><label>Descripción</label><textarea id="mObs"></textarea></div>
+      <div class="mf"><label>Proveedor Adjudicado</label><select id="mProv" style="width:100%;padding:10px 12px;border:1.5px solid var(--border);border-radius:6px;font-size:14px;background:white">
+          <option value="">(Ninguno)</option>
+        </select></div>
       <div class="mf"><label>Cruce banco</label><textarea id="mBanco"></textarea></div>
       <div class="modal-actions">
         <button class="btn-del" id="btnDel" onclick="delProyecto()" style="display:none">Eliminar</button>
@@ -1678,8 +1732,7 @@
   <div class="modal-overlay" id="pdfUploadOverlay" style="display:none">
     <div class="modal" style="max-width:640px">
       <h3>📤 Subir Factura</h3>
-      <p style="font-size:14px;color:#64748B;margin-bottom:20px">Sube la factura en PDF. Se extraerá el consumo
-        automáticamente.</p>
+      <p style="font-size:14px;color:#64748B;margin-bottom:20px">Sube la factura en PDF. Se extraerá el consumo automáticamente.</p>
       <div id="pdfUploadZone" onclick="document.getElementById('pdfFile').click()"
         style="border:2px dashed #E2E8F0;border-radius:10px;padding:40px;text-align:center;cursor:pointer;transition:all 0.2s;"
         ondragover="event.preventDefault();this.style.borderColor='#4F46E5';this.style.background='#EEF2FF'"
@@ -1691,6 +1744,51 @@
       <div id="pdfUploadResult" style="margin-top:16px"></div>
       <div class="modal-actions">
         <button class="btn-cancel" onclick="closePdfUploadModal()">Cerrar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ MODAL FACTURA PROVEEDOR ============ -->
+  <div class="modal-overlay" id="facturaProveedorOverlay" style="display:none">
+    <div class="modal" style="max-width:600px">
+      <h3>📄 Registrar Factura de Obra / Proveedor</h3>
+      <p style="font-size:14px;color:var(--text-muted);margin-bottom:20px">Vincula una factura a un proyecto existente y crúzala con el banco.</p>
+      
+      <div style="display:flex;gap:12px;margin-bottom:12px">
+        <div class="form-field" style="flex:1">
+          <label>Proveedor</label>
+          <select id="fpProveedor" style="width:100%;padding:10px;border-radius:6px;border:1px solid var(--border)">
+            <option value="">Seleccione proveedor...</option>
+          </select>
+        </div>
+        <div class="form-field" style="flex:1">
+          <label>Nº Factura</label>
+          <input type="text" id="fpNumFactura" placeholder="Ej: A6FE0983" style="width:100%;padding:10px;border-radius:6px;border:1px solid var(--border)">
+        </div>
+        <div class="form-field" style="width:120px">
+          <label>Importe (€)</label>
+          <input type="number" id="fpImporte" step="0.01" placeholder="0.00" oninput="buscarCruceBancarioFP()" style="width:100%;padding:10px;border-radius:6px;border:1px solid var(--border)">
+        </div>
+      </div>
+
+      <div class="form-field" style="margin-bottom:12px">
+        <label>Asignar a Proyecto (Se marcará como Completado)</label>
+        <select id="fpProyecto" style="width:100%;padding:10px;border-radius:6px;border:1px solid var(--border)">
+          <option value="">Cargando proyectos...</option>
+        </select>
+      </div>
+
+      <div class="form-field" style="margin-bottom:20px">
+        <label>Cruce Bancario Automático</label>
+        <select id="fpCruceBanco" style="width:100%;padding:10px;border-radius:6px;border:1px solid var(--border);background:#F8FAFC">
+          <option value="">Escribe un importe para buscar movimientos...</option>
+        </select>
+        <div style="font-size:11px;color:var(--text-muted);margin-top:4px">Se muestran movimientos negativos sin cruzar.</div>
+      </div>
+
+      <div class="modal-actions">
+        <button class="btn-cancel" onclick="closeFacturaProveedorModal()">Cancelar</button>
+        <button class="btn-save" onclick="guardarFacturaProveedor()">Vincular y Cerrar Proyecto</button>
       </div>
     </div>
   </div>
@@ -1757,6 +1855,75 @@
       </div>
     </div>
   </div>
+
+  <!-- ============ MODAL PROVEEDOR ============ -->
+  <div class="modal-overlay" id="proveedorOverlay" style="display:none">
+    <div class="modal" style="max-width:500px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px">
+        <h3 style="margin:0;font-size:20px;font-weight:700;color:var(--text)" id="proveedorModalTitle">Nuevo Proveedor</h3>
+        <button onclick="closeProveedorModal()"
+          style="background:none;border:none;font-size:24px;color:var(--text-muted);cursor:pointer;line-height:1">&times;</button>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:16px;margin-bottom:24px">
+        <input type="hidden" id="pId" />
+        
+        <div>
+          <label style="font-size:13px;font-weight:700;color:var(--text-muted);display:block;margin-bottom:8px">Nombre Comercial *</label>
+          <input type="text" id="pNombre" placeholder="Ej: Naturgy" style="width:100%;padding:10px 12px;border:1.5px solid var(--border);border-radius:6px;font-size:14px" />
+        </div>
+
+        <div>
+          <label style="font-size:13px;font-weight:700;color:var(--text-muted);display:block;margin-bottom:8px">CIF / NIF</label>
+          <input type="text" id="pCif" placeholder="Opcional" style="width:100%;padding:10px 12px;border:1.5px solid var(--border);border-radius:6px;font-size:14px" />
+        </div>
+
+        <div>
+          <label style="font-size:13px;font-weight:700;color:var(--text-muted);display:block;margin-bottom:8px">Categoría por Defecto</label>
+          <select id="pCat" style="width:100%;padding:10px 12px;border:1.5px solid var(--border);border-radius:6px;font-size:14px;background:white">
+            <option value="">(Ninguna)</option>
+            <option value="luz">Luz</option>
+            <option value="gas">Gas</option>
+            <option value="agua">Agua</option>
+            <option value="ascensor">Ascensor</option>
+            <option value="admin">Administración</option>
+            <option value="limpieza">Limpieza</option>
+            <option value="seguro">Seguro</option>
+            <option value="comunic">Telecomunicaciones</option>
+            <option value="mantenimiento">Mantenimientos</option>
+            <option value="obra">Obra / Mejora</option>
+            <option value="banco">Gastos Bancarios</option>
+          </select>
+        </div>
+
+        <div>
+          <label style="font-size:13px;font-weight:700;color:var(--text-muted);display:block;margin-bottom:8px">Descripción de Servicios / Notas</label>
+          <textarea id="pDesc" placeholder="Ej: Mantenimiento de caldera..." style="width:100%;padding:10px 12px;border:1.5px solid var(--border);border-radius:6px;font-size:14px;min-height:60px"></textarea>
+        </div>
+
+        <div>
+          <label style="font-size:13px;font-weight:700;color:var(--text-muted);display:block;margin-bottom:8px">Alias Bancarios (separados por coma)</label>
+          <input type="text" id="pAlias" placeholder="Ej: NATURGY, IBERDROLA" style="width:100%;padding:10px 12px;border:1.5px solid var(--border);border-radius:6px;font-size:14px" />
+          <div style="font-size:12px;color:var(--text-muted);margin-top:4px">Para autodetectar los cargos al subir el Excel.</div>
+        </div>
+
+        <div>
+          <label style="display:flex;align-items:center;gap:8px;font-size:14px;font-weight:600;color:var(--danger);cursor:pointer">
+            <input type="checkbox" id="pDeprecado" />
+            Proveedor inactivo / deprecado
+          </label>
+        </div>
+      </div>
+
+      <div style="display:flex;gap:12px;justify-content:flex-end">
+        <button onclick="closeProveedorModal()"
+          style="background:var(--surface);border:1.5px solid var(--border);padding:10px 20px;border-radius:6px;font-size:14px;font-weight:600;cursor:pointer;color:var(--text)">Cancelar</button>
+        <button onclick="saveProveedor()"
+          style="background:var(--primary);color:white;border:none;padding:10px 20px;border-radius:6px;font-size:14px;font-weight:700;cursor:pointer">Guardar</button>
+      </div>
+    </div>
+  </div>
+
 
   <div class="page-wrapper">
     <header class="site-header" id="siteHeader">
@@ -2753,80 +2920,94 @@
       </div>
     </div>
 
-    <div class="card">
-      <div class="card-title">👥 Gestión de usuarios</div>
-      <p class="card-desc">Usuarios con acceso al dashboard. Para invitar a un nuevo usuario, ve a <strong>Supabase →
-          Authentication → Users → Invite user</strong> y luego añade su rol aquí.</p>
-      <div id="usersList" style="margin-top:16px">
-        <div style="color:var(--text-muted);font-size:14px">Cargando usuarios...</div>
+    <details class="card admin-details" style="cursor:pointer">
+      <summary class="card-title">🏢 Directorio de Proveedores</summary>
+      <div class="admin-content">
+        <p class="card-desc">Gestiona la lista de proveedores, sus categorías y alias bancarios para el cruce automático de movimientos.</p>
+        <div id="proveedoresList" style="margin-top:16px">
+          <div style="color:var(--text-muted);font-size:14px">Cargando proveedores...</div>
+        </div>
+        <div style="margin-top:16px;display:flex;gap:10px;flex-wrap:wrap">
+          <button onclick="openProveedorModal()"
+            style="padding:10px 20px;background:var(--primary);color:white;border:none;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit">+ Añadir Proveedor</button>
+        </div>
       </div>
-      <div style="margin-top:16px;display:flex;gap:10px;flex-wrap:wrap">
-        <input type="email" id="newUserEmail" placeholder="nuevo@email.com"
-          style="padding:10px 14px;border:1.5px solid var(--border);border-radius:8px;font-size:14px;outline:none;flex:1;min-width:200px">
-        <select id="newUserRole"
-          style="padding:10px 14px;border:1.5px solid var(--border);border-radius:8px;font-size:14px;background:white">
-          <option value="viewer">👁️ Visualizador</option>
-          <option value="admin">⚙️ Admin</option>
-        </select>
-        <button onclick="addUserRole()"
-          style="padding:10px 20px;background:var(--primary);color:white;border:none;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit">Añadir</button>
-      </div>
-    </div>
+    </details>
 
-    <div class="card">
-      <div class="card-title">📤 Subida de documentos</div>
-      <p class="card-desc">Sube facturas y extractos para tenerlos registrados. También puedes procesar todo el
-        histórico de golpe seleccionando la carpeta con los PDFs.</p>
-      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin-top:16px">
-        <label
-          style="border:2px dashed var(--border);border-radius:10px;padding:24px;text-align:center;cursor:pointer;transition:all 0.2s;display:block"
-          onmouseover="this.style.borderColor='var(--primary)'" onmouseout="this.style.borderColor='var(--border)'">
-          <div style="font-size:28px;margin-bottom:8px">🗂️</div>
-          <div style="font-weight:700;font-size:14px">Carpeta histórica</div>
-          <div style="font-size:12px;color:var(--text-muted);margin-top:4px">Procesa decenas de facturas de golpe</div>
-          <input type="file" id="batchFolderInput" webkitdirectory directory multiple style="display:none"
-            onchange="handleBatchFolder(event)">
-        </label>
-        <div onclick="openDocUpload('banco')"
-          style="border:2px dashed var(--border);border-radius:10px;padding:24px;text-align:center;cursor:pointer;transition:all 0.2s"
-          onmouseover="this.style.borderColor='var(--primary)'" onmouseout="this.style.borderColor='var(--border)'">
-          <div style="font-size:28px;margin-bottom:8px">🏦</div>
-          <div style="font-weight:700;font-size:14px">Extracto banco</div>
-          <div style="font-size:12px;color:var(--text-muted);margin-top:4px">XLS Sabadell mensual</div>
+    <details class="card admin-details" style="cursor:pointer">
+      <summary class="card-title">👥 Gestión de usuarios</summary>
+      <div class="admin-content">
+        <p class="card-desc">Usuarios con acceso al dashboard. Para invitar a un nuevo usuario, ve a <strong>Supabase →
+            Authentication → Users → Invite user</strong> y luego añade su rol aquí.</p>
+        <div id="usersList" style="margin-top:16px">
+          <div style="color:var(--text-muted);font-size:14px">Cargando usuarios...</div>
         </div>
-        <div onclick="openDocUpload('naturgy')"
-          style="border:2px dashed var(--border);border-radius:10px;padding:24px;text-align:center;cursor:pointer;transition:all 0.2s"
-          onmouseover="this.style.borderColor='var(--primary)'" onmouseout="this.style.borderColor='var(--border)'">
-          <div style="font-size:28px;margin-bottom:8px">⚡</div>
-          <div style="font-weight:700;font-size:14px">Factura Naturgy</div>
-          <div style="font-size:12px;color:var(--text-muted);margin-top:4px">Electricidad zonas comunes</div>
-        </div>
-        <div onclick="openDocUpload('gas_power')"
-          style="border:2px dashed var(--border);border-radius:10px;padding:24px;text-align:center;cursor:pointer;transition:all 0.2s"
-          onmouseover="this.style.borderColor='var(--primary)'" onmouseout="this.style.borderColor='var(--border)'">
-          <div style="font-size:28px;margin-bottom:8px">🔥</div>
-          <div style="font-weight:700;font-size:14px">Factura Gas Power</div>
-          <div style="font-size:12px;color:var(--text-muted);margin-top:4px">Gas calefacción</div>
-        </div>
-        <div onclick="openDocUpload('factura')"
-          style="border:2px dashed var(--border);border-radius:10px;padding:24px;text-align:center;cursor:pointer;transition:all 0.2s"
-          onmouseover="this.style.borderColor='var(--primary)'" onmouseout="this.style.borderColor='var(--border)'">
-          <div style="font-size:28px;margin-bottom:8px">📄</div>
-          <div style="font-weight:700;font-size:14px">Factura proveedor</div>
-          <div style="font-size:12px;color:var(--text-muted);margin-top:4px">Pirtac, Perón, etc.</div>
+        <div style="margin-top:16px;display:flex;gap:10px;flex-wrap:wrap">
+          <input type="email" id="newUserEmail" placeholder="nuevo@email.com"
+            style="padding:10px 14px;border:1.5px solid var(--border);border-radius:8px;font-size:14px;outline:none;flex:1;min-width:200px">
+          <select id="newUserRole"
+            style="padding:10px 14px;border:1.5px solid var(--border);border-radius:8px;font-size:14px;background:white">
+            <option value="viewer">👁️ Visualizador</option>
+            <option value="admin">⚙️ Admin</option>
+          </select>
+          <button onclick="addUserRole()"
+            style="padding:10px 20px;background:var(--primary);color:white;border:none;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit">Añadir</button>
         </div>
       </div>
-      <div id="docsList" style="margin-top:20px"></div>
-    </div>
+    </details>
 
-    <div class="card">
-      <details>
-        <summary style="list-style:none;display:flex;align-items:center;justify-content:space-between;cursor:pointer;padding:4px 0">
-          <div class="card-title" style="margin-bottom:0">🔗 Vincular facturas a movimientos</div>
-          <span style="font-size:13px;color:var(--text-muted)">▼ Abrir</span>
-        </summary>
-        <div style="margin-top:16px">
-          <p class="card-desc" style="margin-bottom:12px">Busca un movimiento bancario por concepto y añade la referencia de factura correspondiente.</p>
+    <details class="card admin-details" style="cursor:pointer">
+      <summary class="card-title">📤 Subida de documentos</summary>
+      <div class="admin-content">
+        <p class="card-desc">Sube facturas y extractos para tenerlos registrados. También puedes procesar todo el
+          histórico de golpe seleccionando la carpeta con los PDFs.</p>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin-top:16px">
+          <label
+            style="border:2px dashed var(--border);border-radius:10px;padding:24px;text-align:center;cursor:pointer;transition:all 0.2s;display:block"
+            onmouseover="this.style.borderColor='var(--primary)'" onmouseout="this.style.borderColor='var(--border)'">
+            <div style="font-size:28px;margin-bottom:8px">🗂️</div>
+            <div style="font-weight:700;font-size:14px">Carpeta histórica</div>
+            <div style="font-size:12px;color:var(--text-muted);margin-top:4px">Procesa decenas de facturas de golpe</div>
+            <input type="file" id="batchFolderInput" multiple accept=".pdf" style="display:none"
+              onchange="handleBatchFolder(event)">
+          </label>
+          <div onclick="openDocUpload('banco')"
+            style="border:2px dashed var(--border);border-radius:10px;padding:24px;text-align:center;cursor:pointer;transition:all 0.2s"
+            onmouseover="this.style.borderColor='var(--primary)'" onmouseout="this.style.borderColor='var(--border)'">
+            <div style="font-size:28px;margin-bottom:8px">🏦</div>
+            <div style="font-weight:700;font-size:14px">Extracto banco</div>
+            <div style="font-size:12px;color:var(--text-muted);margin-top:4px">XLS Sabadell mensual</div>
+          </div>
+          <div onclick="openDocUpload('naturgy')"
+            style="border:2px dashed var(--border);border-radius:10px;padding:24px;text-align:center;cursor:pointer;transition:all 0.2s"
+            onmouseover="this.style.borderColor='var(--primary)'" onmouseout="this.style.borderColor='var(--border)'">
+            <div style="font-size:28px;margin-bottom:8px">⚡</div>
+            <div style="font-weight:700;font-size:14px">Factura Naturgy</div>
+            <div style="font-size:12px;color:var(--text-muted);margin-top:4px">Electricidad zonas comunes</div>
+          </div>
+          <div onclick="openDocUpload('gas_power')"
+            style="border:2px dashed var(--border);border-radius:10px;padding:24px;text-align:center;cursor:pointer;transition:all 0.2s"
+            onmouseover="this.style.borderColor='var(--primary)'" onmouseout="this.style.borderColor='var(--border)'">
+            <div style="font-size:28px;margin-bottom:8px">🔥</div>
+            <div style="font-weight:700;font-size:14px">Factura Gas Power</div>
+            <div style="font-size:12px;color:var(--text-muted);margin-top:4px">Gas calefacción</div>
+          </div>
+          <div onclick="openDocUpload('factura')"
+            style="border:2px dashed var(--border);border-radius:10px;padding:24px;text-align:center;cursor:pointer;transition:all 0.2s"
+            onmouseover="this.style.borderColor='var(--primary)'" onmouseout="this.style.borderColor='var(--border)'">
+            <div style="font-size:28px;margin-bottom:8px">📄</div>
+            <div style="font-weight:700;font-size:14px">Factura proveedor</div>
+            <div style="font-size:12px;color:var(--text-muted);margin-top:4px">Pirtac, Perón, etc.</div>
+          </div>
+        </div>
+        <div id="docsList" style="margin-top:20px"></div>
+      </div>
+    </details>
+
+    <details class="card admin-details" style="cursor:pointer">
+      <summary class="card-title">🔗 Vincular facturas a movimientos</summary>
+      <div class="admin-content">
+        <p class="card-desc" style="margin-bottom:12px">Busca un movimiento bancario por concepto y añade la referencia de factura correspondiente.</p>
           <div style="display:flex;gap:8px;margin-bottom:12px">
             <input type="text" id="facturaSearchInput" placeholder="Buscar por concepto, ej: MJM"
               style="flex:1;padding:10px 14px;border:1.5px solid var(--border);border-radius:8px;font-size:14px;outline:none;font-family:inherit"
@@ -2835,19 +3016,13 @@
               style="padding:10px 18px;background:var(--primary);color:white;border:none;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit">Buscar</button>
           </div>
           <div id="facturaSearchResults"></div>
-        </div>
-      </details>
-    </div>
+      </div>
+    </details>
 
-    <div class="card">
-      <details>
-        <summary
-          style="list-style:none;display:flex;align-items:center;justify-content:space-between;cursor:pointer;padding:4px 0">
-          <div class="card-title" style="margin-bottom:0">📋 Log de sesiones</div>
-          <span style="font-size:13px;color:var(--text-muted)">▼ Ver registro</span>
-        </summary>
-        <div style="margin-top:16px">
-          <div style="display:flex;gap:8px;margin-bottom:12px;align-items:center;flex-wrap:wrap">
+    <details class="card admin-details" style="cursor:pointer">
+      <summary class="card-title">📋 Log de sesiones</summary>
+      <div class="admin-content">
+        <div style="display:flex;gap:8px;margin-bottom:12px;align-items:center;flex-wrap:wrap">
             <button onclick="loadSessionLog(0)"
               style="background:var(--bg);border:1px solid var(--border);padding:6px 14px;border-radius:6px;font-size:13px;cursor:pointer;font-family:inherit">⟳
               Actualizar</button>
@@ -2859,19 +3034,21 @@
             <div style="color:var(--text-muted);font-size:14px">Haz clic en "Actualizar" para cargar el log</div>
           </div>
           <div id="sessionLogPager" style="display:flex;gap:8px;margin-top:12px;align-items:center"></div>
-        </div>
-      </details>
-    </div>
+      </div>
+    </details>
 
   </div>
 
   </div>
 
   <footer>
-    <div style="text-align:center; line-height: 2;">
-      <!-- Footer removed as requested -->
-      <div>Administración · <strong>Susana Fernández Robleda</strong></div>
-      <div>Presidente · <strong>Eduardo Sánchez Ruiz</strong></div>
+    <div style="font-weight: 300; color: #FFFFFF; font-size: 22px; letter-spacing: 1px;">
+      ml63
+    </div>
+    <div class="footer-links">
+      <a href="javascript:void(0)" onclick="exportArchitectureData(event)" style="color:rgba(255,255,255,0.6); text-decoration:none;" onmouseover="this.style.color='#FFFFFF'" onmouseout="this.style.color='rgba(255,255,255,0.6)'">🗺️ Arquitectura de la App</a>
+      <span style="color:#2D3448">|</span>
+      <a href="Recursos/Arquitectura/diagramas.html" target="_blank" style="color:rgba(255,255,255,0.6); text-decoration:none;" onmouseover="this.style.color='#FFFFFF'" onmouseout="this.style.color='rgba(255,255,255,0.6)'">📊 Diagramas</a>
     </div>
   </footer>
 
@@ -2921,6 +3098,12 @@
 
     function _baseProjectHTML(p) {
       const obs = p.obs && p.obs.length > 0 ? `<div class="project-obs">${p.obs}</div>` : '';
+      
+      let provName = `<div style="font-size:12px;color:var(--text-muted);margin-top:8px;background:var(--bg);padding:6px 10px;border-radius:6px;border:1px solid var(--border)">🏢 Proveedor: <span style="font-style:italic">Sin asignar</span></div>`;
+      if (p.proveedor_id && typeof PROVEEDORES !== 'undefined') {
+        const prov = PROVEEDORES.find(x => x.id === p.proveedor_id);
+        if (prov) provName = `<div style="font-size:12px;color:var(--text);margin-top:8px;background:var(--bg);padding:6px 10px;border-radius:6px;border:1px solid var(--border)">🏢 Proveedor: <strong style="color:var(--primary)">${prov.nombre}</strong></div>`;
+      }
       const bancoRef = p.banco_ref
         ? `<div class="project-bank" style="background:#ECFDF5; border:1px solid #10B981; color:#065F46; padding:6px 10px; border-radius:6px; font-size:11px; margin-top:8px">✅ <strong>Asiento Bancario:</strong> ${p.banco_ref}</div>`
         : (p.pres !== null && p.cat !== 'pendiente'
@@ -2957,6 +3140,7 @@
     </div>
     <div class="progress-bar"><div class="progress-fill ${progClass(p.cat)}" style="width:${progPct}%"></div></div>
     ${obs}
+    ${provName}
     ${bancoRef}
     ${presBanner}
   </div>`;
@@ -3441,8 +3625,8 @@
       const yearCompleted = (DATA[currentYear] || []).filter(p => p.pres < 0 && p.cat === 'completado');
       const completadoAnual = yearCompleted.reduce((s, p) => s + Math.abs(p.pres), 0);
 
-      const ejecutadoAnual = completadoAnual + yearCostsOnly.reduce((s, p) => s + Math.abs(p.pres) * p.progreso, 0);
-      const pendienteAnual = yearCostsOnly.reduce((s, p) => s + Math.abs(p.pres) * (1 - p.progreso), 0);
+      const ejecutadoAnual = completadoAnual + yearCostsOnly.reduce((s, p) => s + Math.abs(p.pres) * (p.progreso || 0), 0);
+      const pendienteAnual = yearCostsOnly.reduce((s, p) => s + Math.abs(p.pres) * (1 - (p.progreso || 0)), 0);
       const totalAnual = completadoAnual + yearCostsOnly.reduce((s, p) => s + Math.abs(p.pres), 0);
       
       // Actualizar títulos e info
@@ -3665,6 +3849,7 @@
           pres: p.pres !== null ? parseFloat(p.pres) : null,
           obs: p.obs || '',
           banco_ref: p.banco_ref || '',
+          proveedor_id: p.proveedor_id || null,
           etiqueta: p.etiqueta || 'Normal',
           orden: p.orden || 0
         };
@@ -3674,6 +3859,9 @@
       renderProjects2026();
       renderProjects2025();
       calcPlan();
+      if (_isAdmin) {
+        await loadProveedores();
+      }
       loadDashboardData();
     }
 
@@ -4203,6 +4391,7 @@
         document.getElementById('mPres').value = p.pres ?? '';
         document.getElementById('mProg').value = Math.round((p.progreso || 0) * 100);
         document.getElementById('mObs').value = p.obs || '';
+        document.getElementById('mProv').value = p.proveedor_id || '';
         document.getElementById('mBanco').value = p.banco_ref || '';
       } else {
         document.getElementById('mAño').value = '2026';
@@ -4211,6 +4400,7 @@
         document.getElementById('mPres').value = '';
         document.getElementById('mProg').value = '0';
         document.getElementById('mObs').value = '';
+        document.getElementById('mProv').value = '';
         document.getElementById('mBanco').value = '';
       }
       document.getElementById('modalOverlay').classList.add('open');
@@ -4229,6 +4419,7 @@
         pres: document.getElementById('mPres').value !== '' ? parseFloat(document.getElementById('mPres').value) : null,
         progreso: parseFloat(document.getElementById('mProg').value) / 100,
         obs: document.getElementById('mObs').value.trim() || null,
+        proveedor_id: document.getElementById('mProv').value || null,
         banco_ref: document.getElementById('mBanco').value.trim() || null,
       };
       if (!row.nombre) { toast('El nombre es obligatorio', 'err'); return; }
@@ -4520,6 +4711,27 @@
 
         if (!data.length) { document.getElementById('uploadResult').innerHTML = '<div style="color:#EF4444">❌ No se encontraron movimientos</div>'; return; }
 
+        // Mapeo automático de proveedores
+        const { data: provData } = await db.from('proveedores').select('id, nombre, alias, categoria_por_defecto');
+        const proveedoresDb = provData || [];
+        
+        for (let row of data) {
+          const upperConcepto = row.concepto.toUpperCase();
+          let matchedProv = null;
+          for (const p of proveedoresDb) {
+            const aliasList = (p.alias || '').split(',').map(a => a.trim().toUpperCase()).filter(a => a);
+            aliasList.push(p.nombre.toUpperCase());
+            if (aliasList.some(a => upperConcepto.includes(a))) {
+              matchedProv = p;
+              break;
+            }
+          }
+          if (matchedProv) {
+            row.proveedor_id = matchedProv.id;
+            row.categoria = matchedProv.categoria_por_defecto || null;
+          }
+        }
+
         const { data: insertedData, error } = await db
           .from('movimientos')
           .upsert(data, { onConflict: 'fecha,concepto,importe,saldo', ignoreDuplicates: true })
@@ -4528,6 +4740,26 @@
         if (error) { document.getElementById('uploadResult').innerHTML = `<div style="color:#EF4444">❌ Error: ${error.message}</div>`; return; }
 
         const importedCount = insertedData ? insertedData.length : 0;
+        
+        // Cruce Automático con Proyectos para movimientos insertados
+        let cruces = 0;
+        if (importedCount > 0) {
+          const { data: proys } = await db.from('proyectos').select('id, pres, banco_ref').is('banco_ref', null);
+          if (proys && proys.length > 0) {
+            for (let row of insertedData) {
+              if (row.importe < 0) {
+                const monto = Math.abs(row.importe);
+                const matchProy = proys.find(p => p.pres === monto);
+                if (matchProy) {
+                  await db.from('proyectos').update({ banco_ref: row.fecha + ' | ' + monto + '€ (' + row.concepto + ')' }).eq('id', matchProy.id);
+                  matchProy.banco_ref = 'reconciled'; // evitar doble cruce
+                  cruces++;
+                }
+              }
+            }
+          }
+        }
+
         const skippedCount = data.length - importedCount;
 
         // Mostrar resumen premium
@@ -4541,6 +4773,7 @@
             <div style="background:#D1FAE5;border-left:3px solid #10B981;padding:16px;border-radius:8px">
               <div style="font-weight:700;color:#065F46;margin-bottom:8px">✅ ${importedCount} nuevos movimientos importados correctamente</div>
               <div style="font-size:13px;color:#065F46">Ingresos: +${Math.round(ingresos).toLocaleString('es-ES')}€ · Gastos: -${Math.round(gastos).toLocaleString('es-ES')}€</div>
+              ${cruces > 0 ? `<div style="font-size:12px;color:#047857;margin-top:6px;font-weight:600">🔗 Se han conciliado automáticamente ${cruces} proyectos por coincidencia de presupuesto!</div>` : ''}
               ${skippedCount > 0 ? `<div style="font-size:11px;color:#047857;margin-top:6px;opacity:0.85">Omitidos ${skippedCount} movimientos duplicados que ya existían.</div>` : ''}
             </div>`;
         } else {
@@ -4591,19 +4824,145 @@
         });
       }
 
+      const fPO = document.getElementById('facturaProveedorOverlay');
+      if (fPO) {
+        fPO.addEventListener('click', e => {
+          if (e.target === fPO) closeFacturaProveedorModal();
+        });
+      }
+
       document.addEventListener('keydown', e => {
         if (e.key === 'Escape') {
           closeModal();
           closeBancoModal();
           closeProfileModal();
           if (typeof closePdfUploadModal === 'function') closePdfUploadModal();
+          closeFacturaProveedorModal();
         }
       });
     }
 
 
     // ── ADMIN PANEL ──
+    let PROVEEDORES = [];
+
+    async function loadProveedores() {
+      const el = document.getElementById('proveedoresList');
+      if(!el) return;
+      el.innerHTML = '<div style="color:var(--text-muted);font-size:14px">Cargando proveedores...</div>';
+      
+      const { data, error } = await db.from('proveedores').select('*').order('nombre');
+      if (error) {
+        console.error(error);
+        el.innerHTML = '<div style="color:var(--danger)">Error al cargar proveedores</div>';
+        return;
+      }
+      
+      PROVEEDORES = data || [];
+      if (PROVEEDORES.length === 0) {
+        el.innerHTML = '<div style="color:var(--text-muted);font-size:14px">No hay proveedores registrados.</div>';
+        return;
+      }
+
+      let html = '<div style="display:flex;flex-direction:column;gap:8px">';
+      PROVEEDORES.forEach(p => {
+        const bg = p.deprecado ? 'background:#F1F5F9;opacity:0.6' : 'background:var(--bg)';
+        const titleStyle = p.deprecado ? 'text-decoration:line-through;color:var(--text-muted)' : 'color:var(--text)';
+        html += `
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:12px;${bg};border:1px solid var(--border);border-radius:8px">
+            <div>
+              <div style="font-weight:600;font-size:14px;${titleStyle}">${p.nombre} ${p.deprecado ? '<span style="font-size:10px;background:var(--danger);color:white;padding:2px 6px;border-radius:4px;margin-left:8px;font-style:normal;text-decoration:none">INACTIVO</span>' : ''}</div>
+              <div style="font-size:12px;color:var(--text-muted);margin-top:4px">Cat: ${p.categoria_por_defecto || '-'} | Alias: ${p.alias || '-'}</div>
+              ${p.descripcion ? `<div style="font-size:11px;color:var(--text-muted);margin-top:4px;font-style:italic">"${p.descripcion}"</div>` : ''}
+            </div>
+            <div style="display:flex;gap:8px">
+              <button onclick="openProveedorModal('${p.id}')" style="background:white;border:1px solid var(--border);padding:6px 10px;border-radius:4px;font-size:12px;cursor:pointer;opacity:1">✏️</button>
+              <button onclick="deleteProveedor('${p.id}')" style="background:#FEF2F2;color:#EF4444;border:1px solid #FCA5A5;padding:6px 10px;border-radius:4px;font-size:12px;cursor:pointer;opacity:1">🗑️</button>
+            </div>
+          </div>
+        `;
+      });
+      html += '</div>';
+      el.innerHTML = html;
+
+      // Actualizar select del modal de proyectos (solo los activos, o marcando inactivos)
+      const mProv = document.getElementById('mProv');
+      if (mProv) {
+        mProv.innerHTML = '<option value="">(Ninguno)</option>' + PROVEEDORES.filter(p => !p.deprecado).map(p => `<option value="${p.id}">${p.nombre}</option>`).join('');
+      }
+    }
+
+    function openProveedorModal(id = null) {
+      document.getElementById('pId').value = id || '';
+      if (id) {
+        const p = PROVEEDORES.find(x => x.id === id);
+        if (p) {
+          document.getElementById('proveedorModalTitle').textContent = 'Editar Proveedor';
+          document.getElementById('pNombre').value = p.nombre || '';
+          document.getElementById('pCif').value = p.cif || '';
+          document.getElementById('pCat').value = p.categoria_por_defecto || '';
+          document.getElementById('pAlias').value = p.alias || '';
+          document.getElementById('pDesc').value = p.descripcion || '';
+          document.getElementById('pDeprecado').checked = !!p.deprecado;
+        }
+      } else {
+        document.getElementById('proveedorModalTitle').textContent = 'Nuevo Proveedor';
+        document.getElementById('pNombre').value = '';
+        document.getElementById('pCif').value = '';
+        document.getElementById('pCat').value = '';
+        document.getElementById('pAlias').value = '';
+        document.getElementById('pDesc').value = '';
+        document.getElementById('pDeprecado').checked = false;
+      }
+      document.getElementById('proveedorOverlay').style.display = 'flex';
+      setTimeout(() => document.getElementById('proveedorOverlay').classList.add('open'), 10);
+    }
+
+    function closeProveedorModal() {
+      document.getElementById('proveedorOverlay').classList.remove('open');
+      setTimeout(() => document.getElementById('proveedorOverlay').style.display = 'none', 200);
+    }
+
+    async function saveProveedor() {
+      const id = document.getElementById('pId').value;
+      const payload = {
+        nombre: document.getElementById('pNombre').value.trim(),
+        cif: document.getElementById('pCif').value.trim(),
+        categoria_por_defecto: document.getElementById('pCat').value,
+        alias: document.getElementById('pAlias').value.trim(),
+        descripcion: document.getElementById('pDesc').value.trim() || null,
+        deprecado: document.getElementById('pDeprecado').checked
+      };
+      
+      if (!payload.nombre) {
+        alert("El nombre es obligatorio");
+        return;
+      }
+      
+      let res;
+      if (id) {
+        res = await db.from('proveedores').update(payload).eq('id', id);
+      } else {
+        res = await db.from('proveedores').insert([payload]);
+      }
+      
+      if (res.error) {
+        alert("Error al guardar: " + res.error.message);
+      } else {
+        closeProveedorModal();
+        loadProveedores();
+      }
+    }
+
+    async function deleteProveedor(id) {
+      if(!confirm("¿Borrar este proveedor?")) return;
+      const res = await db.from('proveedores').delete().eq('id', id);
+      if (res.error) alert("Error al borrar: " + res.error.message);
+      else loadProveedores();
+    }
+
     async function loadAdminPanel() {
+      loadProveedores();
       loadUsersList();
       loadSessionLog();
       loadDocsList();
@@ -4777,6 +5136,10 @@
     }
 
     function openDocUpload(tipo) {
+      if (tipo === 'factura') {
+        openFacturaProveedorModal();
+        return;
+      }
       if (tipo === 'gas_power' || tipo === 'naturgy' || tipo === 'canal_isabel_ii' || tipo === 'ista') {
         openPdfUploadModal(tipo);
       } else {
@@ -4789,6 +5152,115 @@
 
     // ── LOGICA SUBIDA PDF FACTURAS ──
     let _currentPdfSupplier = null;
+
+    function closeFacturaProveedorModal() {
+      document.getElementById('facturaProveedorOverlay').style.display = 'none';
+    }
+
+    async function openFacturaProveedorModal() {
+      document.getElementById('facturaProveedorOverlay').style.display = 'flex';
+      
+      // Limpiar campos
+      document.getElementById('fpNumFactura').value = '';
+      document.getElementById('fpImporte').value = '';
+      
+      // Cargar proveedores
+      const selProv = document.getElementById('fpProveedor');
+      selProv.innerHTML = '<option value="">Seleccione proveedor...</option>';
+      PROVEEDORES.forEach(p => {
+        selProv.innerHTML += `<option value="${p.id}">${p.nombre}</option>`;
+      });
+
+      // Cargar proyectos (solo en progreso o pendientes)
+      const selProj = document.getElementById('fpProyecto');
+      selProj.innerHTML = '<option value="">Seleccione proyecto a cerrar...</option>';
+      const currentYearStr = new Date().getFullYear().toString();
+      const yearData = DATA[currentYearStr] || [];
+      const pendingProjects = yearData.filter(p => p.cat === 'progreso' || p.cat === 'pendiente');
+      pendingProjects.forEach(p => {
+        selProj.innerHTML += `<option value="${p._id}">${p.nombre} (Ppto: ${p.pres}€)</option>`;
+      });
+      
+      buscarCruceBancarioFP();
+    }
+
+    async function buscarCruceBancarioFP() {
+      const importeRaw = parseFloat(document.getElementById('fpImporte').value) || 0;
+      const selBanco = document.getElementById('fpCruceBanco');
+      
+      if (importeRaw <= 0) {
+        selBanco.innerHTML = '<option value="">Escribe un importe válido para buscar...</option>';
+        return;
+      }
+
+      selBanco.innerHTML = '<option value="">Buscando movimientos...</option>';
+      const { data, error } = await db.from('movimientos').select('*').lt('importe', 0).order('fecha', { ascending: false }).limit(100);
+      
+      if (error || !data) {
+        selBanco.innerHTML = '<option value="">Error al buscar banco</option>';
+        return;
+      }
+
+      // Filtrar los que probablemente no tienen cruce (factura_ref o notas limpias)
+      const movs = data.filter(m => !m.factura_ref || m.factura_ref === '');
+      
+      let html = '<option value="">No cruzar (Dejar en blanco)</option>';
+      let exactMatchId = null;
+
+      movs.forEach(m => {
+        const absImp = Math.abs(m.importe);
+        const match = absImp === importeRaw ? '⭐ ' : '';
+        if (absImp === importeRaw && !exactMatchId) exactMatchId = m.id;
+        
+        // El valor que guardaremos en banco_ref será el string formateado como lo hace processBancoFile
+        const refString = `${m.fecha} | ${absImp}€ (${m.concepto})`;
+        html += `<option value="${refString}">${match}${m.fecha} | ${absImp}€ | ${m.concepto}</option>`;
+      });
+
+      selBanco.innerHTML = html;
+      
+      // Auto-seleccionar coincidencia exacta si hay
+      if (exactMatchId) {
+        const matchMov = movs.find(m => m.id === exactMatchId);
+        selBanco.value = `${matchMov.fecha} | ${Math.abs(matchMov.importe)}€ (${matchMov.concepto})`;
+      }
+    }
+
+    async function guardarFacturaProveedor() {
+      const pId = document.getElementById('fpProyecto').value;
+      const provId = document.getElementById('fpProveedor').value;
+      const importe = parseFloat(document.getElementById('fpImporte').value);
+      const numFact = document.getElementById('fpNumFactura').value.trim();
+      const bancoRef = document.getElementById('fpCruceBanco').value;
+
+      if (!pId) return alert("Debe seleccionar un proyecto para vincular la factura.");
+      if (isNaN(importe) || importe <= 0) return alert("El importe debe ser válido.");
+      
+      const payload = {
+        pres: -importe,
+        cat: 'completado',
+        progreso: 1,
+        proveedor_id: provId || null
+      };
+      
+      if (bancoRef) {
+        payload.banco_ref = bancoRef;
+      }
+
+      // Podríamos guardar el número de factura en 'obs' si el proyecto no tiene un campo dedicado
+      if (numFact) {
+        // fetch current obs to append
+        const { data: currP } = await db.from('proyectos').select('obs').eq('id', pId).single();
+        const existingObs = currP?.obs || '';
+        payload.obs = existingObs ? (existingObs + `\nFactura: ${numFact}`) : `Factura: ${numFact}`;
+      }
+
+      const { error } = await db.from('proyectos').update(payload).eq('id', pId);
+      if (error) return alert("Error al vincular: " + error.message);
+
+      closeFacturaProveedorModal();
+      await loadDashboardData();
+    }
 
     function openPdfUploadModal(supplier) {
       _currentPdfSupplier = supplier;
@@ -4825,8 +5297,15 @@
           // Patrón de fechas: busca "Del XX/XX/XXXX al YY/YY/YYYY" con años de 2 o 4 cifras
           datePattern: /[Dd]el?\s*(\d{1,2})[\.\/\-](\d{1,2})[\.\/\-](\d{2,4})\s*al?\s*(\d{1,2})[\.\/\-](\d{1,2})[\.\/\-](\d{2,4})/i,
           // Patrón de factura: busca "Factura Nº: XXX" o similar
-          invoicePattern: /(?:Factura|Número|Nº|N.º)\s*(?:Nº|o|.)?\s*[:\-]?\s*([A-Z0-9.\-\/]+)/i,
+          invoicePattern: /(?:Factura\s*N\.?º?|N\.?º?\s*(?:de\s*)?factura|Número\s*(?:de\s*)?factura|Factura)\s*[:\-]?\s*([A-Z0-9.\-\/]+)/i,
           // Patrón de importe: busca el total en euros (Muy flexible)
+          importePattern: /(?:Total|Importe|A pagar|Cargo|Facturado).*?([\d.]+,\d{2})\s*€/i
+        };
+      } else if (supplier === 'naturgy') {
+        patterns = {
+          type: 'luz', proveedor: 'Naturgy',
+          datePattern: /[Dd]el?\s*(\d{1,2})[\.\/\-](\d{1,2})[\.\/\-](\d{2,4})\s*al?\s*(\d{1,2})[\.\/\-](\d{1,2})[\.\/\-](\d{2,4})/i,
+          invoicePattern: /(?:Factura\s*N\.?º?|N\.?º?\s*(?:de\s*)?factura|Número\s*(?:de\s*)?factura|Factura)\s*[:\-]?\s*([A-Z0-9.\-\/]+)/i,
           importePattern: /(?:Total|Importe|A pagar|Cargo|Facturado).*?([\d.]+,\d{2})\s*€/i
         };
       } else {
@@ -4834,7 +5313,6 @@
       }
 
       const dateMatch = text.match(patterns.datePattern);
-      const invoiceMatch = text.match(patterns.invoicePattern);
 
       // Intento múltiple para el importe en Euros
       let importeMatch = text.match(patterns.importePattern);
@@ -4852,9 +5330,11 @@
 
       // Extracción de Consumo kWh (Muy flexible pero con filtros de seguridad)
       let consumoStr = null;
-      if (supplier === 'gas_power') {
+      if (supplier === 'gas_power' || supplier === 'naturgy') {
+        // Intento 0: Patrón específico de Naturgy "Total consumo 314 kWh"
+        const m0 = text.match(/Total\s*consumo\s*([0-9.]+)\s*kWh/i);
         // Intento 1: Patrón estándar "Consumo gas 1234 kWh" (El más fiable)
-        const m1 = text.match(/Consumo\s*(?:gas|total|facturado)?\s*[:\-]?\s*([0-9.]+)\s*kWh/i);
+        const m1 = text.match(/Consumo\s*(?:gas|luz|electricidad|total|facturado)?\s*[:\-]?\s*([0-9.]+)\s*kWh/i);
         // Intento 2: Diferencia de lecturas "Lectura anterior 100 - Lectura actual 200 = 100 kWh"
         const m2 = text.match(/(?:facturad[oa]|calculad[oa]|total)\s*[:\-]?\s*([0-9.]+)\s*kWh/i);
         // Intento 3: Patrón de facturación "X kWh x precio"
@@ -4862,7 +5342,8 @@
         // Intento 4: Patrón de diferencia de lecturas antiguo
         const m4 = text.match(/(\d[\d.]*)\s*kWh\s*=\s*\d/i);
 
-        if (m1) consumoStr = m1[1];
+        if (m0) consumoStr = m0[1];
+        else if (m1) consumoStr = m1[1];
         else if (m2) consumoStr = m2[1];
         else if (m3) consumoStr = m3[1];
         else if (m4) consumoStr = m4[1];
@@ -4872,7 +5353,8 @@
           for (let i = allKwh.length - 1; i >= 0; i--) {
             const val = parseFloat(allKwh[i][1].replace(/\./g, '').replace(',', '.'));
             // Si es invierno (Nov-Mar), el consumo debe ser > 500 kWh. Si no, > 100 kWh.
-            if (val > 100 && val < 50000) {
+            // Para Naturgy la luz es más estable, relajamos el límite inferior
+            if (val > 10 && val < 50000) {
               consumoStr = allKwh[i][1];
               break;
             }
@@ -4888,9 +5370,19 @@
       const consumption = parseFloat(consumoStr.replace(/\./g, '').replace(',', '.'));
       const amount = importeMatch ? parseFloat(importeMatch[1].replace(/\./g, '').replace(',', '.')) : 0;
 
-      // Limpieza del número de factura (evitar pillar "de", "nº", etc)
-      let invNum = invoiceMatch ? invoiceMatch[1].trim() : `DOC-${Date.now()}`;
-      if (invNum.toLowerCase() === 'de' || invNum.length < 3) invNum = `FACT-${Date.now()}`;
+      let invNum = null;
+      const allInvoices = [...text.matchAll(new RegExp(patterns.invoicePattern.source, 'gi'))];
+      for (const m of allInvoices) {
+        const candidate = m[1].trim();
+        if (candidate.toLowerCase() !== 'de' && candidate.length >= 3) {
+          invNum = candidate;
+          break;
+        }
+      }
+
+      if (!invNum) {
+        throw new Error("No se pudo extraer el número de factura automáticamente. Revisa el PDF original.");
+      }
 
       return {
         fecha_inicio: d1,
@@ -4909,9 +5401,23 @@
       const resultDiv = document.getElementById('pdfUploadResult');
       resultDiv.innerHTML = '<div style="text-align:center;padding:16px">⏳ Procesando...</div>';
       const res = await processPdfFile(file, _currentPdfSupplier, false);
+      
       if (res.ok) {
-        resultDiv.innerHTML = '<div style="background:#D1FAE5;padding:16px;border-radius:8px;color:#065F46">✅ Importado con éxito</div>';
+        resultDiv.innerHTML = `<div style="background:#D1FAE5;padding:16px;border-radius:8px;color:#065F46">✅ Importado con éxito (Nº: ${res.num})</div>`;
         await loadGasChartData();
+      } else if (res.error === "Factura duplicada") {
+        if (confirm("Esta factura ya ha sido importada previamente. ¿Deseas reemplazarla y actualizar sus datos?")) {
+          resultDiv.innerHTML = '<div style="text-align:center;padding:16px">⏳ Reemplazando...</div>';
+          const resForce = await processPdfFile(file, _currentPdfSupplier, true);
+          if (resForce.ok) {
+            resultDiv.innerHTML = `<div style="background:#D1FAE5;padding:16px;border-radius:8px;color:#065F46">✅ Factura reemplazada con éxito (Nº: ${resForce.num})</div>`;
+            await loadGasChartData();
+          } else {
+            resultDiv.innerHTML = `<div style="background:#FEF2F2;padding:16px;border-radius:8px;color:#EF4444">❌ Error: ${resForce.error}</div>`;
+          }
+        } else {
+          resultDiv.innerHTML = '<div style="color:var(--text-muted);text-align:center;padding:16px">Subida cancelada</div>';
+        }
       } else {
         resultDiv.innerHTML = `<div style="background:#FEF2F2;padding:16px;border-radius:8px;color:#EF4444">❌ Error: ${res.error}</div>`;
       }
@@ -4924,14 +5430,34 @@
         const row = { ...data, consumo_valido: true };
 
         if (!force) {
-          const { data: existing } = await db.from('consumos_suministros').select('id').eq('numero_factura', row.numero_factura).maybeSingle();
-          if (existing) throw new Error("Factura duplicada");
+          const { data: existing } = await db.from('consumos_suministros')
+            .select('id')
+            .eq('numero_factura', row.numero_factura)
+            .limit(1);
+          if (existing && existing.length > 0) throw new Error("Factura duplicada");
         }
 
         const { error } = await db.from('consumos_suministros').upsert([row], { onConflict: 'numero_factura' });
         if (error) throw new Error("Error Supabase: " + error.message);
 
-        return { ok: true };
+        // Auto-cruzar con el banco si existe un cargo exacto
+        try {
+          const importeCargo = -Math.abs(row.importe_eur);
+          const { data: movs } = await db.from('movimientos')
+            .select('id')
+            .eq('importe', importeCargo)
+            .or('factura_ref.is.null,factura_ref.eq.""')
+            .order('fecha', { ascending: false })
+            .limit(1);
+            
+          if (movs && movs.length > 0) {
+            await db.from('movimientos').update({ factura_ref: row.numero_factura }).eq('id', movs[0].id);
+          }
+        } catch(err) {
+          console.error("Error auto-cruzando movimiento bancario:", err);
+        }
+
+        return { ok: true, num: row.numero_factura };
       } catch (e) {
         return { ok: false, error: e.message };
       }
@@ -5559,6 +6085,40 @@
         }
       });
     }
+
+    // Exportar estructura vía URL parameter usando window.open
+    window.exportArchitectureData = function(event) {
+      event.preventDefault(); // Detener navegación del href
+
+      const tabs = document.querySelectorAll('.tabs-container .tab-btn');
+      let treeData = [];
+      tabs.forEach(btn => {
+        const tabName = btn.innerText.trim();
+        const onclick = btn.getAttribute('onclick');
+        if(!onclick) return;
+        const match = onclick.match(/'([^']+)'/);
+        if(!match) return;
+        const tabPane = document.getElementById(match[1]);
+        if(!tabPane) return;
+        const titles = tabPane.querySelectorAll('.card-title');
+        let sections = [];
+        titles.forEach(t => {
+          let text = t.innerText.replace('✓ Cerrado', '').trim();
+          if(text) sections.push(text);
+        });
+        treeData.push({ tabName, sections });
+      });
+      
+      try {
+        const jsonStr = JSON.stringify(treeData);
+        // Usar directamente encodeURIComponent, sin Base64 para evitar fallos de codificación
+        const urlSafeData = encodeURIComponent(jsonStr);
+        const url = "Recursos/Arquitectura/arquitectura.html?data=" + urlSafeData;
+        window.open(url, '_blank');
+      } catch (e) {
+        console.error("Error al exportar datos: ", e);
+      }
+    };
 
     // Init
     initAuth();
