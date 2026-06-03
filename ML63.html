@@ -2379,52 +2379,93 @@
 
     <!-- ACTAS Y DOCUMENTOS -->
     <div class="card">
-      <div class="card-title">📄 Actas de Juntas</div>
+      <div class="card-title">📄 Juntas Generales</div>
       <p class="card-desc">
         Consulta y descarga las actas de las juntas celebradas por la comunidad.
       </p>
-      <div style="margin-top: 15px; display: flex; gap: 10px; align-items: center;">
-        <select id="actaSelect" style="appearance: none; -webkit-appearance: none; background-color: var(--surface); background-image: url('data:image/svg+xml;charset=UTF-8,%3csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'%2364748B\' stroke-width=\'2\' stroke-linecap=\'round\' stroke-linejoin=\'round\'%3e%3cpolyline points=\'6 9 12 15 18 9\'%3e%3c/polyline%3e%3c/svg%3e'); background-repeat: no-repeat; background-position: right 12px center; background-size: 14px; padding: 9px 36px 9px 12px; border-radius: 8px; border: 1px solid var(--border); font-family: inherit; font-size: 14px; min-width: 250px; cursor: pointer; outline: none; color: var(--text);">
-          <option value="">Selecciona un año...</option>
-          <option value="acta_2015.pdf">Junta 2015</option>
-          <option value="acta_2016.pdf">Junta 2016</option>
-          <option value="acta_2017.pdf">Junta 2017</option>
-          <option value="acta_2018.pdf">Junta 2018</option>
-          <option value="acta_2019_2020.pdf">Junta 2019/2020</option>
-          <option value="acta_2020_virtual.pdf">Junta 2020 (Virtual)</option>
-          <option value="acta_2021.pdf">Junta 2021</option>
-          <option value="acta_2022.pdf">Junta 2022</option>
-          <option value="acta_2024.pdf">Junta 2024</option>
-          <option value="acta_2025.pdf">Junta 2025</option>
-          <option value="acta_2026_extraordinaria.pdf">Junta 2026 (Extraordinaria)</option>
-        </select>
-        <button onclick="descargarActa()" style="padding: 9px 16px; background: var(--primary); color: white; border: none; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; font-family: inherit; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); transition: all 0.2s ease;">Descargar acta</button>
-      </div>
-    </div>
+      <div style="margin-top: 10px; display: flex; flex-wrap: wrap; gap: 32px; align-items: stretch;">
+        
+        <!-- BLOQUE IZQUIERDO: Descarga -->
+        <div style="display: flex; flex-direction: column; gap: 12px; min-width: 260px; flex: 1;">
+          <select id="actaSelect" style="appearance: none; -webkit-appearance: none; background-color: var(--surface); background-image: url('data:image/svg+xml;charset=UTF-8,%3csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'%2364748B\' stroke-width=\'2\' stroke-linecap=\'round\' stroke-linejoin=\'round\'%3e%3cpolyline points=\'6 9 12 15 18 9\'%3e%3c/polyline%3e%3c/svg%3e'); background-repeat: no-repeat; background-position: right 12px center; background-size: 14px; padding: 12px 36px 12px 14px; border-radius: 8px; border: 1px solid var(--border); font-family: inherit; font-size: 14px; width: 100%; cursor: pointer; outline: none; color: var(--text); font-weight: 500; transition: border-color 0.2s ease;">
+            <option value="">Selecciona un año...</option>
+            <option value="acta_2015.pdf">Junta 2015</option>
+            <option value="acta_2016.pdf">Junta 2016</option>
+            <option value="acta_2017.pdf">Junta 2017</option>
+            <option value="acta_2018.pdf">Junta 2018</option>
+            <option value="acta_2019_2020.pdf">Junta 2019/2020</option>
+            <option value="acta_2020_virtual.pdf">Junta 2020 (Virtual)</option>
+            <option value="acta_2021.pdf">Junta 2021</option>
+            <option value="acta_2022.pdf">Junta 2022</option>
+            <option value="acta_2024.pdf">Junta 2024</option>
+            <option value="acta_2025.pdf">Junta 2025</option>
+            <option value="acta_2026_extraordinaria.pdf">Junta 2026 (Extraordinaria)</option>
+          </select>
+          <button onclick="descargarActa()" style="padding: 12px 16px; background: var(--primary); color: white; border: none; border-radius: 8px; font-size: 14px; font-weight: 700; cursor: pointer; font-family: inherit; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); transition: all 0.2s ease; width: 100%;">Descargar acta</button>
+        </div>
 
-    <script>
-      async function descargarActa() {
-        const select = document.getElementById('actaSelect');
-        const filename = select.value;
-        if (!filename) {
-          alert('Por favor, selecciona un acta para descargar.');
-          return;
-        }
-
-        try {
-          // Genera una URL temporal segura (válida por 60 segundos) desde el bucket privado
-          const { data, error } = await db.storage.from('actas').createSignedUrl(filename, 60);
-          if (error) throw error;
+        <!-- BLOQUE DERECHO: Histórico Timeline -->
+        <div style="flex: 1.5; min-width: 280px; padding: 22px 24px; background: var(--surface-alt); border-radius: 12px; border: 1px solid var(--border);">
+          <div style="font-size: 13px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 20px; display: flex; align-items: center; gap: 8px;">
+            <span>🏛️</span> Histórico de Presidencias
+          </div>
           
-          if (data && data.signedUrl) {
-            window.open(data.signedUrl, '_blank');
+          <div style="display: flex; flex-direction: column; gap: 20px; position: relative;">
+            <!-- Línea conectora -->
+            <div style="position: absolute; left: 7px; top: 10px; bottom: 10px; width: 2px; background: var(--border); border-radius: 2px;"></div>
+            
+            <!-- Etapa Actual -->
+            <div style="display: flex; gap: 16px; position: relative; z-index: 1;">
+              <div style="width: 16px; height: 16px; border-radius: 50%; background: var(--primary); border: 3px solid var(--surface-alt); margin-top: 2px; flex-shrink: 0;"></div>
+              <div>
+                <div style="font-size: 14px; font-weight: 800; color: var(--primary);">2022 — Actualidad</div>
+                <div style="font-size: 13px; color: var(--text-soft); margin-top: 4px; line-height: 1.5;">
+                  <strong style="color: var(--text); font-weight: 600;">Presidente:</strong> Eduardo Sánchez Ruiz<br>
+                  <strong style="color: var(--text); font-weight: 600;">Vicepresidenta:</strong> Vivianne R. L. Assa
+                </div>
+              </div>
+            </div>
+
+            <!-- Etapa Anterior -->
+            <div style="display: flex; gap: 16px; position: relative; z-index: 1;">
+              <div style="width: 16px; height: 16px; border-radius: 50%; background: var(--text-muted); border: 3px solid var(--surface-alt); margin-top: 2px; flex-shrink: 0;"></div>
+              <div>
+                <div style="font-size: 14px; font-weight: 700; color: var(--text-muted);">2016 — 2022</div>
+                <div style="font-size: 13px; color: var(--text-soft); margin-top: 4px; line-height: 1.5;">
+                  <strong style="color: var(--text-muted); font-weight: 600;">Presidente:</strong> Sergio Bendrao Bendahan<br>
+                  <strong style="color: var(--text-muted); font-weight: 600;">Vicepresidente:</strong> Daniel Halioua
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <script>
+        async function descargarActa() {
+          const select = document.getElementById('actaSelect');
+          const filename = select.value;
+          if (!filename) {
+            alert('Por favor, selecciona un acta para descargar.');
+            return;
           }
-        } catch (err) {
-          console.error(err);
-          alert('Error al descargar el acta. Asegúrate de que el archivo exista en el bucket privado. Detalle: ' + err.message);
+
+          try {
+            // Genera una URL temporal segura (válida por 60 segundos) desde el bucket privado
+            const { data, error } = await db.storage.from('actas').createSignedUrl(filename, 60);
+            if (error) throw error;
+            
+            if (data && data.signedUrl) {
+              window.open(data.signedUrl, '_blank');
+            }
+          } catch (err) {
+            console.error(err);
+            alert('Error al descargar el acta. Asegúrate de que el archivo exista en el bucket privado. Detalle: ' + err.message);
+          }
         }
-      }
-    </script>
+      </script>
+    </div>
 
     <!-- COMISIONES BANCARIAS -->
     <div class="card">
@@ -2682,6 +2723,14 @@
         <div class="chart-container" id="burndownChart"></div>
       </div>
     </div>
+
+    <!-- TABLA HISTÓRICA DE MEJORAS -->
+    <div class="card" id="historicoMejorasCard">
+      <div class="card-title">🏆 Histórico de Mejoras Ejecutadas</div>
+      <p class="card-desc" id="historicoMejorasDesc">Listado completo de todas las intervenciones, proyectos y mejoras llevadas a cabo y finalizadas al 100%.</p>
+      <div id="historicoMejorasContainer" style="margin-top: 16px;"></div>
+    </div>
+
   </div>
 
   <!-- ============ TAB ADMIN ============ -->
@@ -3226,6 +3275,97 @@
       if (h) h.classList.toggle('scrolled', window.scrollY > 10);
     });
 
+    function renderHistoricalProjects() {
+      const container = document.getElementById('historicoMejorasContainer');
+      if (!container) return;
+
+      let completedProjects = [];
+      const moves = window.loadedMoves || [];
+
+      const isRecurring = (concepto) => {
+        const c = (concepto || '').toUpperCase();
+        const keywords = [
+          'NATURGY', 'IBERDROLA', 'CURENERGIA', 'GAS POWER', 'MADRID DISTRIBUCION',
+          'CANAL ISABEL', 'ISTA', 'TECHEM',
+          'MJM', 'LIMPIEZA', 'PILAR', 'PREVENT', 'VANESSA',
+          'ALFREDO SANCHEZ', 'FINCAS', 'HONORARIOS', 'ADMINISTRACION',
+          'NOMINA', 'TGSS', 'SEGURIDAD SOCIAL', 'IRPF', 'MUTUA', 'QUIRON', 'PREVENCION',
+          'COMISION', 'INTERES', 'IVA SOBRE', 'LIQUIDACION', 'MANTENIMIENTO DE CUENTA',
+          'SEGURO', 'ALLIANZ', 'MAPFRE', 'CASER', 'OCASO',
+          'LASSER', 'PRISMA', 'MULTISERVICIOS', 'EXTINTOR', 'IBEREXT', 'RIESGOS', 'LOPD', 'PROTECCION DATOS',
+          'ASCENSOR', 'ORONA', 'THYSSEN', 'SCHINDLER', 'FAIN',
+          'RECIBO', 'CUOTA', 'DEVOLUCION', 'REMESAS', 'TALONARIO', 'PROVISION'
+        ];
+        return keywords.some(k => c.includes(k));
+      };
+
+      moves.forEach(m => {
+        if (m.importe >= 0) return;
+        if (m.importe > -50) return;
+        if (isRecurring(m.concepto)) return;
+
+        let year = parseInt((m._iso || '').split('-')[0]);
+        if (isNaN(year) || year >= 2025) return;
+
+        let nombreDesc = m.concepto;
+        if (nombreDesc.toUpperCase().includes('CHEQUE')) {
+          nombreDesc += ' (Impernova)';
+        }
+
+        completedProjects.push({
+          year: year,
+          nombre: nombreDesc,
+          pres: Math.abs(m.importe),
+          orden: new Date(m._iso).getTime() || 0
+        });
+      });
+
+      Object.keys(DATA).forEach(year => {
+        DATA[year].forEach(p => {
+          if (p.progreso >= 1) {
+            completedProjects.push({ ...p, year });
+          }
+        });
+      });
+
+      if (completedProjects.length === 0) {
+        container.innerHTML = '<div style="padding: 16px; color: var(--text-muted); font-size: 14px;">No hay mejoras registradas al 100%.</div>';
+        return;
+      }
+
+      completedProjects.sort((a, b) => b.year - a.year || a.orden - b.orden);
+
+      let totalInversion = 0;
+      let html = '<div style="max-height: 400px; overflow-y: auto; border: 1px solid var(--border); border-radius: 8px;">';
+      html += '<table style="width: 100%; border-collapse: collapse; font-size: 13px;">';
+      html += '<thead style="background: var(--surface-alt); position: sticky; top: 0; z-index: 10;">';
+      html += '<tr>';
+      html += '<th style="padding: 12px 16px; text-align: left; font-weight: 700; color: var(--text-muted); border-bottom: 1px solid var(--border);">AÑO</th>';
+      html += '<th style="padding: 12px 16px; text-align: left; font-weight: 700; color: var(--text-muted); border-bottom: 1px solid var(--border);">OBRA / PROYECTO</th>';
+      html += '<th style="padding: 12px 16px; text-align: right; font-weight: 700; color: var(--text-muted); border-bottom: 1px solid var(--border);">INVERSIÓN</th>';
+      html += '</tr></thead><tbody>';
+
+      completedProjects.forEach(p => {
+        const presValue = p.pres ? Math.abs(parseFloat(p.pres)) : 0;
+        totalInversion += presValue;
+        const pres = presValue > 0 ? new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR' }).format(presValue) : '-';
+        html += '<tr style="border-bottom: 1px solid var(--border); transition: background 0.2s;" onmouseover="this.style.background=\'#F8FAFC\'" onmouseout="this.style.background=\'transparent\'">';
+        html += `<td style="padding: 12px 16px; color: var(--text); font-weight: 600;">${p.year}</td>`;
+        html += `<td style="padding: 12px 16px; color: var(--text);">${p.nombre}</td>`;
+        html += `<td style="padding: 12px 16px; text-align: right; color: var(--text-soft); font-weight: 500;">${pres}</td>`;
+        html += '</tr>';
+      });
+
+      html += '</tbody></table></div>';
+      container.innerHTML = html;
+
+      const desc = document.getElementById('historicoMejorasDesc');
+      if (desc) {
+        const formattedTotal = new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }).format(totalInversion);
+        desc.innerHTML = `Listado completo de todas las intervenciones finalizadas al 100%. Inversión total acumulada en mejoras: <strong style="color: var(--primary); font-size: 14px;">${formattedTotal}</strong>.`;
+      }
+    }
+
     function calcPlan() {
       const PRESUPUESTO = 182810;
       const years = ['2025', '2026', '2027', '2028', '2029', '2030', '2031'];
@@ -3545,11 +3685,7 @@
 
         console.log('Iniciando carga recursiva de movimientos...');
         
-        // AUTO-CLEANUP: Borrar movimientos falsos generados por el bug de separador de miles
-        try {
-          await db.from('movimientos').delete().gt('saldo', 35000);
-          console.log("Limpiados movimientos erróneos con saldo > 35k");
-        } catch(e) {}
+        // AUTO-CLEANUP eliminado: ya no se borran movimientos con saldo > 35k, eran reales del histórico.
         let allMoves = [];
         let from = 0;
         let finished = false;
@@ -4044,6 +4180,7 @@
 
         // Recalcular plan con los movimientos ya cargados para no dar balance cero en tesorería
         calcPlan();
+        renderHistoricalProjects();
       } catch (err) {
         console.error('Error crítico en loadDashboardData:', err);
         setInner('kpiTesoria2026', `<div class="kpi danger"><div class="kpi-label">ERROR CRÍTICO</div><div class="kpi-value">${err.message || 'Error desconocido'}</div></div>`);
