@@ -15,7 +15,8 @@
     }
 
     .canvas-wrapper {
-      min-width: max-content;
+      width: 100%;
+      box-sizing: border-box;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -81,6 +82,7 @@
      */
     .tree {
       margin-top: 40px;
+      width: 100%;
     }
 
     .tree ul {
@@ -90,12 +92,14 @@
       -webkit-transition: all 0.5s;
       -moz-transition: all 0.5s;
       display: flex;
-      justify-content: center;
+      justify-content: space-evenly;
+      width: 100%;
       padding-left: 0;
     }
 
     .tree li {
-      float: left; text-align: center;
+      flex: 1;
+      text-align: center;
       list-style-type: none;
       position: relative;
       padding: 30px 10px 0 10px;
@@ -286,13 +290,29 @@
     /* === RESPONSIVE MOBILE === */
     @media (max-width: 768px) {
       body {
-        padding: 80px 10px 20px 10px; /* Espacio para el header absoluto y aprovechar bordes */
+        padding: 20px 10px 20px 10px; 
+      }
+      .header-container {
+        position: relative;
+        flex-direction: column;
+        top: 0;
+        gap: 16px;
+        padding: 0 10px;
+        margin-bottom: 30px;
       }
       .canvas-title {
         position: static;
         text-align: center;
-        margin-bottom: 20px;
-        font-size: 18px;
+        margin-left: 0;
+        margin-bottom: 0;
+        font-size: 20px;
+      }
+      .flow-select-wrapper {
+        margin-right: 0;
+        width: 100%;
+      }
+      .flow-select {
+        width: 100%;
       }
       .canvas-wrapper {
         min-width: 100%;
