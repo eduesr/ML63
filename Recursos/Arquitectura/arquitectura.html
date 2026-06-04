@@ -20,7 +20,8 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 60px 20px;
+      padding: 30px 10px 40px 10px; /* Menos padding lateral y superior para aprovechar la pantalla */
+      min-height: calc(100vh - 180px); /* Empuja el footer al fondo si hay poco contenido */
     }
 
     .site-header {
@@ -89,7 +90,7 @@
      * Basado en listas no ordenadas ul/li
      */
     .tree {
-      margin-top: 40px;
+      margin-top: 10px;
       width: 100%;
     }
 
