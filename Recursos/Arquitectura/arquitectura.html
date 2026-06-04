@@ -496,11 +496,12 @@
         treeRoot.innerHTML = '';
         
         const cleanEmoji = (s) => s.replace(/[^\w\sáéíóúÁÉÍÓÚñÑüÜ.,\-&()·]/g, '').replace(/^\s*·\s*/, '').trim();
+        const removeProvider = (s) => cleanEmoji(s.split('·')[0]);
 
         tabsData.forEach(tab => {
           let childrenHTML = '';
           tab.sections.forEach(sec => {
-            childrenHTML += `<div class="vertical-node">${cleanEmoji(sec)}</div>`;
+            childrenHTML += `<div class="vertical-node">${removeProvider(sec)}</div>`;
           });
           
           const li = document.createElement('li');
