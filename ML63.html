@@ -2307,51 +2307,51 @@
       <div style="font-size: 11px; font-weight: 700; color: var(--text-muted); margin: 26px 0 12px; text-transform: uppercase; letter-spacing: 0.5px;">💰 Total Pagado por Proveedor</div>
       <div class="kpi-grid">
         
-        <!-- Card 1: MJM -->
-        <div class="kpi" id="limpCard_MJM" onclick="showLimpiezaAudit('MJM')" style="border: 1px solid rgba(239, 68, 68, 0.12); border-left: 4px solid #EF4444; background: linear-gradient(135deg, #FFF5F5 0%, #FFF 100%); transition: all 0.25s ease; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 1px 3px rgba(0,0,0,0.01); cursor: pointer;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 10px rgba(0,0,0,0.04)';" onmouseout="this.style.transform='none'; this.style.boxShadow='0 1px 3px rgba(0,0,0,0.01)';">
+        <!-- Card 1: Prevent Ambos -->
+        <div class="kpi" id="limpCard_PREVENT_AMBOS" onclick="showLimpiezaAudit('PREVENT_AMBOS')" style="border: 1px solid rgba(239, 68, 68, 0.22); border-left: 4px solid #EF4444; background: linear-gradient(135deg, #FFF5F5 0%, #FFF 100%); transition: all 0.25s ease; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 2px 4px rgba(239,68,68,0.04); position: relative; cursor: pointer;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 12px rgba(0,0,0,0.06)';" onmouseout="this.style.transform='none'; this.style.boxShadow='0 2px 4px rgba(239,68,68,0.04)';">
+          <span style="position: absolute; top: 6px; right: 8px; background: #EF4444; color: white; font-size: 8px; font-weight: 800; padding: 1px 5px; border-radius: 8px; text-transform: uppercase;">Activo</span>
           <div>
-            <div style="color: #9B2C2C; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px;">MJM • Total</div>
-            <div id="limpAnterior" style="color: #EF4444; font-size: 24px; font-weight: 800;">---€</div>
+            <div style="color: #9B2C2C; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px;">Prevent XXI • Ambos</div>
+            <div id="limpActual" style="color: #EF4444; font-size: 24px; font-weight: 800;">---€</div>
           </div>
           <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 8px;">
-            <span style="color: #E53E3E; font-size: 11px; font-weight: 600;">oct'24 – abr'25 • ambos</span>
+            <span style="color: #E53E3E; font-size: 11px; font-weight: 600;">mar'26 → actual • total</span>
             <span style="font-size: 13px; color: #EF4444; text-transform: uppercase; font-weight: 800; display: inline-flex; align-items: center; gap: 5px; opacity: 1.0; padding: 3px 8px; background: rgba(239, 68, 68, 0.08); border-radius: 4px;">🔍 Auditar</span>
           </div>
         </div>
 
-        <!-- Card 2: Prevent Cubos -->
-        <div class="kpi" id="limpCard_PREVENT_SOLO" onclick="showLimpiezaAudit('PREVENT_SOLO')" style="border: 1px solid rgba(245, 158, 11, 0.12); border-left: 4px solid #F59E0B; background: linear-gradient(135deg, #FFFDF5 0%, #FFF 100%); transition: all 0.25s ease; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 1px 3px rgba(0,0,0,0.01); cursor: pointer;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 10px rgba(0,0,0,0.04)';" onmouseout="this.style.transform='none'; this.style.boxShadow='0 1px 3px rgba(0,0,0,0.01)';">
+        <!-- Card 2: El Pilar -->
+        <div class="kpi" id="limpCard_EL_PILAR" onclick="showLimpiezaAudit('EL_PILAR')" style="border: 1px solid rgba(245, 158, 11, 0.12); border-left: 4px solid #F59E0B; background: linear-gradient(135deg, #FFFDF5 0%, #FFF 100%); transition: all 0.25s ease; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 1px 3px rgba(0,0,0,0.01); cursor: pointer;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 10px rgba(0,0,0,0.04)';" onmouseout="this.style.transform='none'; this.style.boxShadow='0 1px 3px rgba(0,0,0,0.01)';">
           <div>
-            <div style="color: #B45309; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px;">Prevent XXI • Cubos</div>
-            <div id="limpPreventSolo" style="color: #F59E0B; font-size: 24px; font-weight: 800;">---€</div>
+            <div style="color: #B45309; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px;">El Pilar • Limpieza</div>
+            <div id="limpIntermedio" style="color: #F59E0B; font-size: 24px; font-weight: 800;">---€</div>
           </div>
           <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 8px;">
-            <span style="color: #D97706; font-size: 11px; font-weight: 600;">may'25 – feb'26 • solo cubos</span>
+            <span style="color: #D97706; font-size: 11px; font-weight: 600;">may'25 – feb'26 • solo limp.</span>
             <span style="font-size: 13px; color: #F59E0B; text-transform: uppercase; font-weight: 800; display: inline-flex; align-items: center; gap: 5px; opacity: 1.0; padding: 3px 8px; background: rgba(245, 158, 11, 0.08); border-radius: 4px;">🔍 Auditar</span>
           </div>
         </div>
 
-        <!-- Card 3: El Pilar -->
-        <div class="kpi" id="limpCard_EL_PILAR" onclick="showLimpiezaAudit('EL_PILAR')" style="border: 1px solid rgba(16, 185, 129, 0.12); border-left: 4px solid #10B981; background: linear-gradient(135deg, #F0FDF4 0%, #FFF 100%); transition: all 0.25s ease; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 1px 3px rgba(0,0,0,0.01); cursor: pointer;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 10px rgba(0,0,0,0.04)';" onmouseout="this.style.transform='none'; this.style.boxShadow='0 1px 3px rgba(0,0,0,0.01)';">
+        <!-- Card 3: Prevent Cubos -->
+        <div class="kpi" id="limpCard_PREVENT_SOLO" onclick="showLimpiezaAudit('PREVENT_SOLO')" style="border: 1px solid rgba(16, 185, 129, 0.12); border-left: 4px solid #10B981; background: linear-gradient(135deg, #F0FDF4 0%, #FFF 100%); transition: all 0.25s ease; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 1px 3px rgba(0,0,0,0.01); cursor: pointer;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 10px rgba(0,0,0,0.04)';" onmouseout="this.style.transform='none'; this.style.boxShadow='0 1px 3px rgba(0,0,0,0.01)';">
           <div>
-            <div style="color: #047857; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px;">El Pilar • Limpieza</div>
-            <div id="limpIntermedio" style="color: #10B981; font-size: 24px; font-weight: 800;">---€</div>
+            <div style="color: #047857; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px;">Prevent XXI • Cubos</div>
+            <div id="limpPreventSolo" style="color: #10B981; font-size: 24px; font-weight: 800;">---€</div>
           </div>
           <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 8px;">
-            <span style="color: #059669; font-size: 11px; font-weight: 600;">may'25 – feb'26 • solo limp.</span>
+            <span style="color: #059669; font-size: 11px; font-weight: 600;">may'25 – feb'26 • solo cubos</span>
             <span style="font-size: 13px; color: #10B981; text-transform: uppercase; font-weight: 800; display: inline-flex; align-items: center; gap: 5px; opacity: 1.0; padding: 3px 8px; background: rgba(16, 185, 129, 0.08); border-radius: 4px;">🔍 Auditar</span>
           </div>
         </div>
 
-        <!-- Card 4: Prevent Ambos -->
-        <div class="kpi" id="limpCard_PREVENT_AMBOS" onclick="showLimpiezaAudit('PREVENT_AMBOS')" style="border: 1px solid rgba(14, 165, 233, 0.22); border-left: 4px solid #0EA5E9; background: linear-gradient(135deg, #F0F9FF 0%, #FFF 100%); transition: all 0.25s ease; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 2px 4px rgba(14,165,233,0.04); position: relative; cursor: pointer;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 12px rgba(0,0,0,0.06)';" onmouseout="this.style.transform='none'; this.style.boxShadow='0 2px 4px rgba(14,165,233,0.04)';">
-          <span style="position: absolute; top: 6px; right: 8px; background: #0EA5E9; color: white; font-size: 8px; font-weight: 800; padding: 1px 5px; border-radius: 8px; text-transform: uppercase;">Activo</span>
+        <!-- Card 4: MJM -->
+        <div class="kpi" id="limpCard_MJM" onclick="showLimpiezaAudit('MJM')" style="border: 1px solid rgba(14, 165, 233, 0.12); border-left: 4px solid #0EA5E9; background: linear-gradient(135deg, #F0F9FF 0%, #FFF 100%); transition: all 0.25s ease; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 1px 3px rgba(0,0,0,0.01); cursor: pointer;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 10px rgba(0,0,0,0.04)';" onmouseout="this.style.transform='none'; this.style.boxShadow='0 1px 3px rgba(0,0,0,0.01)';">
           <div>
-            <div style="color: #0369A1; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px;">Prevent XXI • Ambos</div>
-            <div id="limpActual" style="color: #0EA5E9; font-size: 24px; font-weight: 800;">---€</div>
+            <div style="color: #0369A1; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px;">MJM • Total</div>
+            <div id="limpAnterior" style="color: #0EA5E9; font-size: 24px; font-weight: 800;">---€</div>
           </div>
           <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 8px;">
-            <span style="color: #0284C7; font-size: 11px; font-weight: 600;">mar'26 → actual • total</span>
+            <span style="color: #0284C7; font-size: 11px; font-weight: 600;">oct'24 – abr'25 • ambos</span>
             <span style="font-size: 13px; color: #0EA5E9; text-transform: uppercase; font-weight: 800; display: inline-flex; align-items: center; gap: 5px; opacity: 1.0; padding: 3px 8px; background: rgba(14, 165, 233, 0.08); border-radius: 4px;">🔍 Auditar</span>
           </div>
         </div>
