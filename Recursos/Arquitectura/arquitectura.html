@@ -151,10 +151,12 @@
       background: #1E293B;
       color: white;
       border-color: #0F172A;
-      font-size: 24px;
+      font-size: clamp(16px, 1.8vw, 24px);
       font-weight: 700;
-      padding: 24px 36px;
-      min-width: 240px;
+      padding: clamp(16px, 1.5vw, 24px) clamp(20px, 2.5vw, 36px);
+      min-width: 0;
+      width: clamp(200px, 20vw, 300px);
+      box-sizing: border-box;
       letter-spacing: 0.5px;
     }
     .tree li .node.root:hover {
@@ -167,9 +169,9 @@
       background: #4F46E5;
       color: white;
       border-color: #3730A3;
-      font-size: 20px;
+      font-size: clamp(11px, 1.1vw, 18px);
       font-weight: 400; /* Sin negrita */
-      padding: 18px 24px;
+      padding: clamp(10px, 1vw, 18px) clamp(8px, 1vw, 24px);
     }
     .tree li .node.tab:hover {
       background: #6366F1;
@@ -182,7 +184,6 @@
       background: white;
       border: 2px solid #E2E8F0;
       color: #1E293B;
-      padding: 16px 20px;
       text-decoration: none;
       font-size: 13px;
       font-weight: 600;
@@ -190,8 +191,9 @@
       border-radius: 10px;
       transition: all 0.3s;
       box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
-      min-width: 130px;
-      max-width: 160px;
+      width: 95%; /* En vez de fijos, que use el contenedor para achicarse */
+      max-width: 170px;
+      box-sizing: border-box;
       white-space: normal;
     }
 
@@ -263,16 +265,19 @@
     }
 
     .vertical-node {
-      padding: 12px 16px;
+      padding: clamp(8px, 0.8vw, 12px) clamp(6px, 1vw, 16px);
       border-radius: 8px;
-      font-size: 16px;
+      font-size: clamp(10px, 0.95vw, 15px);
       font-weight: 600;
-      width: 160px; /* Aumentar un poco el ancho para el texto más grande */
+      width: 95%;
+      max-width: 170px;
+      box-sizing: border-box;
       box-shadow: 0 1px 3px rgba(0,0,0,0.05);
       position: relative;
       transition: all 0.2s ease;
       cursor: default;
       border: 1.5px solid transparent;
+      margin: 0 auto;
     }
 
     /* Pequeña línea conectora para la lista vertical */
