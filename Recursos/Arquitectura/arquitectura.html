@@ -23,24 +23,30 @@
       padding: 20px;
     }
 
-    .header-container {
-      width: 100%;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 0 20px;
-      margin-bottom: 20px;
-      box-sizing: border-box;
-      position: absolute;
-      top: 20px;
-      left: 0;
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: #1E2330;
+      border-bottom: 1px solid #2D3448;
+      margin: -60px -60px 40px -60px;
+      padding: 0 60px;
     }
-    
-    .canvas-title {
-      font-size: 20px;
-      font-weight: 700;
-      color: #475569;
-      margin-left: 10px;
+
+    .site-header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      height: 60px;
+    }
+
+    .site-header-title {
+      font-size: 17px;
+      font-weight: 800;
+      color: #FFFFFF;
+      letter-spacing: -0.3px;
+      white-space: nowrap;
     }
 
     .flow-select-wrapper {
@@ -155,7 +161,7 @@
       font-weight: 700;
       padding: clamp(16px, 1.5vw, 24px) clamp(20px, 2.5vw, 36px);
       min-width: 0;
-      width: clamp(200px, 20vw, 300px);
+      width: max-content;
       box-sizing: border-box;
       letter-spacing: 0.5px;
     }
@@ -297,20 +303,20 @@
       body {
         padding: 20px 10px 20px 10px; 
       }
-      .header-container {
-        position: relative;
-        flex-direction: column;
-        top: 0;
-        gap: 16px;
-        padding: 0 10px;
-        margin-bottom: 30px;
+      .site-header {
+        margin: -20px -10px 30px -10px;
+        padding: 0 16px;
       }
-      .canvas-title {
-        position: static;
+      .site-header-inner {
+        flex-direction: column;
+        height: auto;
+        padding: 15px 0;
+        gap: 15px;
+      }
+      .site-header-title {
+        font-size: 15px;
+        white-space: normal;
         text-align: center;
-        margin-left: 0;
-        margin-bottom: 0;
-        font-size: 20px;
       }
       .flow-select-wrapper {
         margin-right: 0;
@@ -401,7 +407,7 @@
     }
 
     /* Footer Responsive */
-    .app-footer {
+    footer {
       margin-top: 60px;
       padding: 28px 50px;
       border-top: 1px solid #2D3448;
@@ -412,45 +418,47 @@
       justify-content: space-between;
       align-items: center;
     }
-    .app-footer .links {
+    footer .footer-links {
       display: flex;
       gap: 16px;
       align-items: center;
       font-size: 16px;
     }
     @media (max-width: 768px) {
-      .app-footer {
+      footer {
         flex-direction: column;
         padding: 20px;
         gap: 20px;
       }
-      .app-footer .links {
+      footer .footer-links {
         flex-direction: column;
         gap: 12px;
       }
-      .app-footer .links span { display: none; } /* Ocultar el separador | en móvil */
+      footer .footer-links span { display: none; } /* Ocultar el separador | en móvil */
     }
   </style>
 </head>
 <body>
 
-  <div class="header-container">
-    <div class="canvas-title">Arquitectura de Información</div>
-    <div class="flow-select-wrapper">
-      <select class="flow-select" onchange="if(this.value) { window.location.href = this.value; }">
-        <option value="" disabled selected>☰ Seleccionar flujo...</option>
-        <option value="arquitectura.html">🗺️ Arquitectura de la App</option>
-        <option value="diagramas.html">🔀 Conciliación Bancaria</option>
-      </select>
+  <header class="site-header" id="siteHeader">
+    <div class="site-header-inner">
+      <div class="site-header-title">Gestión CP ML63</div>
+      <div class="flow-select-wrapper">
+        <select class="flow-select" onchange="if(this.value) { window.location.href = this.value; }">
+          <option value="" disabled selected>Seleccionar flujo...</option>
+          <option value="arquitectura.html">Arquitectura de la App</option>
+          <option value="diagramas.html">Conciliación Bancaria</option>
+        </select>
+      </div>
     </div>
-  </div>
+  </header>
   
   <div class="canvas-wrapper">
 
   <div class="tree">
     <ul>
       <li>
-        <div class="node root">🏠 ML63 Dashboard</div>
+        <div class="node root">ML63 Dashboard</div>
         <ul id="tree-root">
           <div style="padding: 40px; color: var(--text-muted)">Cargando arquitectura...</div>
         </ul>
@@ -481,15 +489,17 @@
         const tabsData = JSON.parse(jsonStr);
         treeRoot.innerHTML = '';
         
+        const cleanEmoji = (s) => s.replace(/[^\w\sáéíóúÁÉÍÓÚñÑüÜ.,\-&()·]/g, '').replace(/^\s*·\s*/, '').trim();
+
         tabsData.forEach(tab => {
           let childrenHTML = '';
           tab.sections.forEach(sec => {
-            childrenHTML += `<div class="vertical-node">${sec}</div>`;
+            childrenHTML += `<div class="vertical-node">${cleanEmoji(sec)}</div>`;
           });
           
           const li = document.createElement('li');
           li.innerHTML = `
-            <div class="node tab">${tab.tabName}</div>
+            <div class="node tab">${cleanEmoji(tab.tabName)}</div>
             <div class="vertical-list">
               ${childrenHTML}
             </div>
@@ -513,12 +523,12 @@
     document.addEventListener('DOMContentLoaded', loadArchitecture);
   </script>
 
-  <footer class="app-footer">
+  <footer>
     <div style="font-weight: 300; color: #FFFFFF; font-size: 22px; letter-spacing: 1px;">ml63</div>
-    <div class="links">
-      <a href="../../ML63.html" style="color:rgba(255,255,255,0.6); text-decoration:none;" onmouseover="this.style.color='#FFFFFF'" onmouseout="this.style.color='rgba(255,255,255,0.6)'">🏠 Volver a ML63 App</a>
+    <div class="footer-links">
+      <a href="../../ML63.html" style="color:rgba(255,255,255,0.6); text-decoration:none;" onmouseover="this.style.color='#FFFFFF'" onmouseout="this.style.color='rgba(255,255,255,0.6)'">Volver a ML63 App</a>
       <span style="color:#2D3448">|</span>
-      <a href="diagramas.html" style="color:rgba(255,255,255,0.6); text-decoration:none;" onmouseover="this.style.color='#FFFFFF'" onmouseout="this.style.color='rgba(255,255,255,0.6)'">📊 Diagramas</a>
+      <a href="diagramas.html" style="color:rgba(255,255,255,0.6); text-decoration:none;" onmouseover="this.style.color='#FFFFFF'" onmouseout="this.style.color='rgba(255,255,255,0.6)'">Diagramas</a>
     </div>
   </footer>
 
