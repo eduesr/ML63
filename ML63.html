@@ -3124,9 +3124,14 @@
         : `<div class="project-nopres" style="margin-top:6px">📋 Sin presupuestar</div>`;
       const progPct = Math.round(p.progreso * 100);
       const icon = p.cat === 'completado' ? '✅' : p.cat === 'progreso' ? '⏳' : '📋';
-      const cardAccent = p.cat === 'completado' ? 'border-left: 3px solid var(--secondary);'
+      let cardAccent = p.cat === 'completado' ? 'border-left: 3px solid var(--secondary);'
         : p.cat === 'progreso' ? 'border-left: 3px solid var(--accent);'
           : 'border-left: 3px solid var(--border);';
+      
+      // Alerta visual fuerte para proyectos completados sin cruce bancario
+      if (p.cat === 'completado' && (!p.banco_ref || p.banco_ref.trim() === '')) {
+        cardAccent = 'border: 2px solid var(--danger); border-left: 6px solid var(--danger); box-shadow: 0 4px 12px rgba(239, 68, 68, 0.15);';
+      }
 
       let meatball = '';
       let dragAttr = '';
