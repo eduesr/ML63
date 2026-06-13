@@ -1708,6 +1708,12 @@
         <div class="mf"><label>% Progreso</label><input type="number" id="mProg" min="0" max="100" placeholder="0-100">
         </div>
       </div>
+      <div class="mf" style="margin-top:-5px;margin-bottom:15px;">
+        <label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-weight:600;color:var(--text-soft)">
+          <input type="checkbox" id="mSinCoste" style="width:16px;height:16px;accent-color:var(--primary)">
+          Este proyecto es de coste cero (no requiere cruce bancario)
+        </label>
+      </div>
       <div class="mf"><label>Descripción</label><textarea id="mObs"></textarea></div>
       <div class="mf"><label>Proveedor Adjudicado</label><select id="mProv" style="width:100%;padding:10px 12px;border:1.5px solid var(--border);border-radius:6px;font-size:14px;background:white">
           <option value="">(Ninguno)</option>
@@ -3119,9 +3125,12 @@
           ? `<div class="project-bank" style="background:#FFF7ED; border:1px solid #F59E0B; color:#9A3412; padding:6px 10px; border-radius:6px; font-size:11px; margin-top:8px">⚠️ <strong>Pendiente de auditoría:</strong> Sin cruce bancario</div>`
           : '');
 
-      const presBanner = (p.pres !== null && p.pres !== undefined)
-        ? `<div class="project-pres" style="margin-top:6px">📋 <strong>Presupuesto:</strong> ${fmtPres(p.pres)}</div>`
-        : `<div class="project-nopres" style="margin-top:6px">📋 Sin presupuestar</div>`;
+      let presBanner = '';
+      if (!p.banco_ref || p.banco_ref === 'Sin gasto' || p.banco_ref.trim() === '') {
+        presBanner = (p.pres !== null && p.pres !== undefined)
+          ? `<div class="project-pres" style="margin-top:6px">📋 <strong>Presupuesto:</strong> ${fmtPres(p.pres)}</div>`
+          : `<div class="project-nopres" style="margin-top:6px">📋 Sin presupuestar</div>`;
+      }
       const progPct = Math.round(p.progreso * 100);
       const icon = p.cat === 'completado' ? '✅' : p.cat === 'progreso' ? '⏳' : '📋';
       let cardAccent = p.cat === 'completado' ? 'border-left: 3px solid var(--secondary);'
@@ -4413,6 +4422,7 @@
         document.getElementById('mObs').value = p.obs || '';
         document.getElementById('mProv').value = p.proveedor_id || '';
         document.getElementById('mBanco').value = p.banco_ref || '';
+        document.getElementById('mSinCoste').checked = (p.banco_ref === 'Sin gasto');
       } else {
         document.getElementById('mAño').value = '2026';
         document.getElementById('mCat').value = 'pendiente';
@@ -4422,6 +4432,7 @@
         document.getElementById('mObs').value = '';
         document.getElementById('mProv').value = '';
         document.getElementById('mBanco').value = '';
+        document.getElementById('mSinCoste').checked = false;
       }
       document.getElementById('modalOverlay').classList.add('open');
     }
@@ -4432,6 +4443,12 @@
     }
 
     async function saveProyecto() {
+      const isSinCoste = document.getElementById('mSinCoste').checked;
+      let finalBancoRef = document.getElementById('mBanco').value.trim() || null;
+      if (isSinCoste) {
+        finalBancoRef = 'Sin gasto';
+      }
+
       const row = {
         año: document.getElementById('mAño').value,
         cat: document.getElementById('mCat').value,
@@ -4440,7 +4457,7 @@
         progreso: parseFloat(document.getElementById('mProg').value) / 100,
         obs: document.getElementById('mObs').value.trim() || null,
         proveedor_id: document.getElementById('mProv').value || null,
-        banco_ref: document.getElementById('mBanco').value.trim() || null,
+        banco_ref: finalBancoRef,
       };
       if (!row.nombre) { toast('El nombre es obligatorio', 'err'); return; }
 
@@ -4761,21 +4778,49 @@
 
         const importedCount = insertedData ? insertedData.length : 0;
         
-        // Cruce Automático con Proyectos para movimientos insertados
+        // Cruce Automático Global (siempre se ejecuta, incluso si importedCount es 0)
         let cruces = 0;
-        if (importedCount > 0) {
-          const { data: proys } = await db.from('proyectos').select('id, pres, banco_ref').is('banco_ref', null);
-          if (proys && proys.length > 0) {
-            for (let row of insertedData) {
-              if (row.importe < 0) {
-                const monto = Math.abs(row.importe);
-                const matchProy = proys.find(p => p.pres === monto);
-                if (matchProy) {
-                  await db.from('proyectos').update({ banco_ref: row.fecha + ' | ' + monto + '€ (' + row.concepto + ')' }).eq('id', matchProy.id);
-                  matchProy.banco_ref = 'reconciled'; // evitar doble cruce
-                  cruces++;
-                }
+        const { data: allProys } = await db.from('proyectos').select('*');
+        const { data: fetchAllMovs } = await db.from('movimientos').select('*');
+        
+        if (allProys && fetchAllMovs) {
+          const unrecProys = allProys.filter(p => p.banco_ref === null);
+          const usedRefs = new Set();
+          allProys.forEach(p => { if (p.banco_ref) usedRefs.add(p.banco_ref); });
+          
+          let unrecMovs = fetchAllMovs.filter(m => {
+            const refStr = m.fecha + ' | ' + Math.abs(m.importe) + '€ (' + m.concepto + ')';
+            return !Array.from(usedRefs).some(r => r && r.includes(refStr));
+          });
+          
+          // Ordenamos proyectos de mayor a menor presupuesto
+          unrecProys.sort((a,b) => Math.abs(b.pres||0) - Math.abs(a.pres||0));
+          
+          for (let p of unrecProys) {
+            const pPres = Math.abs(p.pres || 0);
+            if (pPres === 0) continue;
+            const isPIncome = (p.pres > 0);
+            
+            let bestM = null;
+            for (let m of unrecMovs) {
+              const isMIncome = (m.importe > 0);
+              if (isPIncome !== isMIncome) continue;
+              
+              const mImp = Math.abs(m.importe);
+              // Check exact match or IVA margins
+              if (Math.abs(pPres - mImp) < 0.01 || Math.abs(pPres * 1.10 - mImp) < 0.01 || Math.abs(pPres * 1.21 - mImp) < 0.01) {
+                 bestM = m;
+                 break;
               }
+            }
+            
+            if (bestM) {
+              const finalRef = bestM.fecha + ' | ' + Math.abs(bestM.importe) + '€ (' + bestM.concepto + ')';
+              await db.from('proyectos').update({ banco_ref: finalRef }).eq('id', p.id);
+              p.banco_ref = finalRef;
+              usedRefs.add(finalRef);
+              unrecMovs = unrecMovs.filter(x => x.id !== bestM.id);
+              cruces++;
             }
           }
         }
@@ -4783,7 +4828,7 @@
         const skippedCount = data.length - importedCount;
 
         // Mostrar resumen premium
-        const targetData = importedCount > 0 ? insertedData : [];
+        const targetData = importedCount > 0 ? insertedData : data;
         const ingresos = targetData.filter(m => m.importe > 0).reduce((s, m) => s + m.importe, 0);
         const gastos = targetData.filter(m => m.importe < 0).reduce((s, m) => s + Math.abs(m.importe), 0);
 
@@ -4793,7 +4838,7 @@
             <div style="background:#D1FAE5;border-left:3px solid #10B981;padding:16px;border-radius:8px">
               <div style="font-weight:700;color:#065F46;margin-bottom:8px">✅ ${importedCount} nuevos movimientos importados correctamente</div>
               <div style="font-size:13px;color:#065F46">Ingresos: +${Math.round(ingresos).toLocaleString('es-ES')}€ · Gastos: -${Math.round(gastos).toLocaleString('es-ES')}€</div>
-              ${cruces > 0 ? `<div style="font-size:12px;color:#047857;margin-top:6px;font-weight:600">🔗 Se han conciliado automáticamente ${cruces} proyectos por coincidencia de presupuesto!</div>` : ''}
+              ${cruces > 0 ? `<div style="font-size:12px;color:#047857;margin-top:6px;font-weight:600">🔗 Se han conciliado automáticamente ${cruces} proyectos pendientes!</div>` : ''}
               ${skippedCount > 0 ? `<div style="font-size:11px;color:#047857;margin-top:6px;opacity:0.85">Omitidos ${skippedCount} movimientos duplicados que ya existían.</div>` : ''}
             </div>`;
         } else {
@@ -4801,13 +4846,14 @@
             <div style="background:#EFF6FF;border-left:3px solid #3B82F6;padding:16px;border-radius:8px">
               <div style="font-weight:700;color:#1E3A8A;margin-bottom:4px">ℹ️ Sin movimientos nuevos</div>
               <div style="font-size:13px;color:#1E3A8A">Todos los ${data.length} movimientos de este extracto ya estaban registrados previamente.</div>
+              ${cruces > 0 ? `<div style="font-size:12px;color:#047857;margin-top:6px;font-weight:600">🔗 Reevaluación completada: se han conciliado automáticamente ${cruces} proyectos pendientes!</div>` : ''}
             </div>`;
         }
 
         document.getElementById('uploadResult').innerHTML = summaryHtml;
 
-        // Recargar dashboard dinámicamente si se importaron registros nuevos
-        if (importedCount > 0) {
+        // Recargar dashboard dinámicamente si se importaron registros nuevos o se conciliaron proyectos
+        if (importedCount > 0 || cruces > 0) {
           if (typeof loadDashboardData === 'function') loadDashboardData();
         }
       } catch (e) {
