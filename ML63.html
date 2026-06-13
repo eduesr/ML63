@@ -1710,7 +1710,7 @@
       </div>
       <div class="mf" style="margin-top:-5px;margin-bottom:15px;">
         <label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-weight:600;color:var(--text-soft)">
-          <input type="checkbox" id="mSinCoste" style="width:16px;height:16px;accent-color:var(--primary)">
+          <input type="checkbox" id="mSinCoste" onchange="if(this.checked){document.getElementById('mPres').value=''; document.getElementById('mPres').disabled=true;}else{document.getElementById('mPres').disabled=false;}" style="width:16px;height:16px;accent-color:var(--primary)">
           Este proyecto es de coste cero (no requiere cruce bancario)
         </label>
       </div>
@@ -2870,10 +2870,7 @@
       <div class="kpi-grid" id="planAnualKpis">
         <!-- Renderizado dinámico de KPIs -->
       </div>
-      <div class="chart-section" style="margin-top:24px">
-        <div class="chart-title">Consumo de Presupuesto de Proyectos del Año</div>
-        <div class="chart-container" id="planAnualChart"></div>
-      </div>
+
       <div style="font-size:14px; font-weight:700; color:var(--text); margin:24px 0 10px; display:flex; align-items:center; gap:6px;">
         📌 Desglose de partidas y proyectos comprometidos
       </div>
@@ -3583,7 +3580,7 @@
       const PRESUPUESTO = 182810;
       const years = ['2025', '2026', '2027', '2028', '2029', '2030', '2031'];
       const projects = years.flatMap(year => (DATA[year] || []).map(p => ({ ...p, year })));
-      const hasPres = p => p.pres !== null && p.pres !== undefined;
+      const hasPres = p => p.pres !== null && p.pres !== undefined && p.pres !== 0 && p.banco_ref !== 'Sin gasto' && !(p.cat === 'progreso' && p.banco_ref);
       function subset(cat) {
         return projects.filter(p => p.cat === cat);
       }
@@ -3629,9 +3626,8 @@
 
       document.getElementById('planDesglose').innerHTML = `
     <div class="kpi c1"><div class="kpi-label">Completados</div><div class="kpi-value">${completados.length}</div><div class="kpi-sub">${countBudgeted(completados)} con presupuesto · ${fmtNum(completedCosts)}€ de gasto</div></div>
-    <div class="kpi c2"><div class="kpi-label">En progreso</div><div class="kpi-value">${progreso.length}</div><div class="kpi-sub">${countBudgeted(progreso)} con presupuesto · ${fmtNum(progressCosts)}€ gasto · +${fmtNum(progressIncome)}€ ingreso</div></div>
-    <div class="kpi c3"><div class="kpi-label">Pendientes</div><div class="kpi-value">${pendientes.length}</div><div class="kpi-sub">${countBudgeted(pendientes)} con presupuesto · ${pendientes.length - countBudgeted(pendientes)} sin cifra</div></div>
-    <div class="kpi c4"><div class="kpi-label">Pendiente con Cifra</div><div class="kpi-value">${fmtNum(pendingCosts - pendingIncome)}€</div><div class="kpi-sub">importe neto aún no ejecutado, concentrado en 2026+</div></div>`;
+    <div class="kpi c2"><div class="kpi-label">En progreso</div><div class="kpi-value">${progreso.length}</div><div class="kpi-sub">Coste proyectos ${fmtNum(progressCosts)}€</div></div>
+    <div class="kpi c3"><div class="kpi-label">Pendientes</div><div class="kpi-value">${pendientes.length}</div><div class="kpi-sub">Importe estimado ${fmtNum(pendingCosts - pendingIncome)}€, no ejecutado</div></div>`;
 
       makeBars('planProgressChart',
         [Math.round(completedCosts), Math.round(progressCosts), Math.round(pendingCosts), Math.round(totalGrossCosts)],
@@ -3689,15 +3685,7 @@
         </div>
       `);
       
-      // Renderizar gráfico de barras del plan anual
-      makeBars('planAnualChart',
-        [Math.round(ejecutadoAnual), Math.round(pendienteAnual), Math.round(totalAnual)],
-        ['Ejecutado Real', 'Previsión Resto Año', `Total Planificado ${currentYear}`],
-        {
-          fmt: v => fmtNum(v) + '€',
-          colorFn: (v, i) => ['var(--c1)', 'var(--c2)', 'var(--c3)'][i]
-        }
-      );
+
       
       // Renderizar el desglose dinámico de los proyectos comprometidos de 2026
       let desgloseHtml = '';
@@ -3893,12 +3881,10 @@
         if (DATA[p.año]) DATA[p.año].push(proj);
       });
 
+      await loadProveedores();
       renderProjects2026();
       renderProjects2025();
       calcPlan();
-      if (_isAdmin) {
-        await loadProveedores();
-      }
       loadDashboardData();
     }
 
@@ -4430,12 +4416,15 @@
         document.getElementById('mObs').value = p.obs || '';
         document.getElementById('mProv').value = p.proveedor_id || '';
         document.getElementById('mBanco').value = p.banco_ref || '';
-        document.getElementById('mSinCoste').checked = (p.banco_ref === 'Sin gasto');
+        const isSinCoste = (p.banco_ref === 'Sin gasto');
+        document.getElementById('mSinCoste').checked = isSinCoste;
+        document.getElementById('mPres').disabled = isSinCoste;
       } else {
         document.getElementById('mAño').value = '2026';
         document.getElementById('mCat').value = 'pendiente';
         document.getElementById('mNombre').value = '';
         document.getElementById('mPres').value = '';
+        document.getElementById('mPres').disabled = false;
         document.getElementById('mProg').value = '0';
         document.getElementById('mObs').value = '';
         document.getElementById('mProv').value = '';
@@ -4461,7 +4450,7 @@
         año: document.getElementById('mAño').value,
         cat: document.getElementById('mCat').value,
         nombre: document.getElementById('mNombre').value.trim(),
-        pres: document.getElementById('mPres').value !== '' ? parseFloat(document.getElementById('mPres').value) : null,
+        pres: isSinCoste ? null : (document.getElementById('mPres').value !== '' ? parseFloat(document.getElementById('mPres').value) : null),
         progreso: parseFloat(document.getElementById('mProg').value) / 100,
         obs: document.getElementById('mObs').value.trim() || null,
         proveedor_id: document.getElementById('mProv').value || null,
@@ -4814,6 +4803,15 @@
               const isMIncome = (m.importe > 0);
               if (isPIncome !== isMIncome) continue;
               
+              // Restricción de fecha: evitar que se crucen movimientos muy antiguos. Máximo 1 año de diferencia.
+              if (p.año && m.fecha) {
+                const mYear = parseInt(m.fecha.substring(0, 4), 10);
+                const pYear = parseInt(p.año, 10);
+                if (!isNaN(mYear) && !isNaN(pYear) && Math.abs(pYear - mYear) > 1) {
+                  continue;
+                }
+              }
+              
               const mImp = Math.abs(m.importe);
               // Check exact match or IVA margins
               if (Math.abs(pPres - mImp) < 0.01 || Math.abs(pPres * 1.10 - mImp) < 0.01 || Math.abs(pPres * 1.21 - mImp) < 0.01) {
@@ -4922,21 +4920,22 @@
 
     async function loadProveedores() {
       const el = document.getElementById('proveedoresList');
-      if(!el) return;
-      el.innerHTML = '<div style="color:var(--text-muted);font-size:14px">Cargando proveedores...</div>';
+      if (el) el.innerHTML = '<div style="color:var(--text-muted);font-size:14px">Cargando proveedores...</div>';
       
       const { data, error } = await db.from('proveedores').select('*').order('nombre');
       if (error) {
         console.error(error);
-        el.innerHTML = '<div style="color:var(--danger)">Error al cargar proveedores</div>';
+        if (el) el.innerHTML = '<div style="color:var(--danger)">Error al cargar proveedores</div>';
         return;
       }
       
       PROVEEDORES = data || [];
       if (PROVEEDORES.length === 0) {
-        el.innerHTML = '<div style="color:var(--text-muted);font-size:14px">No hay proveedores registrados.</div>';
+        if (el) el.innerHTML = '<div style="color:var(--text-muted);font-size:14px">No hay proveedores registrados.</div>';
         return;
       }
+      
+      if (!el) return; // Si no hay elemento del DOM, terminamos aquí (ej: usuario viewer)
 
       let html = '<div style="display:flex;flex-direction:column;gap:8px">';
       PROVEEDORES.forEach(p => {
