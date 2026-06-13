@@ -84,13 +84,12 @@ ML63/
 | `openModal()` / `closeModal()` | Modal de crear/editar proyecto |
 | `saveProyecto()` | INSERT o UPDATE de proyecto |
 | `delProyecto()` | DELETE de proyecto |
-| `processBancoFile(file)` | Parsea Excel de Sabadell e inserta en `movimientos` |
+| `processBancoFile(file)` | Parsea Excel de Sabadell e inserta en `movimientos`. **CRÍTICO:** Incluye la lógica de **Cruce Automático Global**. Esta lógica evalúa SIEMPRE todos los movimientos sin conciliar contra todos los proyectos pendientes (incluso si el Excel subido tiene 0 registros nuevos). El motor de cruce busca coincidencias exactas o con márgenes de IVA (10% y 21%) y recarga el dashboard dinámicamente si hay nuevos cruces. **¡Nunca eliminar ni simplificar este flujo!** |
 | `loadAdminPanel()` | Carga panel admin (solo admins) |
 | `calcPlan()` | Calcula KPIs y agregados del plan plurianual |
 | `renderProjects2026()` / `renderProjects2025()` | Renderiza tarjetas de proyecto por año |
 | `makeBars()` / `makeStackedBars()` / `makeGroupedBars()` | Funciones de renderizado base de Chart.js |
 | `loadGasChartData()` | Fetchea y agrega costes reales del Gas (Naturgy vs Gas Power) |
-| `calcPlan()` | Agrega facturas y calcula el Plan Plurianual 2025-2029 |
 | `calcOperativo(y)` | (Interna en `switchTab`) Suma los gastos operativos recurrentes de un año (luz, gas, agua, mantenimientos) para separarlos de las obras/mejoras. |
 | Funciones anónimas en `switchTab` | El grueso de los cálculos de Gastos/Energía se hace al cambiar de pestaña mediante filtros `allMoves.filter(...)` |
 
