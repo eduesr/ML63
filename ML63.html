@@ -3654,8 +3654,16 @@
       const yearCompleted = (DATA[currentYear] || []).filter(p => p.pres < 0 && p.cat === 'completado');
       const completadoAnual = yearCompleted.reduce((s, p) => s + Math.abs(p.pres), 0);
 
-      const ejecutadoAnual = completadoAnual + yearCostsOnly.reduce((s, p) => s + Math.abs(p.pres) * (p.progreso || 0), 0);
-      const pendienteAnual = yearCostsOnly.reduce((s, p) => s + Math.abs(p.pres) * (1 - (p.progreso || 0)), 0);
+      const ejecutadoAnual = completadoAnual + yearCostsOnly.reduce((s, p) => {
+        if (p.banco_ref && p.banco_ref !== 'Sin gasto') return s + Math.abs(p.pres);
+        return s + Math.abs(p.pres) * (p.progreso || 0);
+      }, 0);
+      
+      const pendienteAnual = yearCostsOnly.reduce((s, p) => {
+        if (p.banco_ref && p.banco_ref !== 'Sin gasto') return s;
+        return s + Math.abs(p.pres) * (1 - (p.progreso || 0));
+      }, 0);
+      
       const totalAnual = completadoAnual + yearCostsOnly.reduce((s, p) => s + Math.abs(p.pres), 0);
       
       // Actualizar títulos e info
