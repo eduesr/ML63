@@ -868,6 +868,18 @@
       transition: transform 0.2s ease;
     }
 
+    details.project-section.state-progreso summary::after {
+      color: var(--accent);
+    }
+    
+    details.project-section.state-pendiente summary::after {
+      color: var(--info);
+    }
+    
+    details.project-section.state-completado summary::after {
+      color: var(--secondary);
+    }
+
     details.project-section[open]>summary::after {
       transform: rotate(180deg);
     }
@@ -3227,10 +3239,50 @@
         </div>`;
 
       let html = '';
+      
+      // -- INICIO GRAFICO RESUMEN --
+      const total = progreso.length + completados.length + pendientes.length;
+      if (total > 0) {
+        const pctComp = Math.round((completados.length / total) * 100) || 0;
+        const pctProg = Math.round((progreso.length / total) * 100) || 0;
+        const pctPend = Math.max(0, 100 - pctComp - pctProg); // Resto asegurado
+        
+        html += `
+          <div class="projects-overview" style="margin-bottom: 24px; padding: 20px; background: var(--bg); border-radius: 12px; border: 1px solid var(--border);">
+            <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 16px;">
+              <span style="font-size: 14px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px;">Resumen de Ejecución</span>
+              <span style="font-size: 24px; font-weight: 700; color: var(--text); line-height: 1;">${pctComp}%</span>
+            </div>
+            
+            <div style="display: flex; height: 16px; border-radius: 8px; overflow: hidden; background: var(--border); margin-bottom: 20px; box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);">
+              <div style="width: ${pctComp}%; background: var(--secondary); transition: width 0.5s ease;" title="Completados: ${completados.length}"></div>
+              <div style="width: ${pctProg}%; background: var(--accent); transition: width 0.5s ease;" title="En Curso: ${progreso.length}"></div>
+              <div style="width: ${pctPend}%; background: var(--info); transition: width 0.5s ease;" title="Pendientes: ${pendientes.length}"></div>
+            </div>
+            
+            <div style="display: flex; gap: 20px; font-size: 13px; flex-wrap: wrap;">
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <span style="display: inline-block; width: 12px; height: 12px; border-radius: 50%; background: var(--secondary); box-shadow: 0 1px 2px rgba(0,0,0,0.1);"></span>
+                <span style="color: var(--text-soft);"><b>${completados.length}</b> Completados</span>
+              </div>
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <span style="display: inline-block; width: 12px; height: 12px; border-radius: 50%; background: var(--accent); box-shadow: 0 1px 2px rgba(0,0,0,0.1);"></span>
+                <span style="color: var(--text-soft);"><b>${progreso.length}</b> En curso</span>
+              </div>
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <span style="display: inline-block; width: 12px; height: 12px; border-radius: 50%; background: var(--info); box-shadow: 0 1px 2px rgba(0,0,0,0.1);"></span>
+                <span style="color: var(--text-soft);"><b>${pendientes.length}</b> Pendientes</span>
+              </div>
+            </div>
+          </div>
+        `;
+      }
+      // -- FIN GRAFICO RESUMEN --
+
       if (progreso.length) {
         html += `
-          <details class="project-section">
-            <summary>⏳ En curso <span class="count">${progreso.length}</span></summary>
+          <details class="project-section state-progreso">
+            <summary>⏳ En curso</summary>
             ${searchBox}
             <div class="project-list" data-cat="progreso" ondragover="allowDrop(event)" ondrop="handleDrop(event)">
               ${progreso.map(_baseProjectHTML).join('')}
@@ -3239,8 +3291,8 @@
       }
       if (pendientes.length) {
         html += `
-          <details class="project-section">
-            <summary>📋 Pendientes <span class="count">${pendientes.length}</span></summary>
+          <details class="project-section state-pendiente">
+            <summary>📋 Pendientes</summary>
             ${searchBox}
             <div class="project-list" data-cat="pendiente" ondragover="allowDrop(event)" ondrop="handleDrop(event)">
               ${pendientes.map(_baseProjectHTML).join('')}
@@ -3249,8 +3301,8 @@
       }
       if (completados.length) {
         html += `
-          <details class="project-section">
-            <summary>✓ Completados <span class="count">${completados.length}</span></summary>
+          <details class="project-section state-completado">
+            <summary>✓ Completados</summary>
             ${searchBox}
             <div class="project-list" data-cat="completado" ondragover="allowDrop(event)" ondrop="handleDrop(event)">
               ${completados.map(_baseProjectHTML).join('')}
